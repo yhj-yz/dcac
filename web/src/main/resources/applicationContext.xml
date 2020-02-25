@@ -11,7 +11,7 @@
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
 >
 	<!--导入electronicTag.properties文件-->
-	<context:property-placeholder location="classpath:electronicTag.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+	<context:property-placeholder location="classpath:dcac.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>
 	<!--扫描注解除了 Controller 和 ControllerAdvice-->
 	<context:component-scan base-package="com.huatusoft">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
