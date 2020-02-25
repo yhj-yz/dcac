@@ -14,7 +14,7 @@
 
 	<context:property-placeholder location="classpath:electronicTag-db.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>
 	<bean id="propertyConfigurer"
-		  class="com.huatusoft.electronictag.web.config.property.ElectronicTagPropertyPlaceholderConfigurer">
+		  class="com.huatusoft.dcac.web.config.property.ElectronicTagPropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:electronicTag-db.properties</value>
@@ -27,7 +27,7 @@
 		  destroy-method="close" lazy-init="true" depends-on="propertyConfigurer">
 		<!--对加密密码进行解密-->
 		<property name="properties">
-			<bean class="com.huatusoft.electronictag.web.config.database.C3P0DatasourcePropertiesFactory" factory-method="getProperties">
+			<bean class="com.huatusoft.dcac.web.config.database.C3P0DatasourcePropertiesFactory" factory-method="getProperties">
 				<constructor-arg type="java.lang.String">
 					<value>${jdbc.dzbq.password}</value>
 				</constructor-arg>
@@ -56,7 +56,7 @@
 	<bean id="entityManagerFactory"
 		  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<!--扫描实体包-->
-		<property name="packagesToScan" value="com.huatusoft.electronictag.**.entity" />
+		<property name="packagesToScan" value="com.huatusoft.dcac.**.entity" />
 		<!--添加数据源-->
 		<property name="dataSource" ref="dataSource" />
 		<!--添加HibernateJPA提供适配器-->

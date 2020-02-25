@@ -76,14 +76,14 @@
 	</tx:advice>
 	<!-- 定义使用事务管理的方法 -->
 	<aop:config>
-		<aop:pointcut id="managerMethod" expression="execution(* com.huatusoft.electronictag.*.service.*.*(..))"/>
+		<aop:pointcut id="managerMethod" expression="execution(* com.huatusoft.dcac.*.service.*.*(..))"/>
 		<aop:advisor pointcut-ref="managerMethod" advice-ref="txAdvice"/>
 	</aop:config>
 
 	<jpa:repositories base-package="com.huatusoft.**.dao"
 					  repository-impl-postfix="Impl"
 					  query-lookup-strategy = "create-if-not-found"
-					  factory-class="com.huatusoft.electronictag.base.factory.BaseDaoFactoryBean"
+					  factory-class="com.huatusoft.dcac.base.factory.BaseDaoFactoryBean"
 					  entity-manager-factory-ref="entityManagerFactory"
 					  transaction-manager-ref="transactionManager">
 	</jpa:repositories>

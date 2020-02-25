@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="web" />
+        <module name="security-strategy-center" />
+        <module name="common" />
+        <module name="authentication" />
+        <module name="separate-approval" />
+        <module name="address-list" />
+        <module name="audit-log" />
+        <module name="base" />
+        <module name="system-settings" />
+        <module name="basic-platform-interaction" />
+        <module name="electronic-label-database" />
+        <module name="client-side" />
+        <module name="organizational-structure" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="address-list" target="1.8" />
+      <module name="audit-log" target="1.8" />
+      <module name="authentication" target="1.8" />
+      <module name="base" target="1.8" />
+      <module name="basic-platform-interaction" target="1.8" />
+      <module name="client-side" target="1.8" />
+      <module name="common" target="1.8" />
+      <module name="dcac" target="1.8" />
+      <module name="electronic-label-database" target="1.8" />
+      <module name="organizational-structure" target="1.8" />
+      <module name="security-strategy-center" target="1.8" />
+      <module name="separate-approval" target="1.8" />
+      <module name="system-settings" target="1.8" />
+      <module name="technically" target="1.8" />
+      <module name="web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

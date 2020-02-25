@@ -59,7 +59,7 @@
 
     <filter>
         <filter-name>exceptionFilter</filter-name>
-        <filter-class>com.huatusoft.electronictag.web.filter.exception.ExceptionFilter</filter-class>
+        <filter-class>com.huatusoft.dcac.web.filter.exception.ExceptionFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>exceptionFilter</filter-name>

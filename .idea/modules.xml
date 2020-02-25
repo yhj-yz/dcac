@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/address-list/address-list.iml" filepath="$PROJECT_DIR$/address-list/address-list.iml" />
+      <module fileurl="file://$PROJECT_DIR$/audit-log/audit-log.iml" filepath="$PROJECT_DIR$/audit-log/audit-log.iml" />
+      <module fileurl="file://$PROJECT_DIR$/authentication/authentication.iml" filepath="$PROJECT_DIR$/authentication/authentication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/technically/base/base.iml" filepath="$PROJECT_DIR$/technically/base/base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basic-platform-interaction/basic-platform-interaction.iml" filepath="$PROJECT_DIR$/basic-platform-interaction/basic-platform-interaction.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client-side/client-side.iml" filepath="$PROJECT_DIR$/client-side/client-side.iml" />
+      <module fileurl="file://$PROJECT_DIR$/technically/common/common.iml" filepath="$PROJECT_DIR$/technically/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/dcac.iml" filepath="$PROJECT_DIR$/.idea/dcac.iml" />
+      <module fileurl="file://$PROJECT_DIR$/electronic-label-database/electronic-label-database.iml" filepath="$PROJECT_DIR$/electronic-label-database/electronic-label-database.iml" />
+      <module fileurl="file://$PROJECT_DIR$/organizational-structure/organizational-structure.iml" filepath="$PROJECT_DIR$/organizational-structure/organizational-structure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/security-strategy-center/security-strategy-center.iml" filepath="$PROJECT_DIR$/security-strategy-center/security-strategy-center.iml" />
+      <module fileurl="file://$PROJECT_DIR$/separate-approval/separate-approval.iml" filepath="$PROJECT_DIR$/separate-approval/separate-approval.iml" />
+      <module fileurl="file://$PROJECT_DIR$/system-settings/system-settings.iml" filepath="$PROJECT_DIR$/system-settings/system-settings.iml" />
+      <module fileurl="file://$PROJECT_DIR$/technically/technically.iml" filepath="$PROJECT_DIR$/technically/technically.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
+    </modules>
+  </component>
+</project>
