@@ -12,12 +12,12 @@
 	<!--引入 applicationContext.xml-->
 	<import resource="applicationContext.xml" />
 
-	<context:property-placeholder location="classpath:electronicTag-db.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+	<context:property-placeholder location="classpath:dcac-db.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>
 	<bean id="propertyConfigurer"
 		  class="com.huatusoft.dcac.web.config.property.ElectronicTagPropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:electronicTag-db.properties</value>
+				<value>classpath:dcac-db.properties</value>
 			</list>
 		</property>
 	</bean>
