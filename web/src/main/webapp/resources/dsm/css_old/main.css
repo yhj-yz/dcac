@@ -1,0 +1,128 @@
+@charset "utf-8";
+/* CSS Document */
+body{ margin:auto; font-family:"微软雅黑";background-color:transparent;}
+a,a:hover{ color:#303030; text-decoration:none;}
+input{ outline:none; border:none;}
+hr{ margin:0;}
+ul,li{ margin:0; padding:0;}
+img{ margin:0; padding:0; display:inline-block;}
+select,select option,select option:hover{appearance:none;
+		-moz-appearance:none;
+		-webkit-appearance:none;
+		background:none;}
+label{ margin:0; padding:0;}
+/* header */
+.big_box{ overflow:hidden; overflow-x:atuo;}
+.header{margin:auto; width:100%;height:60px; background-image:url(../images/head_bg.png); }
+.headertitle{float: left;width: 268px; text-align:center; line-height:60px; font-size:22px; font-family:"方正兰亭纤黑_GBK";}
+.headertitle a{color:#FFF; text-decoration:none;}
+.userinfo{margin-left: 268px;/*==等于左边栏宽度==*/ padding-right:92px; text-align:center;}
+.userinfo a{ float:right; margin-right:36px; text-decoration:none;}
+.userinfo a span{ line-height:60px; color:#FFF; font-size:12px; font-family:"微软雅黑"; margin-left:6px;}
+.userinfo a .current{ color:#0a7aba;}
+/* 正文 */
+.content{ overflow:hidden; overflow-x:atuo;}
+
+/*右边*/
+.main_content{margin-left: 10px;/*==等于左边栏宽度==*/ padding:0px; padding-right:0px;z-index:-100;   overflow-y:scroll;
+			  }
+.main_title{ display:block; width:100%; padding-bottom:10px;color:#fff; font-size:14px; position:relative;}
+.main_title .stroke50{display:block; width:100%; padding-bottom:10px;position:absolute; border-bottom:1px #fff dashed;}
+/*右边*/
+/*透明背景及描边*/
+.columnbg40{
+	filter:alpha(opacity=40);   
+      -moz-opacity:0.4;   
+      -khtml-opacity: 0.4;   
+      opacity: 0.4;
+}
+.stroke40{
+	filter:alpha(opacity=40);   
+      -moz-opacity:0.4;   
+      -khtml-opacity: 0.4;   
+      opacity: 0.4;
+}
+.columnbg48{filter:alpha(opacity=48);   
+      -moz-opacity:0.48;   
+      -khtml-opacity: 0.48;   
+      opacity: 0.48;
+}
+.stroke60{filter:alpha(opacity=60);   
+      -moz-opacity:0.6;   
+      -khtml-opacity: 0.6;   
+      opacity: 0.6;
+	}
+.stroke50{filter:alpha(opacity=50);   
+      -moz-opacity:0.5;   
+      -khtml-opacity: 0.5;   
+      opacity: 0.5;
+	}
+.stroke55{filter:alpha(opacity=55);   
+      -moz-opacity:0.55;   
+      -khtml-opacity: 0.55;   
+      opacity: 0.55;
+	}
+
+.columnbg15{filter:alpha(opacity=15);   
+      -moz-opacity:0.15;   
+      -khtml-opacity: 0.15;   
+      opacity: 0.15;
+}
+.stroke30{filter:alpha(opacity=30);   
+      -moz-opacity:0.3;   
+      -khtml-opacity: 0.3;   
+      opacity: 0.3;
+	}
+.columnbg64{filter:alpha(opacity=64);   
+      -moz-opacity:0.64;   
+      -khtml-opacity: 0.64;   
+      opacity: 0.64;
+}
+.stroke80{filter:alpha(opacity=80);   
+      -moz-opacity:0.80;   
+      -khtml-opacity: 0.80;   
+      opacity: 0.80;
+	}
+.columnbg81{filter:alpha(opacity=81);   
+      -moz-opacity:0.81;   
+      -khtml-opacity: 0.81;   
+      opacity: 0.81;
+}
+.stroke90{filter:alpha(opacity=90);   
+      -moz-opacity:0.9;   
+      -khtml-opacity: 0.9;   
+      opacity: 0.9;
+	}
+.columnbg36{filter:alpha(opacity=36);   
+      -moz-opacity:0.36;   
+      -khtml-opacity: 0.36;   
+      opacity: 0.36;
+}
+.columnbg60{filter:alpha(opacity=60);   
+      -moz-opacity:0.60;   
+      -khtml-opacity: 0.60;   
+      opacity: 0.60;
+}
+.columnbg10{filter:alpha(opacity=10);   
+      -moz-opacity:0.10;   
+      -khtml-opacity: 0.1;   
+      opacity: 0.1;
+}
+.columnbg50{filter:alpha(opacity=50);   
+      -moz-opacity:0.50;   
+      -khtml-opacity: 0.5;   
+      opacity: 0.5;
+}
+.stroke20{filter:alpha(opacity=20);   
+      -moz-opacity:0.2;   
+      -khtml-opacity: 0.2;   
+      opacity: 0.2;
+	}
+.columnbg20{filter:alpha(opacity=20);   
+      -moz-opacity:0.2;   
+      -khtml-opacity: 0.2;   
+      opacity: 0.2;
+}
+/*透明背景及描边结束*/
+/*temp*/
+

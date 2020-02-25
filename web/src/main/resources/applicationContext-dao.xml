@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx" xmlns:cache="http://www.springframework.org/schema/cache"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	   default-lazy-init="true">
+	<!--引入 applicationContext.xml-->
+	<import resource="applicationContext.xml" />
+
+	<context:property-placeholder location="classpath:electronicTag-db.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+	<bean id="propertyConfigurer"
+		  class="com.huatusoft.electronictag.web.config.property.ElectronicTagPropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:electronicTag-db.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--配置数据源-->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		  destroy-method="close" lazy-init="true" depends-on="propertyConfigurer">
+		<!--对加密密码进行解密-->
+		<property name="properties">
+			<bean class="com.huatusoft.electronictag.web.config.database.C3P0DatasourcePropertiesFactory" factory-method="getProperties">
+				<constructor-arg type="java.lang.String">
+					<value>${jdbc.dzbq.password}</value>
+				</constructor-arg>
+			</bean>
+		</property>
+		<property name="driverClass" value="${jdbc.dzbq.driver}" />
+		<property name="jdbcUrl" value="${jdbc.dzbq.url}" />
+		<property name="user" value="${jdbc.dzbq.username}" />
+		<property name="initialPoolSize" value="${connection_pools.initial_pool_size}" />
+		<property name="minPoolSize" value="${connection_pools.min_pool_size}" />
+		<property name="maxPoolSize" value="${connection_pools.max_pool_size}" />
+		<property name="maxIdleTime" value="${connection_pools.max_idle_time}" />
+		<property name="acquireIncrement" value="${connection_pools.acquire_increment}" />
+		<property name="checkoutTimeout" value="${connection_pools.checkout_timeout}" />
+		<property name="breakAfterAcquireFailure" value="false" />
+		<property name="testConnectionOnCheckout" value="${connection_pools.testConnectionOnCheckout}" />
+		<property name="testConnectionOnCheckin" value="${connection_pools.testConnectionOnCheckin}" />
+		<property name="idleConnectionTestPeriod" value="${connection_pools.idleConnectionTestPeriod}" />
+		<property name="acquireRetryAttempts" value="${connection_pools.acquireRetryAttempts}" />
+		<property name="acquireRetryDelay" value="${connection_pools.acquireRetryDelay}"/>
+	</bean>
+
+
+
+	<!--配置EntityManager工厂-->
+	<bean id="entityManagerFactory"
+		  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<!--扫描实体包-->
+		<property name="packagesToScan" value="com.huatusoft.electronictag.**.entity" />
+		<!--添加数据源-->
+		<property name="dataSource" ref="dataSource" />
+		<!--添加HibernateJPA提供适配器-->
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+			</bean>
+		</property>
+		<property name="sharedCacheMode" value="ENABLE_SELECTIVE" />
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class"> org.hibernate.cache.SingletonEhCacheRegionFactory</prop>
+				<prop key="hibernate.cache.provider_configuration_file_resource_path">ehcache.xml</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

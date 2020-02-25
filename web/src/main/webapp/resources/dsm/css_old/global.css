@@ -1,0 +1,797 @@
+/*yanhaojian 2016-08-01 */
+/*全局样式，左侧导航,头部,右侧,图标,表单控件,表格重写*/
+/*登录页,首页,系统升级,系统时间,系统重启,解密配置，加密配置*/
+html {
+  background-color: #ffffff;
+  height: 100%;
+}
+
+*:before,*:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+form
+{
+    margin-bottom: 0;
+	padding:0;
+}
+body {
+  font-family: "微软雅黑",Arial,'Hiragino Sans GB',Microsoft YaHei,sans-serif;
+  font-size: 12px;
+  color: #788188;
+  background-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.40;
+}
+a:focus{outline:none;}
+/*全局样式*/
+.color-red
+{
+	color:red;
+}
+.p-relative
+{
+	position: relative;
+}
+.color-gary
+{
+    background-color: #D6DEE1;
+}
+.waddicon
+{
+	padding-left: 30px;
+    position: relative;
+}
+.btn-white {
+    color: inherit;
+    background: white;
+    border: 1px solid #e7eaec;
+}
+.btn-white:hover, .btn-white:focus, .btn-white:active, .btn-white.active, .open .dropdown-toggle.btn-white {
+    color: inherit;
+    border: 1px solid #d2d2d2;
+    outline: none;
+}
+.font-16
+{
+	font-size:16px !important;
+}
+.wsgbag
+{
+    background-color: #F8F8F8;
+}
+.wminwidth
+{
+	min-width: 850px;
+}
+.minwidth
+{
+	min-width: 550px;
+}
+.fr
+{
+	float:right !important;
+}
+.linkactive
+{
+    color:#2087B7 !important;
+}
+.yellow-color
+{	
+color: #fff3af;
+}
+.huise
+{
+	color: #969393 !important;
+}
+.app body {
+    height: 100%;
+}
+
+.vbox {
+    display: table;
+    border-spacing: 0;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.padding-20
+{
+	padding: 20px;
+}
+.mar-bottom20
+{
+	margin-bottom: 20px;
+}
+.mat-left-20
+{
+	margin-left:-20px !important;
+}
+/*头部*/
+.app .header
+{
+    border-radius: 0;
+    border: none;
+    margin-bottom: 0;
+    padding: 0;
+    position: relative;
+    background-color: #26A8E4;
+    z-index: 1000;
+    min-height: 55px;
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    -o-box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+.app .header .headtitle
+{
+    position: relative;
+    width: 300px;
+    height: 55px;
+    background-color: #26A8E4;
+    /*box-shadow: 0 2px 10px rgb(0, 0, 0);*/
+}
+.app .header .headtitle a
+{
+    text-decoration: none;
+    cursor: pointer;
+    color: #ffffff;
+    left: 50%;
+    position: absolute;
+    margin-left: -110px;
+    margin-top: 10px;
+    font-size: 24px;
+    word-spacing: 8px;
+    letter-spacing: 4px;
+}
+.app .header .headtitle .entitle
+{
+	position: absolute;
+	left: 0;
+	top: 23px;
+}
+.app .header .headnav
+{
+	position: absolute; 
+	right: 0;
+	top: 0;
+}
+.app .header .headnav
+{
+	position: absolute; 
+	right: 0;
+	top: 16px;
+}
+.app .header .headnav .nav-pills a
+{
+	font-size: 16px;
+	border-radius: 0;
+}
+
+.app .header .headnav .nav-pills li.active a
+{
+	background-color: #ffffff;
+    color: #428bca;
+    border-bottom: 2px solid #428bca;
+    font-weight: bold;
+}
+
+.app .header .headnav .nav-pills li > a:hover, 
+.nav-pills > li > a:focus {
+	background-color: #ffffff;
+}
+.app .userinfo
+{
+    position: relative;
+    right: 0;
+    padding: 0 0 0 15px;
+    top: -55px;
+    line-height: 55px;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: right;
+}
+.app .loginuser
+{
+    width:300px;
+    float:right;
+    margin-right:30px;
+}
+a
+{
+	-webkit-transition: background-color .2s linear,color .2s linear;
+    -o-transition: background-color .2s linear,color .2s linear;
+    transition: background-color .2s linear,color .2s linear;
+}
+.app .userinfo  a
+{
+    float: right;
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+    margin-right: 21px;
+    
+    padding: 0 5px;
+}
+.app .userinfo  a:hover
+{
+    background-color: #008fbf;
+}
+.app .vbox > section, .app .vbox > footer {
+    position: absolute;
+}
+.app .vbox >.header ~ section {
+    top:55px;
+}
+.app .vbox > section, .vbox > footer {
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+.app .hbox.stretch {
+    height: 100%;
+    display: table;
+    table-layout: fixed;
+    border-spacing: 0;
+    width: 100%;
+}
+.hbox > aside, .hbox > section {
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
+    float: none;
+}
+
+
+@media (min-width: 768px) {
+  
+  .vbox > footer {
+    top: auto;
+    z-index: 1000;
+  }
+  
+  .scrollable {
+    -webkit-overflow-scrolling: touch;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(50,50,50,0.25);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(50,50,50,0.5);
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(50,50,50,0.05);
+  }
+}
+.scrollable {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.no-touch .scrollable.hover {
+  overflow-y: hidden;
+}
+.no-touch .scrollable.hover:hover {
+  overflow: visible;
+  overflow-y: auto;
+}
+.no-touch ::-webkit-scrollbar-button {
+  width: 10px;
+  height: 6px;
+  background-color: rgba(50,50,50,0.05);
+}
+.slimScrollBar {
+  border-radius: 5px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background-clip: padding-box !important;
+}
+
+/*左侧导航*/
+
+.text-sm {
+    font-size: 13px;
+}
+.app .aside {
+    width: 180px;
+    background-color: #0D1B26;
+    color: #ffffff;
+}
+.app .aside .nav  li  a {
+    color: #CACACA;
+    -webkit-transition: background-color .2s ease-in-out 0s;
+    transition: background-color .2s ease-in-out 0s;
+    padding: 15px 0px 15px 20px;
+    font-size: 14px;
+}
+.app .aside .nav  li  a span {
+    margin-left:10px;
+}
+.app .aside .nav  li ul {
+	background-color: #293038;
+}
+.grayblack
+{
+	background-color:#0D1B26 !important;
+}
+.app .aside .nav .active li a {
+	padding-left: 45px;
+    font-size: 14px;
+    padding: 10px 0px 10px 25px;
+}
+.app .aside .fli.active .active li a {
+	border-left: 5px solid #26A8E4;
+}
+.app .aside .fnav
+{
+    background-color: #202E3A;
+    margin-top: 1px;
+}
+.app .aside .fnav .fli
+{
+    margin-top: 1px;
+    background-color: #14232F;
+}
+.app .aside .nav > li > a:hover, 
+.app .aside .nav > li > a:focus {
+    text-decoration: none;
+    cursor: pointer;
+    background: #14232F;
+}
+.app .aside .nav .linkactive
+{
+	border-left: 2px solid #26A8E4;
+}
+/*右侧*/
+.mainbox{
+    height: calc(100% - 0px);
+}
+iframe
+{
+    border:0;
+}
+/*图标*/
+.wfa
+{
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    left: 10px;
+    top: 8px;
+    position: absolute;
+}
+.wfa-plus
+{
+	background-image: url(../../images/addicon.png);
+}
+.icon-loading
+{
+	background: url(../../images/loading.gif) no-repeat;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    position: relative;
+    left: 5px;
+    top: 5px;
+}
+.icon
+{
+    background-image: url(../../images/wsgicons.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+}
+.app .icon
+{
+    height: 16px;
+    width: 16px;
+    margin-top: 2px;
+}
+.app .icon-ad
+{
+    background-position: -86px -94px;
+    margin-right: 20px;
+}
+.app .active .icon-ad
+{
+ 	background-position: -86px -124px !important;
+    margin-right: 20px;
+}
+.app .icon-isys
+{
+    background-position: -25px -27px;
+}
+.app .icon-snet
+{
+    background-position: -25px -89px;
+}
+.app .icon-sjjm
+{
+	background-position: -25px -149px;
+}
+.app .icon-slog
+{
+	background-position: -25px -209px;
+}
+.app .icon-logout
+{
+    background-position: -138px -27px;
+    width: 28px;
+    height: 28px;
+}
+.app .icon-saveconfig
+{    
+	background-position: -81px -27px;
+    width: 28px;
+    height: 28px;
+}
+/*表单控件*/
+.error
+{
+	color:red;
+}
+thead
+{
+	/*background-color: #EAF4F9;*/
+}
+.lebalbreak{
+	word-break: break-all;
+    word-wrap: break-word;
+    white-space: inherit !important;
+    width: 100% !important;
+}
+.winfo
+{	
+	width: 100%;
+}
+.winfo .whead
+{
+	font-size: 16px;
+    color: #000;
+    line-height: 50px;
+    padding-left: 20px;
+	height:50px;
+	background: #FDFDFD;
+    background: -moz-linear-gradient(top,  #FDFDFD 0%, #F1F1F1 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F1F1F1), color-stop(100%,#F1F1F1));
+    background: -webkit-linear-gradient(top,  #FDFDFD 0%,#F1F1F1 100%);
+    background: -o-linear-gradient(top,  #FDFDFD 0%,#F1F1F1 100%);
+    background: -ms-linear-gradient(top,  #FDFDFD 0%,#F1F1F1 100%);
+    background: linear-gradient(to bottom,  #FDFDFD 0%,#F1F1F1 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FDFDFD', endColorstr='#F1F1F1',GradientType=0 );
+}
+.winfo .wcontent
+{
+	    height: 100%;
+    	margin-bottom: 50px;
+}
+/*登录页*/
+.loginbag
+{
+    width: 1920px;
+    background-image: url(../../images/loginbag.png);
+    height: 1000px;
+    position: absolute;
+    left: 50%;
+    margin-left: -960px;
+    top: -60px;
+}
+.loginbox
+{
+    width: 480px;
+    height: 370px;
+    position: relative;
+    left: 50%;
+    top:200px;
+    margin-left: -240px;
+    background-color:#EFEFEF;
+    border-radius:4px;
+    padding: 0px 55px;
+}
+.loginbox .info
+{
+    text-align: center;
+    font-size: 20px;
+    color: #000;
+    letter-spacing: 6px;
+    padding-top: 45px;
+    padding-bottom: 30px;
+    position:relative;
+}
+.loginbox .lline
+{
+    left: 20px;
+    border-top: 1px solid #f0f0f0;
+    width: 115px;
+    position: absolute;
+    top: 60px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.loginbox .rline
+{
+    border-top: 1px solid #f0f0f0;
+    width: 115px;
+    position: absolute;
+    right: 25px;
+    top: 60px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.loginbox .lyy
+{
+    background-image: url(../../images/lyy.png);
+    height: 58px;
+    width: 23px;
+    position: absolute;
+    right: -24px;
+    bottom: -2px;
+}
+.loginbox .ryy
+{
+    background-image: url(../../images/ryy.png);
+    height: 58px;
+    width: 24px;
+    left: -23px;
+    bottom: -2px;
+    position: absolute;
+}
+.loginbox .controls
+{
+    margin-left: 70px;
+}
+.loginbox .form-control
+{
+	height:35px;
+}
+.loginbox .control-group .control-label
+{
+    width: 70px;
+    font-size:16px;
+}
+.loginbox .btn-lg
+{
+	padding: 10px 40px;
+}
+.wsgname
+{
+    top: 90px;
+    position: absolute;
+    text-align: center;
+    font-size: 42px;
+    font-family: 华文中宋;
+    color: #0687C2;
+    left: 50%;
+    margin-left: -126px;
+    letter-spacing: 4px;
+}
+.loginbox .btnbox
+{
+	margin-top:35px;
+	text-align: center;
+}
+.loginbox .btnbox input
+{
+	margin:0 23px;
+}
+/*首页*/
+.homecontent .timeimg
+{
+    left: 50%;
+    margin: 50px 0 35px 0;
+    margin-left: -50px;
+    color: #333;
+    position: relative;
+    text-align: center;
+}
+.homecontent .runtimeinfo
+{
+	width: 300px; 
+	left: 50%;
+	margin-left: -150px;
+	color: #333;
+	position: relative;
+	text-align: center;
+	font-size: 16px;
+}
+.easypiechart {
+    position: relative;
+    text-align: center;
+    left: 50%;
+    margin-left: -94px;
+}
+.m-l-sm {
+    margin-left: 10px;
+}
+.easypiechart > div .text {
+    position: absolute;
+    width: 100%;
+    top: -20%;
+    line-height: 1;
+}
+.text-sm {
+    font-size: 13px;
+}
+.easypiechart canvas {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    z-index: 0;
+}
+.homecontent .pieitemt {
+    float:left;
+    width:33.33%;
+}
+.homecontent .syschart {
+    margin-top:120px;
+}
+.homecontent .pieitemt .desc {
+    color:#26A8E4;
+}
+.homecontent .pieitemt .desc .text {
+    color:#333 !important;
+}
+/*系统升级 系统时间 系统重启*/
+.main
+{
+	padding: 45px  110px;
+}
+.main .wbox
+{
+	color: #000;
+}
+.wboxheader
+{
+	height: 35px;
+	line-height: 35px;
+	font-size: 16px;
+	padding-left: 20px;
+    background-color: #F8F8F8;
+}
+.wboxcontent
+{
+    margin-top: 1px;
+    background-color: #F8F8F8;
+    padding: 25px 90px;
+}
+.borderstyle
+{
+	border-bottom: 1px solid #E0E0E0;
+	border-left: 1px solid #E0E0E0;
+	border-right: 1px solid #E0E0E0;
+}
+.wboxcontent .operatebox .btn
+{
+	width: 120px;
+	font-size: 16px;
+}
+.wboxcontent .btn.dr,
+.wboxcontent .btn.dc
+{
+	width: 80px;
+}
+.operatebox
+{
+	text-align: center;
+    padding-top: 22px;
+    margin-top: 15px;
+}
+.border-top
+{
+    border-top: 1px solid #D8D5D5;
+}
+.operatebox .opdesc
+{
+	margin-top:20px;
+}
+.ltimetype
+{
+	font-weight:500;
+	font-size:16px;
+	margin-left:10px;
+}
+.chooseday
+{
+		width: 30px;
+		height: 30px;
+		position: absolute;
+		background-color: #C7C7C7;
+	    cursor: pointer;
+	    background-image: url(../../images/wsgicons.png);
+   	   background-repeat: no-repeat;
+}
+.chooseday.add
+{
+	right:0;
+	top:0;
+    background-position: -81px -201px;
+}
+.chooseday.remv
+{
+	top:0;
+	left:0;
+	background-position: -136px -201px;
+}
+.control-group {
+    padding: 15px 20px;
+    margin-bottom: 0;
+}
+.control-label {
+    width: 85px;
+}
+.control-group .control-label {
+    float: left;
+    line-height: 30px;
+    color: #000;
+    white-space: nowrap;
+    width: 80px;
+    margin: 0;
+    padding-top: 0;
+    text-align: left;
+    font-weight: 500;
+    font-size: 14px;
+}
+.controls {
+    margin-left: 90px;
+}
+.control-group:before, .control-group:after {
+    display: table;
+    line-height: 0;
+    content: "";
+    clear: both;
+}
+.form-control {
+    border-radius: 0;
+    vertical-align: middle;
+    height: 30px;
+    padding: 4px 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+/*解密配置，加密配置*/
+.martop10
+{
+	margin-top:10px !important;
+}
+.btnview
+{
+    width: 60px;
+    height: 25px;
+    padding: 2px;
+    color:#26A8E4;
+    border-color:#26A8E4;
+}
+.btnview:hover, .btnview:focus, .btnview:active, .btnview.active, .open .dropdown-toggle.btnview {
+    color: inherit;
+    border: 1px solid #26A8E4;
+    outline: none;
+    color:#26A8E4;
+}
+/*表格重写*/
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border: 0px solid #ddd;
+    text-align: center;
+}
+.table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > th, .table > caption + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > td, .table > thead:first-child > tr:first-child > td {
+    border-top: 0;
+    text-align: center;
+}
+.table tr
+{
+    border: 1px solid #ddd;
+}

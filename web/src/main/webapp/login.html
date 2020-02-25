@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" +>
+<head>
+    <title>登录界面</title>
+    <meta http-equiv="expires" content="0"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <link href="resources/dsm/css/bootstrap.css" rel="stylesheet"/>
+    <link href="resources/dsm/css/global.css" rel="stylesheet"/>
+    <script type="text/javascript" src="resources/dsm/js/jquery.js"></script>
+    <script type="text/javascript" src="resources/dsm/js/bootstrap.js"></script>
+    <script type="text/javascript" src="resources/dsm/js/common.js"></script>
+    <script type="text/javascript" src="resources/dsm/js/jquery.validate.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            /*向服务器发送ajax请求校验用户名是否存在*/
+            var token = getQueryVariable("token");
+            if (token != false) {
+                var message = $("#message");
+                $.ajax({
+                    type: "post",
+                    url: "authentication/login.do?token=" + token,
+                    dataType: "json",
+                    success: function (data) {
+                        message.html(data.msg);
+                    },
+                    error: function (data) {
+                        window.location.href = "authentication/main.do";
+                    }
+                });
+
+            }
+
+            var $loginForm = $("#loginForm");
+            var $enPassword = $("#enPassword");
+            var $username = $("#username");
+            var $password = $("#password");
+
+
+            // 表单验证、记住用户名
+            $loginForm.submit(function () {
+
+                if ($username.val() == "") {
+                    return false;
+                }
+                var resultSetPin = 0;
+                var pin = $password.val();
+                $enPassword.val($password.val());
+
+            });
+        });
+
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            return (false);
+        }
+
+        function checkAccount() {
+            var message = $("#message");
+            var userAccount = $('#userAccountInput').val();
+            $.ajax({
+                type: "get",
+                url: "authentication/user.do",
+                data: {account: userAccount},
+                dataType: "json",
+                success: function (data) {
+                    message.html('');
+                    if (data.status != 402) {
+                        message.html(data.msg);
+                    }
+                }
+            })
+        }
+
+        function updateCheckCode () {
+            $('#checkCode').prop("src", "authentication/code.do?datetime="+new Date().getTime());
+        }
+
+        function login() {
+            var message = $("#message");
+            var param = {
+                username: $("#userAccountInput").val(),
+                password: $("#password").val(),
+                checkCode: $("#code").val()
+            };
+            $.ajax({
+                type: "post",
+                url: "authentication/login.do",
+                data: param,
+                dataType: "json",
+                success: function (data) {
+                    message.html('');
+                    message.html(data.msg);
+                },
+                error: function (data) {
+                    window.location.href = "authentication/main.do";
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+<div class="dsmapp min-width">
+    <div class="header">
+        <div class="appinfo">
+            <a class="dsm-logo" href=""><img src="resources/dsm/images/logo_vamtoo_blue.png"/></a>
+            <div class="dsm-title title-blue">
+                <span class="companyname">浙江华途信息安全技术股份有限公司</span> <span class="productname">涉密电子标签管理系统</span>
+            </div>
+        </div>
+    </div>
+    <div class="dsm-bg" style="background: url(resources/dsm/images/bg_1.png) center center repeat-x;"></div>
+    <div class="main">
+        <form action="authentication/login.do" method="post">
+            <div class="loginbox">
+                <select name="loginType" class="loginbox-header clearfix form-control" id="loginType"
+                        style="position: absolute;top: 13px;width: 146px;border: none;box-shadow: 2px 2px 6px #ddd;">
+                    <option value="system">账号密码登录</option>
+                    <option value="usbkey">USBKEY登录</option>
+                </select>
+                <div class="loginbox-body">
+                    <input type="hidden" id="enPassword" name="enPassword"/>
+                    <div class="login-fail"></div>
+                    <div class="login-info" style="padding-top: 36px;">
+                        <div class="login-input">
+                            <i class='icon icon-username' alt="用户名"></i>
+                            <input id="userAccountInput" type="text" class="dsm-input account l-input "
+                                   autocomplete="off"
+                                   placeholder="用户名" onchange="checkAccount()" name="username">
+                        </div>
+
+                        <div class="login-input">
+                            <i class='icon icon-password'></i>
+                            <input type="password" class="dsm-input password l-input" id="password" autocomplete="off"
+                                   placeholder="密码" name="password">
+                        </div>
+                        <div>
+                            <img src="authentication/code.do" title="验证码" onclick="updateCheckCode()" id="checkCode"/>
+                            <input type="text" id="code"  name="code" class="dsm-input account l-input" style="display: inline-block; width: 183px; height: 28px;"/>
+                        </div>
+                        <div class="js_loginErr" style="color:red;" id="message"></div>
+                    </div>
+                </div>
+                <div class="loginbox-footer">
+                    <a href="#"
+                       class="btn btn-primary btn_login" onclick="login()">登录</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="footer">
+        <span>控制台版本：1.0.00</span>
+    </div>
+</div>
+</body>
+</html>

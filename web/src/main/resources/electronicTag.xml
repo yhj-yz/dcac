@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<shopxx>
+	<setting name="siteName" value="涉密电子标签管理系统" />
+	<setting name="siteUrl" value="http://localhost:8080/dsmxx/" />
+	<setting name="siteVersion" value="1.0.00" />
+	<setting name="dataVersion" value="5.0.1" />
+	<setting name="logo" value="/upload/image/logo.gif" />
+	<setting name="address" value="杭州市西湖区优盘时代" />
+	<setting name="phone" value="400-675-9090" />
+	<setting name="zipCode" value="310012" />
+	<setting name="email" value="service@huatusoft.com" />
+	<setting name="certtext" value="浙ICP备10000000号" />
+	<setting name="isSiteEnabled" value="true" />
+	<setting name="siteCloseMessage" value="&lt;dl&gt;&lt;dt&gt;网站维护中，暂时无法访问！&lt;/dt&gt;&lt;dd&gt;本网站正在进行系统维护和技术升级，网站暂时无法访问，敬请谅解！&lt;/dd&gt;&lt;/dl&gt;" />
+	<setting name="watermarkAlpha" value="50" />
+	<setting name="watermarkImage" value="/upload/image/watermark.png" />
+	<setting name="watermarkPosition" value="bottomRight" />
+	<setting name="isRegisterEnabled" value="true" />
+	<setting name="isDuplicateEmail" value="false" />
+	<setting name="disabledUsername" value="admin,管理员" />
+	<setting name="usernameMinLength" value="2" />
+	<setting name="usernameMaxLength" value="20" />
+	<setting name="passwordMinLength" value="4" />
+	<setting name="passwordMaxLength" value="20" />
+	<setting name="registerAgreement" value="&lt;p&gt;服务条款"/> 
+	<setting name="isEmailLogin" value="true" />
+	<setting name="captchaTypes" value="memberLogin,memberRegister,adminLogin,review,consultation,findPassword,resetPassword,other" />
+	<setting name="accountLockTypes" value="member,admin" />
+	<setting name="accountLockCount" value="5" />
+	<setting name="accountLockTime" value="5" />
+	<setting name="safeKeyExpiryTime" value="1440" />
+	<setting name="uploadMaxSize" value="10" />
+	<setting name="uploadImageExtension" value="jpg,jpeg,bmp,gif,png" />
+	<setting name="uploadFlashExtension" value="swf,flv" />
+	<setting name="uploadMediaExtension" value="swf,flv,mp3,wav,avi,rm,rmvb" />
+	<setting name="uploadFileExtension" value="zip,rar,7z,doc,docx,xls,xlsx,ppt,pptx" />
+	<setting name="imageUploadPath" value="/upload/image/${.now?string('yyyyMM')}/" />
+	<setting name="flashUploadPath" value="/upload/flash/${.now?string('yyyyMM')}/" />
+	<setting name="mediaUploadPath" value="/upload/media/${.now?string('yyyyMM')}/" />
+	<setting name="fileUploadPath" value="upload/file/${.now?string('yyyyMM')}/" />
+	<setting name="cirUploadPath" value="upload/circulation/" />
+	<setting name="destUploadPath" value="upload/dest/" />
+	<setting name="smtpFromMail" value="test@shopxx.net" />
+	<setting name="smtpHost" value="smtp.shopxx.net" />
+	<setting name="smtpPort" value="25" />
+	<setting name="smtpUsername" value="test" />
+	<setting name="smtpPassword" value="test" />
+	<setting name="isDevelopmentEnabled" value="false" />
+	<setting name="cookiePath" value="/" />
+	<setting name="cookieDomain" value="" />
+	<setting name="isCnzzEnabled" value="false" />
+	<setting name="cnzzSiteId" value="" />
+	<setting name="cnzzPassword" value="" />
+	<setting name="syncTime" value="5" />
+	<setting name="verifytokenUrl" value="" />	
+	<setting name="appId" value="" />
+	<setting name="appSecret" value="" />
+	<setting name="isSolo" value="false" />
+	
+	<logConfig operation="系统设置" urlPattern="/admin/setting/update.jhtml" />
+	<logConfig operation="添加管理员" urlPattern="/admin/admin/save.jhtml" />
+	<logConfig operation="编辑管理员" urlPattern="/admin/admin/update.jhtml" />
+	<logConfig operation="删除管理员" urlPattern="/admin/admin/delete.jhtml" />
+	<logConfig operation="添加会员" urlPattern="/admin/member/save.jhtml" />
+	<logConfig operation="编辑会员" urlPattern="/admin/member/update.jhtml" />
+	<logConfig operation="删除会员" urlPattern="/admin/member/delete.jhtml" />
+ 
+ 
+ <!--终端管理开始  -->
+     <logConfig operation="批量设置智能策略" modelFlag="10001" modelName="终端列表" urlPattern="/admin/teminalManager/addIntelligentPolicy.jhtml" />
+     <logConfig operation="按部门设置智能策略" modelFlag="10001" modelName="终端列表" urlPattern="/admin/teminalManager/addIntellByGroupId.jhtml" />
+     <logConfig operation="智能加密策略的批量删除" modelFlag="10001" modelName="终端列表" urlPattern="/admin/teminalManager/deleIntelligentPolicy.jhtml" />
+     <logConfig operation="终端信息的批量删除" modelFlag="10001" modelName="终端列表" urlPattern="/admin/teminalManager/deleTeminal.jhtml" />
+     <logConfig operation="根据部门批量删除智能加密策略" modelFlag="10001" modelName="终端列表" urlPattern="/admin/teminalManager/delIntellByGroupId.jhtml" />
+     <logConfig operation="根据部门删除终端信息" modelFlag="10001" modelName="终端列表" urlPattern="/admin/teminalManager/delTeminalByGroupId.jhtml" />
+     <logConfig operation="批量设置准入控制" modelFlag="10001" modelName="终端列表" urlPattern="/admin/teminalManager/allowConnect.jhtml" />
+     <logConfig operation="根据部门设置准入控制" modelFlag="10001" modelName="终端列表" urlPattern="/admin/teminalManager/allowConnectByGroup.jhtml" />
+ <!--终端管理结束  -->
+ 
+ <!--工作流审批开始  -->
+    <logConfig operation="流程模板添加" modelFlag="10001" modelName="流程模板管理" urlPattern="/admin/flowModel/save.jhtml" />
+    <logConfig operation="流程模板删除" modelFlag="10001" modelName="流程模板管理" urlPattern="/admin/flowModel/delete.jhtml" />
+    <logConfig operation="流程模板修改" modelFlag="10001" modelName="流程模板管理" urlPattern="/admin/flowModel/save.jhtml" />
+    <logConfig operation="我的流程添加" modelFlag="10001" modelName="我的流程" urlPattern="/admin/myflow/save.jhtml" />
+ <!--工作流审批结束  -->
+ 
+ <!--系统设置开始 -->
+     <logConfig operation="登录设置信息保存" modelFlag="10001" modelName="登录页面设置" urlPattern="/admin/systemLoginImage/save.jhtml" />
+     <logConfig operation="设置还原" modelFlag="10001" modelName="登录页面设置" urlPattern="/admin/systemLoginImage/recover.jhtml" />
+     <logConfig operation="服务器设置参数的修改保存" modelFlag="10001" modelName="系统参数设置 " urlPattern="/admin/systemServerSet/save.jhtml" />
+     <logConfig operation="系统参数保存" modelFlag="10001" modelName="系统参数设置" urlPattern="/admin/system_param/save.jhtml" />
+     <logConfig operation="授权验证" modelFlag="10001" modelName="授权管理" urlPattern="/admin/authorizationManager/authorizationValidate.jhtml" />
+ <!--系统设置结束 -->
+ 
+ 	<!--角色 -->
+	<logConfig operation="新增角色"  modelFlag="10001" modelName="角色管理" urlPattern="/admin/role/save.jhtml" />
+	<logConfig operation="修改角色"  modelFlag="10001" modelName="角色管理" urlPattern="/admin/role/update.jhtml" />
+	<logConfig operation="删除角色"  modelFlag="10001" modelName="角色管理" urlPattern="/admin/role/delete.jhtml" />
+	<!--用户 -->
+	<logConfig operation="新增用户"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/save.jhtml" />
+	<logConfig operation="修改用户"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/update.jhtml" />
+	<logConfig operation="删除用户"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/delete.jhtml" />
+	<logConfig operation="禁用用户"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/disable.jhtml" />
+	<logConfig operation="解禁用户"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/enable.jhtml" />
+	<logConfig operation="移除用户"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/remove.jhtml" />
+	<logConfig operation="移动用户"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/move.jhtml" />
+	<logConfig operation="复制用户"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/copy.jhtml" />
+	<logConfig operation="离线策略导出"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/user/offline.jhtml" />
+	<logConfig operation="批量设置用户-所属角色"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/*/set_user_role.jhtml" />
+	<logConfig operation="批量设置用户-所属密级"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/*/set_user_level.jhtml" />
+	<logConfig operation="批量设置用户-权限集"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/*/set_user_permission.jhtml" />
+	<logConfig operation="批量设置用户-受控程序"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/*/set_user_control.jhtml" />
+	<logConfig operation="批量设置用户-备份策略"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/*/set_user_backup.jhtml" />
+	<!--个人资料 -->
+	<logConfig operation="修改密码"  modelFlag="10001" modelName="我的账号" urlPattern="/admin/profile/change_password.jhtml" />
+	<logConfig operation="修改用户邮箱设置"  modelFlag="10001" modelName="我的账号" urlPattern="/admin/profile/change_email.jhtml" />
+	<!--域导入 -->
+	<logConfig operation="手动执行域同步策略"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/ad_import/execute.jhtml" />
+	<!--数据库连接 -->
+	<logConfig operation="修改数据库连接信息"  modelFlag="10001" modelName="数据库设置" urlPattern="/admin/database_connection/update.jhtml" />
+	<!--部门 -->
+	<logConfig operation="新增部门"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/department/save.jhtml" />
+	<logConfig operation="修改部门"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/department/update.jhtml" />
+	<logConfig operation="删除部门"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/department/delete.jhtml" />
+	<logConfig operation="设置部门成员"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/department/set_user.jhtml" />
+	<logConfig operation="批量设置用户信息(按部门)"  modelFlag="10001" modelName="部门与用户管理" urlPattern="/admin/department/set_users.jhtml" />
+	<!--域同步策略 -->
+	<logConfig operation="新增域同步策略"  modelFlag="10001" modelName="域同步策略管理" urlPattern="/admin/domain_manager/save.jhtml" />
+	<logConfig operation="修改域同步策略"  modelFlag="10001" modelName="域同步策略管理" urlPattern="/admin/domain_manager/update.jhtml" />
+	<logConfig operation="删除域同步策略"  modelFlag="10001" modelName="域同步策略管理" urlPattern="/admin/domain_manager/delete.jhtml" />
+	<!--用户组 -->
+	<logConfig operation="新增用户组"  modelFlag="10001" modelName="用户组管理" urlPattern="/admin/group/save.jhtml" />
+	<logConfig operation="修改用户组"  modelFlag="10001" modelName="用户组管理" urlPattern="/admin/group/update.jhtml" />
+	<logConfig operation="删除用户组"  modelFlag="10001" modelName="用户组管理" urlPattern="/admin/group/delete.jhtml" />
+	<!--智能加密策略管理 -->
+	<logConfig operation="新增智能加密策略"  modelFlag="10001" modelName="智能加密策略管理" urlPattern="/admin/intelligent_policy/save.jhtml" />
+	<logConfig operation="修改智能加密策略"  modelFlag="10001" modelName="智能加密策略管理" urlPattern="/admin/intelligent_policy/update.jhtml" />
+	<logConfig operation="删除智能加密策略"  modelFlag="10001" modelName="智能加密策略管理" urlPattern="/admin/intelligent_policy/delete.jhtml" />
+	<!--权限集管理 -->
+	<logConfig operation="新增权限集"  modelFlag="10001" modelName="权限集管理" urlPattern="/admin/permissionset/save.jhtml" />
+	<logConfig operation="修改权限集"  modelFlag="10001" modelName="权限集管理" urlPattern="/admin/permissionset/update.jhtml" />
+	<logConfig operation="删除权限集"  modelFlag="10001" modelName="权限集管理" urlPattern="/admin/permissionset/delete.jhtml" />
+	<logConfig operation="删除权限集"  modelFlag="10001" modelName="权限集管理" urlPattern="/admin/permissionset/deletenorelations.jhtml" />
+	<!--安全域管理 -->
+	<logConfig operation="新增安全域"  modelFlag="10001" modelName="安全域管理" urlPattern="/admin/security_domain/save.jhtml" />
+	<logConfig operation="修改安全域"  modelFlag="10001" modelName="安全域管理" urlPattern="/admin/security_domain/update.jhtml" />
+	<logConfig operation="删除安全域"  modelFlag="10001" modelName="安全域管理" urlPattern="/admin/security_domain/delete.jhtml" />
+	<!--密级管理 -->
+	<logConfig operation="新增密级"  modelFlag="10001" modelName="密级管理" urlPattern="/admin/security_level/save.jhtml" />
+	<logConfig operation="修改密级"  modelFlag="10001" modelName="密级管理" urlPattern="/admin/security_level/update.jhtml" />
+	<logConfig operation="删除密级"  modelFlag="10001" modelName="密级管理" urlPattern="/admin/security_level/delete.jhtml" />
+	<!--备份管理 -->
+	<logConfig operation="新增备份策略"  modelFlag="10001" modelName="备份管理 " urlPattern="/admin/backupManager/save.jhtml" />
+	<logConfig operation="修改备份策略"  modelFlag="10001" modelName="备份管理 " urlPattern="/admin/backupManager/edit.jhtml" />
+	<logConfig operation="删除备份策略"  modelFlag="10001" modelName="备份管理 " urlPattern="/admin/backupManager/delete.jhtml" />
+	<!--安全策略管理 -->
+	<logConfig operation="新增安全策略"  modelFlag="10001" modelName="安全策略管理" urlPattern="/admin/security_policy/save.jhtml" />
+	<logConfig operation="修改安全策略"  modelFlag="10001" modelName="安全策略管理" urlPattern="/admin/security_policy/update.jhtml" />
+	<logConfig operation="删除安全策略"  modelFlag="10001" modelName="安全策略管理" urlPattern="/admin/security_policy/delete.jhtml" />
+	<!--终端升级补丁包管理 -->
+	<logConfig operation="新增补丁包"  modelFlag="10001" modelName="补丁包管理" urlPattern="/admin/upgrade_patch/save.jhtml" />
+	<logConfig operation="修改补丁包"  modelFlag="10001" modelName="补丁包管理" urlPattern="/admin/upgrade_patch/update.jhtml" />
+	<logConfig operation="删除补丁包"  modelFlag="10001" modelName="补丁包管理" urlPattern="/admin/upgrade_patch/delete.jhtml" />
+	<logConfig operation="上传组件"  modelFlag="10001" modelName="补丁包管理" urlPattern="/admin/upgrade_patch/upload.jhtml" />
+	<!--更新操作记录管理 -->
+	<logConfig operation="新增更新操作记录"  modelFlag="10001" modelName="更新操作管理" urlPattern="/admin/upgrade_record/save.jhtml" />
+	<logConfig operation="修改更新操作记录"  modelFlag="10001" modelName="更新操作管理" urlPattern="/admin/upgrade_record/update.jhtml" />
+	<logConfig operation="删除更新操作记录"  modelFlag="10001" modelName="更新操作管理" urlPattern="/admin/upgrade_record/delete.jhtml" />
+	<logConfig operation="中止更新操作"  modelFlag="10001" modelName="更新操作管理" urlPattern="/admin/upgrade_record/stop.jhtml" />
+	<!--联系人 -->
+	<logConfig operation="新增联系人"  modelFlag="10001" modelName="我的账号管理" urlPattern="/admin/contact/save.jhtml" />
+	<logConfig operation="修改联系人"  modelFlag="10001" modelName="我的账号管理" urlPattern="/admin/contact/update.jhtml" />
+	<logConfig operation="删除联系人"  modelFlag="10001" modelName="我的账号管理" urlPattern="/admin/contact/delete.jhtml" />
+    <!--受控程序策略-->
+    <logConfig operation="新增受控程序策略"  modelFlag="10001" modelName="受控程序策略管理" urlPattern="/admin/controlledStrategy/save.jhtml" />
+    <logConfig operation="修改受控程序策略"  modelFlag="10001" modelName="受控程序策略管理" urlPattern="/admin/controlledStrategy/edit.jhtml" />
+    <logConfig operation="删除受控程序策略"  modelFlag="10001" modelName="受控程序策略管理" urlPattern="/admin/controlledStrategy/delete.jhtml" />
+    <!--配置程序管理-->
+    <logConfig operation="新增软件"  modelFlag="10001" modelName="配置程序管理" urlPattern="/admin/contrManagerController/saveProgram.jhtml" />
+    <logConfig operation="修改软件"  modelFlag="10001" modelName="配置程序管理" urlPattern="/admin/contrManagerController/updateProgram.jhtml" />
+    <logConfig operation="新增配置"  modelFlag="10001" modelName="配置程序管理" urlPattern="/admin/contrManagerController/addConfig.jhtml" />
+    <logConfig operation="修改配置"  modelFlag="10001" modelName="配置程序管理" urlPattern="/admin/contrManagerController/updateConfig.jhtml" />
+    <logConfig operation="删除软件"  modelFlag="10001" modelName="配置程序管理" urlPattern="/admin/contrManagerController/deleteProgram.jhtml" />
+    <logConfig operation="删除配置"  modelFlag="10001" modelName="配置程序管理" urlPattern="/admin/contrManagerController/deleteConfig.jhtml" />
+    <logConfig operation="新增配置"  modelFlag="10001" modelName="配置程序管理" urlPattern="/admin/contrManagerController/netAddConfig.jhtml" />
+    <!--管理日志-->
+    <logConfig operation="删除管理日志"  modelFlag="10001" modelName="日志审计" urlPattern="/admin/managerLog/deleteLog.jhtml" />
+    <!--文件操作日志-->
+    <logConfig operation="删除文件操作日志"  modelFlag="10001" modelName="日志审计" urlPattern="/admin/fileDecodeLog/deleteLog.jhtml" />
+    <!--系统参数设置-->
+    <logConfig operation="系统参数设置"  modelFlag="10001" modelName="系统参数设置" urlPattern="/admin/system_param/save.jhtml" />
+    
+	<template id="dsmCommonJs" type="page" name="dsm_common_js" templatePath="/js/common.ftl" staticPath="/resources/dsm/js/common.js" />
+	<template id="adminCommonJs" type="page" name="admin_common_js" templatePath="/js/common.ftl" staticPath="/resources/dsm/js/common.js" />
+
+</shopxx>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+	<diskStore path="${java.io.tmpdir}/${system.project_name}/cache" />
+	<cache name="authorization" maxElementsInMemory="100" timeToLiveSeconds="3600" eternal="false" overflowToDisk="false" />
+	<cache name="setting" maxElementsInMemory="100" eternal="true" overflowToDisk="true" />
+	<cache name="logConfig" maxElementsInMemory="100" eternal="true" overflowToDisk="true" />
+	<cache name="template" maxElementsInMemory="100" eternal="true" overflowToDisk="true" />
+	<cache name="memberAttribute" maxElementsInMemory="500" timeToIdleSeconds="3600" timeToLiveSeconds="86400" eternal="false" overflowToDisk="true" />
+	<cache name="navigation" maxElementsInMemory="500" timeToIdleSeconds="3600" timeToLiveSeconds="86400" eternal="false" overflowToDisk="true" />
+	<cache name="license" maxElementsInMemory="100" eternal="true" overflowToDisk="true" />
+	<cache name="department" maxElementsInMemory="100" eternal="true" overflowToDisk="true" />
+	<cache name="programControl" maxElementsInMemory="100" eternal="true" overflowToDisk="true" />
+	<cache name="tokenInfo" maxElementsInMemory="100" eternal="true" overflowToDisk="true" />
+
+	<cache name="org.hibernate.cache.UpdateTimestampsCache"
+		   maxElementsInMemory="5000"
+		   eternal="true"
+		   overflowToDisk="true"
+	/>
+	<cache name="org.hibernate.cache.StandardQueryCache"
+		   maxElementsInMemory="10000"
+		   eternal="false"
+		   timeToLiveSeconds="86400"
+		   overflowToDisk="true"
+	/>
+
+	<defaultCache
+			maxElementsInMemory="10000"
+			eternal="false"
+			timeToIdleSeconds="3600"
+			timeToLiveSeconds="86400"
+			overflowToDisk="true"
+	/>
+
+</ehcache>

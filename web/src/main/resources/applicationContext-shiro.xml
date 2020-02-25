@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+>
+
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- session的失效时长，单位毫秒 1小时: 3600000, itzixi站点设置以 6小时 为主：21600000 -->
+        <!-- 设置全局会话超时时间，默认30分钟，即如果30分钟内没有访问会话将过期 1800000 -->
+        <property name="globalSessionTimeout" value="1800000"/>
+        <!-- 删除失效的session -->
+        <property name="deleteInvalidSessions" value="true"/>
+        <!-- 是否开启会话验证器，默认是开启的 -->
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+    </bean>
+
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManager" ref="ehCacheManager"/>
+    </bean>
+    <bean id="securityManager"
+          class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="sessionManager" ref="sessionManager" />
+        <property name="cacheManager" ref="shiroCacheManager"/>
+        <property name="authenticator" ref="authenticator"/>
+        <property name="realm" ref="authenticationRealm"/>
+    </bean>
+
+    <bean id="authenticator"
+          class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+        <property name="authenticationStrategy">
+            <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
+        </property>
+    </bean>
+
+    <bean id="authenticationRealm" class="com.huatusoft.electronictag.authentication.shiro.AuthenticationRealm">
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="MD5"/>
+                <property name="hashIterations" value="10"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+        <property name="redirectUrl" value="/login.html"/>
+    </bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/authentication/login.do"/>
+        <property name="successUrl" value="/authentication/main.do"/>
+        <property name="unauthorizedUrl" value="/manager/unauthorized.do"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /login.html = anon
+                /authentication/user.do = anon <!--验证用户接口-->
+                /authentication/token.do = anon
+                /resources/** = anon <!--静态资源目录-->
+                /authentication/login.do = authc <!--登陆接口-->
+                /authentication/main.do = authc
+                /logout.do = logout
+                <!--/admin/ = anon
+                /admin/index.jsp = anon
+                /admin/uptest/list.jhtml = anon
+                /admin/file/uploadflowfiles.jhtml = anon
+                /admin/login.jsp = authc
+                /admin/logout.jsp = logout
+                /admin/common/captcha.jhtml = anon
+                /admin/authorizationManager/nolic.jhtml = anon
+                /admin/authorizationManager/importlic.jhtml = anon
+
+                /admin/organization_management/.jhtml = perms["admin:org"]
+                /admin/*/set_user_control.jhtml = perms["admin:dept:multi"]
+                /admin/*/set_user_permission.jhtml = perms["admin:dept:multi"]
+                /admin/*/set_user_backup.jhtml = perms["admin:dept:multi"]
+                /admin/user/offline.jhtml = perms["admin:dept:multi"]
+
+                /admin/department/save.jhtml = perms["admin:dept:mono"]
+                /admin/department/update.jhtml = perms["admin:dept:mono"]
+                /admin/department/delete.jhtml = perms["admin:dept:mono"]
+                /admin/user/save.jhtml = perms["admin:dept:mono"]
+                /admin/user/update.jhtml = perms["admin:dept:mono"]
+                /admin/user/delete.jhtml = perms["admin:dept:mono"]
+
+                /admin/system_param/** = perms["admin:system:paramset"]
+                /admin/authorizationManager/** = perms["admin:system:authmanager"]
+
+                /admin/security_level/** = perms["admin:security:level"]
+                /admin/permissionset/** = perms["admin:security:permission"]
+                /admin/backupManager/** = perms["admin:security:backup"]
+                /admin/contrManagerController/** = perms["admin:security:program"]
+                /admin/controlledStrategy/** = perms["admin:security:control"]
+
+                /admin/managerLog/** = perms["admin:log:manage"]
+                /admin/fileLog/** = perms["admin:log:file"]
+                /admin/alarm/** = perms["admin:log:alarm"]
+
+                /admin/circulation/** = perms["admin:circulation:address"]
+                /admin/circulationManage/** = perms["admin:circulation:manage"]
+
+                /admin/dzbq/** = perms["admin:tag"]
+                &lt;!&ndash;/admin/flow/** = perms["admin:flow:approve"]
+                /admin/task/** = perms["admin:flow:approve"] &ndash;&gt;-->
+                <!--                /admin/** = authc-->
+            </value>
+        </property>
+        <property name="filters">
+            <map>
+                <entry key="authc" value-ref="adminAuthenticationFilter"/>
+                <entry key="logout" value-ref="logoutFilter"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+        <property name="arguments" ref="securityManager"/>
+    </bean>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+</beans>

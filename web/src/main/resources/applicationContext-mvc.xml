@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	   default-lazy-init="true">
+	<!--导入electronicTag.properties文件-->
+	<context:component-scan base-package="com.huatusoft" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+	<!--<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.huatusoft.electronictag.web.interceptor.URLInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>-->
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.huatusoft.electronictag.web.interceptor.SqlOrXssInjectInterceptor"/>
+		</mvc:interceptor>
+<!--		<mvc:interceptor>-->
+<!--			<mvc:mapping path="/**" />-->
+<!--			<mvc:exclude-mapping path="/api/**" />-->
+<!--			<mvc:exclude-mapping path="/TAG/**" />-->
+<!--			<mvc:exclude-mapping path="/restapi/**" />-->
+<!--			<mvc:exclude-mapping path="/admin/myflow/uploadFile.jhtml" />-->
+<!--			<mvc:exclude-mapping path="/admin/myflow/add.jhtml" />-->
+<!--			<mvc:exclude-mapping path="/admin/file/uploadflowfiles.jhtml" />-->
+<!--			<bean id="tokenInterceptor" class="com.huatusoft.electronictag.web.interceptor.TokenInterceptor" />-->
+<!--		</mvc:interceptor>-->
+<!--		<mvc:interceptor>-->
+<!--			<mvc:mapping path="/admin/**" />-->
+<!--			<bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">-->
+<!--				<property name="cacheSeconds" value="0" />-->
+<!--			</bean>-->
+<!--		</mvc:interceptor>-->
+<!--		<mvc:interceptor>-->
+<!--			<mvc:mapping path="/**" />-->
+<!--			<bean id="openSessionInViewInterceptor" class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor">-->
+<!--				<property name="entityManagerFactory" ref="entityManagerFactory" />-->
+<!--			</bean>-->
+<!--		</mvc:interceptor>-->
+<!--		<mvc:interceptor>-->
+<!--			<mvc:mapping path="/admin/**" />-->
+<!--			<bean id="listInterceptor" class="com.huatusoft.electronictag.web.interceptor.ListInterceptor" />-->
+<!--		</mvc:interceptor>-->
+<!--		<mvc:interceptor>-->
+<!--			<mvc:mapping path="/admin/**" />-->
+<!--			<bean id="logInterceptor" class="com.huatusoft.electronictag.web.interceptor.LogInterceptor" />-->
+<!--		</mvc:interceptor>-->
+	</mvc:interceptors>
+
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="freeMarkerSettings" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="classpath:freemarker.properties"/>
+	</bean>
+	<bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/template/electronictag" />
+		<property name="freemarkerSettings" ref="freeMarkerSettings" />
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="base" value="#{servletContext.contextPath}" />
+				<entry key="locale" value="${locale}" />
+				<entry key="setting">
+					<bean class="com.huatusoft.electronictag.common.util.SettingUtils" factory-method="get" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+		<property name="contentType" value="text/html; charset=UTF-8" />
+		<property name="cache" value="true"/>
+	</bean>
+	
+   <!--文件上传与下载  -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="5368709120" />
+		<property name="maxInMemorySize" value="1024000" />
+	</bean>
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<!-- 解决Controller返回json中文乱码问题 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<!-- <property name="supportedMediaTypes" value="text/html;charset=UTF-8" /> -->
+				<!-- <property name="supportedMediaTypes" value="application/json;charset=UTF-8" > -->
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+</beans>
