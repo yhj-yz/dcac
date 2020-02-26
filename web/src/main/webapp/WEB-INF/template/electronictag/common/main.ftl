@@ -105,14 +105,6 @@
                                             </a>
                                         </li>
                                     [/@shiro.hasPermission]
-                                    [@shiro.hasPermission name = "admin:system:authmanager"]
-                                        <li>
-                                            <a href="${base}/admin/networkProcess/list.do" target="electronicTagIframe"
-                                               class="auto cur">
-                                                <span>网络进程配置</span>
-                                            </a>
-                                        </li>
-                                    [/@shiro.hasPermission]
                                 </ul>
                             </li>
                         </ul>
@@ -190,84 +182,8 @@
                     [/@shiro.hasPermission]
                 [/#list]
 
-                [#list ["admin:circulation:addlist", "admin:circulation:manage"] as permission]
-                    [@shiro.hasPermission name = permission]
-                        <ul class="nav menu">
-                            <li class="navitem bottomline">
-                                <a class="auto cur" data-toggle="collapse" href="#collapseThree">
-                                    <i class="icon icon-nav-sysSet"></i>
-                                    <span class="ptitle">通讯录管理</span>
-                                </a>
-                                <ul id="collapseThree" class="nav subnav collapse">
-                                    [@shiro.hasPermission name = "admin:circulation:address"]
-                                        <li>
-                                            <a href="${base}/admin/circulation/list.do" target="electronicTagIframe"
-                                               class="auto cur">
-                                                <span>数字证书库</span>
-                                            </a>
-                                        </li>
-                                    [/@shiro.hasPermission]
-                                </ul>
-                            </li>
-                        </ul>
-                        [#break /]
-                    [/@shiro.hasPermission]
-                [/#list]
-
                 [#--[#list ["admin:flow:approveapprove"] as permission]--]
                 [#--[@shiro.hasPermission name = permission]--]
-                <ul class="nav menu">
-                    <li class="navitem bottomline">
-                        <a class="auto cur" data-toggle="collapse" href="#collapseFour">
-                            <i class="icon icon-nav-sysSet"></i>
-                            <span class="ptitle">分离审批</span>
-                        </a>
-                        <ul id="collapseFour" class="nav subnav collapse">
-                            <li>
-                                <a href="${base}/initiation_process/show.do" target="electronicTagIframe"
-                                   class="auto cur">
-                                    <span>我的流程</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${base}/affairs_be_dealt_with/show.do" target="electronicTagIframe"
-                                   class="auto cur">
-                                    <span>待办事宜</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${base}/already_done/show.do" target="electronicTagIframe"
-                                   class="auto cur">
-                                    <span>已办事宜</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${base}/process_management/show.do" target="electronicTagIframe"
-                                   class="auto cur">
-                                    <span>流程管理</span>
-                                </a>
-                            </li>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                [@shiro.hasPermission name = "admin:tag"]
-                    <ul class="nav menu">
-                        <li class="navitem bottomline">
-                            <a class="auto cur" data-toggle="collapse" href="#collapseFive">
-                                <i class="icon icon-nav-dataBase"></i>
-                                <span class="ptitle">电子标签数据库</span>
-                            </a>
-                            <ul id="collapseFive" class="nav subnav collapse">
-                                <li>
-                                    <a href="../dzbq/list.do" target="electronicTagIframe" class="auto cur">
-                                        <span>电子标签列表</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                [/@shiro.hasPermission]
 
                 [#list ["admin:log:file", "admin:log:manage", "admin:log:alarm"] as permission]
                     [@shiro.hasPermission name = permission]

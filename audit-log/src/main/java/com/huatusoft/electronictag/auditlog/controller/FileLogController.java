@@ -43,7 +43,6 @@ public class FileLogController extends BaseController{
      * @param userAccount
      * @param userName
      * @param ip
-     * @param createDate
      * @param operationType
      * @param deviceName
      * @param docName
@@ -52,9 +51,9 @@ public class FileLogController extends BaseController{
      */
     @GetMapping(value = "/search")
     @ResponseBody
-    public PageVo<FileLogEntity> search(Integer pageSize, Integer pageNumber, String userAccount, String userName, String ip, String createDate, String operationType, String deviceName, String docName, String operateTime) {
+    public PageVo<FileLogEntity> search(Integer pageSize, Integer pageNumber, String userAccount, String userName, String ip, String operationType, String deviceName, String docName, String operateTime) {
         Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
-        Page<FileLogEntity> page = fileLogService.findAll(pageable,userAccount,userName,ip,createDate,operationType,deviceName,docName,operateTime);
+        Page<FileLogEntity> page = fileLogService.findAll(pageable,userAccount,userName,ip,operationType,deviceName,docName,operateTime);
         return new PageVo<FileLogEntity>(page.getContent(),page.getTotalElements(),new PageableVo(page.getNumber()+1,page.getSize()));
     }
 

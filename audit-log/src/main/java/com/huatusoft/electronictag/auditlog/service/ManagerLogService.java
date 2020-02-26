@@ -4,12 +4,28 @@ import com.huatusoft.electronictag.auditlog.entity.ManagerLogEntity;
 import com.huatusoft.electronictag.base.service.BaseService;
 import com.huatusoft.electronictag.auditlog.dao.ManagerLogDao;
 import com.huatusoft.electronictag.organizationalstrucure.entity.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 /**
  * @author WangShun
  */
 public interface ManagerLogService extends BaseService<ManagerLogEntity, ManagerLogDao> {
+
+    /**
+     * 分页查询
+     * @param userAccount
+     * @param userName
+     * @param ip
+     * @param operateTime
+     * @param operationModel
+     * @param operationType
+     * @param operationContent
+     * @param orderby
+     * @return
+     */
+    Page<ManagerLogEntity> findAll(Pageable pageable, String userAccount, String userName, String ip, String operateTime, String operationModel, String operationType, String operationContent, String orderby);
 
     /**
      * 添加管理日志
@@ -28,6 +44,5 @@ public interface ManagerLogService extends BaseService<ManagerLogEntity, Manager
      * @param user
      */
     void addLoginSuccessLog(UserEntity user);
-
 
 }

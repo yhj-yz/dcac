@@ -15,6 +15,7 @@ import com.huatusoft.electronictag.common.util.ExceptionUtils;
 import com.huatusoft.electronictag.common.util.XmlUtils;
 import com.huatusoft.electronictag.common.xml.XmlDataReaderHelper;
 import com.huatusoft.electronictag.organizationalstrucure.service.UserService;
+import freemarker.template.SimpleDate;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,7 +32,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,7 +48,7 @@ public class FileLogServiceImpl extends BaseServiceImpl<FileLogEntity, FileLogDa
     private FileLogXmlTransfer fileLogXmlTransfer;
 
     @Override
-    public Page<FileLogEntity> findAll(Pageable pageable, String userAccount, String userName, String ip, String createDate, String operationType, String deviceName, String docName, String operateTime) {
+    public Page<FileLogEntity> findAll(Pageable pageable, String userAccount, String userName, String ip, String operationType, String deviceName, String docName, String operateTime) {
         Specification<FileLogEntity> specification = new Specification<FileLogEntity>() {
             @Override
             public Predicate toPredicate(Root<FileLogEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
@@ -58,9 +62,6 @@ public class FileLogServiceImpl extends BaseServiceImpl<FileLogEntity, FileLogDa
                 if (StringUtils.isNotBlank(ip)) {
                     predicates.add(criteriaBuilder.like(root.get("ip").as(String.class), "%" + ip + "%"));
                 }
-                if (StringUtils.isNotBlank(createDate)) {
-                    predicates.add(criteriaBuilder.like(root.get("createDate").as(String.class), "%" + createDate + "%"));
-                }
                 if (StringUtils.isNotBlank(operationType)) {
                     predicates.add(criteriaBuilder.like(root.get("operationType").as(String.class), "%" + operationType + "%"));
                 }
@@ -71,7 +72,18 @@ public class FileLogServiceImpl extends BaseServiceImpl<FileLogEntity, FileLogDa
                     predicates.add(criteriaBuilder.like(root.get("docName").as(String.class), "%" + docName + "%"));
                 }
                 if (StringUtils.isNotBlank(operateTime)) {
-                    predicates.add(criteriaBuilder.like(root.get("operateTime").as(String.class), "%" + operateTime + "%"));
+                    String[] operationTime = operateTime.split("_");
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date startTime = null;
+                    Date endTime = null;
+                    try {
+                        startTime = format.parse(operationTime[0]);
+                        endTime = format.parse(operationTime[1]);
+                    }catch (Exception e){
+                        LOGGER.info("日期转换错误");
+                        e.printStackTrace();
+                    }
+                    predicates.add(criteriaBuilder.between(root.get("operateTime"), startTime, endTime));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }

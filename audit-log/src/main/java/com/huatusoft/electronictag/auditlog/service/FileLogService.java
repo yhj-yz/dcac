@@ -19,14 +19,13 @@ public interface FileLogService extends BaseService<FileLogEntity, FileLogDao>{
      * @param userAccount
      * @param userName
      * @param ip
-     * @param createDate
      * @param operationType
      * @param deviceName
      * @param docName
      * @param operateTime
      * @return
      */
-    Page<FileLogEntity> findAll(Pageable pageable, String userAccount, String userName, String ip, String createDate, String operationType, String deviceName, String docName, String operateTime);
+    Page<FileLogEntity> findAll(Pageable pageable, String userAccount, String userName, String ip, String operationType, String deviceName, String docName, String operateTime);
 
     /**
      * 检验格式
