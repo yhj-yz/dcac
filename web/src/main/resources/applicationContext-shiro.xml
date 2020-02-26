@@ -39,7 +39,7 @@
         </property>
     </bean>
 
-    <bean id="authenticationRealm" class="com.huatusoft.electronictag.authentication.shiro.AuthenticationRealm">
+    <bean id="authenticationRealm" class="com.huatusoft.dcac.authentication.shiro.AuthenticationRealm">
         <property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
                 <property name="hashAlgorithmName" value="MD5"/>

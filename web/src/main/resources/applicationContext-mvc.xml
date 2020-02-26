@@ -22,7 +22,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
-			<bean class="com.huatusoft.electronictag.web.interceptor.SqlOrXssInjectInterceptor"/>
+			<bean class="com.huatusoft.dcac.web.interceptor.SqlOrXssInjectInterceptor"/>
 		</mvc:interceptor>
 <!--		<mvc:interceptor>-->
 <!--			<mvc:mapping path="/**" />-->
@@ -71,7 +71,7 @@
 				<entry key="base" value="#{servletContext.contextPath}" />
 				<entry key="locale" value="${locale}" />
 				<entry key="setting">
-					<bean class="com.huatusoft.electronictag.common.util.SettingUtils" factory-method="get" />
+					<bean class="com.huatusoft.dcac.common.util.SettingUtils" factory-method="get" />
 				</entry>
 			</map>
 		</property>
