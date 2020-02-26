@@ -1,12 +1,11 @@
-package com.huatusoft.electronictag.auditlog.service.impl;
+package com.huatusoft.dcac.auditlog.service.impl;
 
-import com.huatusoft.electronictag.auditlog.entity.AlarmLogEntity;
-import com.huatusoft.electronictag.auditlog.entity.ManagerLogEntity;
-import com.huatusoft.electronictag.auditlog.service.ManagerLogService;
-import com.huatusoft.electronictag.base.service.BaseServiceImpl;
-import com.huatusoft.electronictag.auditlog.dao.ManagerLogDao;
-import com.huatusoft.electronictag.organizationalstrucure.entity.UserEntity;
-import com.huatusoft.electronictag.organizationalstrucure.service.UserService;
+import com.huatusoft.dcac.auditlog.dao.ManagerLogDao;
+import com.huatusoft.dcac.auditlog.entity.ManagerLogEntity;
+import com.huatusoft.dcac.auditlog.service.ManagerLogService;
+import com.huatusoft.dcac.base.service.BaseServiceImpl;
+import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
+import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -61,7 +61,7 @@
 	</bean>
 
 	<bean id="freeMarkerSettings" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="location" value="classpath:freemarker.properties"/>
+		<property name="location" value="classpath:/freemarker.properties"/>
 	</bean>
 	<bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/template/electronictag" />

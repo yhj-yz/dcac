@@ -1,9 +1,9 @@
-package com.huatusoft.electronictag.auditlog.service;
+package com.huatusoft.dcac.auditlog.service;
 
-import com.huatusoft.electronictag.auditlog.entity.ManagerLogEntity;
-import com.huatusoft.electronictag.base.service.BaseService;
-import com.huatusoft.electronictag.auditlog.dao.ManagerLogDao;
-import com.huatusoft.electronictag.organizationalstrucure.entity.UserEntity;
+import com.huatusoft.dcac.auditlog.dao.ManagerLogDao;
+import com.huatusoft.dcac.auditlog.entity.ManagerLogEntity;
+import com.huatusoft.dcac.base.service.BaseService;
+import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

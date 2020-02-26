@@ -2,20 +2,19 @@
  * @author yhj
  * @date 2019-10-23
  */
-package com.huatusoft.electronictag.auditlog.service.impl;
+package com.huatusoft.dcac.auditlog.service.impl;
 
-import com.huatusoft.electronictag.auditlog.dao.FileLogDao;
-import com.huatusoft.electronictag.auditlog.entity.FileLogEntity;
-import com.huatusoft.electronictag.auditlog.service.FileLogService;
-import com.huatusoft.electronictag.base.service.BaseServiceImpl;
-import com.huatusoft.electronictag.common.bo.Message;
-import com.huatusoft.electronictag.common.constant.KeytConstants;
-import com.huatusoft.electronictag.common.exception.DataStoreReadException;
-import com.huatusoft.electronictag.common.util.ExceptionUtils;
-import com.huatusoft.electronictag.common.util.XmlUtils;
-import com.huatusoft.electronictag.common.xml.XmlDataReaderHelper;
-import com.huatusoft.electronictag.organizationalstrucure.service.UserService;
-import freemarker.template.SimpleDate;
+import com.huatusoft.dcac.auditlog.dao.FileLogDao;
+import com.huatusoft.dcac.auditlog.entity.FileLogEntity;
+import com.huatusoft.dcac.auditlog.service.FileLogService;
+import com.huatusoft.dcac.base.service.BaseServiceImpl;
+import com.huatusoft.dcac.common.bo.Message;
+import com.huatusoft.dcac.common.constant.KeytConstants;
+import com.huatusoft.dcac.common.exception.DataStoreReadException;
+import com.huatusoft.dcac.common.util.ExceptionUtils;
+import com.huatusoft.dcac.common.util.XmlUtils;
+import com.huatusoft.dcac.common.xml.XmlDataReaderHelper;
+import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
