@@ -36,8 +36,6 @@ import java.util.Objects;
  */
 public class AuthenticationRealm extends AuthorizingRealm {
 
-    private SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-
     @Autowired
     private UserService userService;
 
@@ -53,8 +51,6 @@ public class AuthenticationRealm extends AuthorizingRealm {
 
     private String password;
 
-
-
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //获取用户信息
@@ -62,6 +58,7 @@ public class AuthenticationRealm extends AuthorizingRealm {
         if (principal != null) {
             List<String> authorities = this.getAuthorities(principal.getId());
             if (authorities != null && authorities.size() > 0) {
+                SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
                 authorizationInfo.addStringPermissions(authorities);
                 return authorizationInfo;
             }

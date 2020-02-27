@@ -71,7 +71,7 @@
                 <hr class="whiteline rightline"/>
             </div>
             <div class="navbar">
-                [#list ["admin:system:paramset", "admin:system:authmanager"] as permission]
+                [#list ["admin:system:paramset", "admin:system:whitelist", "admin:system:backup"] as permission]
                     [@shiro.hasPermission name = permission]
                         <ul class="nav menu">
                             <li class="navitem bottomline">
@@ -88,7 +88,7 @@
                                             </a>
                                         </li>
                                     [/@shiro.hasPermission]
-                                    [@shiro.hasPermission name = "admin:system:authmanager"]
+                                    [@shiro.hasPermission name = "admin:system:whitelist"]
                                         <li>
                                             <a href="${base}/ip_authentication/list.do" target="electronicTagIframe"
                                                class="auto cur">
@@ -96,7 +96,7 @@
                                             </a>
                                         </li>
                                     [/@shiro.hasPermission]
-                                    [@shiro.hasPermission name = "admin:system:authmanager"]
+                                    [@shiro.hasPermission name = "admin:system:backup"]
                                         <li>
                                             <a href="${base}/admin/backUp/backUpView.do"
                                                data-urlindex="authorizationManagerList" target="electronicTagIframe"
@@ -121,7 +121,7 @@
                             </a>
                             <ul id="collapseTwo" class="nav subnav collapse">
                                 <li>
-                                    <a href="../admin/permissionset/show.do" target="electronicTagIframe"
+                                    <a href="${base}/admin/permissionset/show.do" target="electronicTagIframe"
                                        class="auto cur">
                                         <span>部门与用户管理</span>
                                     </a>
@@ -140,16 +140,16 @@
                                     <span class="ptitle">安全策略中心</span>
                                 </a>
                                 <ul id="collapseSix" class="nav subnav collapse">
-                                    [#if isSolo == true]
-                                        [@shiro.hasPermission name = "admin:security:level"]
-                                            <li>
-                                                <a href="../security_level/list.do" target="electronicTagIframe"
-                                                   class="auto cur">
-                                                    <span>密级管理</span>
-                                                </a>
-                                            </li>
-                                        [/@shiro.hasPermission]
-                                    [/#if]
+[#--                                    [#if isSolo == true]--]
+[#--                                        [@shiro.hasPermission name = "admin:security:level"]--]
+[#--                                            <li>--]
+[#--                                                <a href="../security_level/list.do" target="electronicTagIframe"--]
+[#--                                                   class="auto cur">--]
+[#--                                                    <span>密级管理</span>--]
+[#--                                                </a>--]
+[#--                                            </li>--]
+[#--                                        [/@shiro.hasPermission]--]
+[#--                                    [/#if]--]
                                     [@shiro.hasPermission name = "admin:security:permission"]
                                         <li>
                                             <a href="${base}/admin/permissionset/list.do" target="electronicTagIframe"
