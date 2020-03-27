@@ -23,6 +23,7 @@
         <module>technically</module>
         <module>authentication</module>
         <module>basic-platform-interaction</module>
+        <module>strategy-manager</module>
     </modules>
 
     <!--配置版本号 -->

@@ -182,46 +182,77 @@
                     [/@shiro.hasPermission]
                 [/#list]
 
+                <ul class="nav menu">
+                    <li class="navitem bottomline">
+                        <a class="auto cur" data-toggle="collapse" href="#collapseEight">
+                            <i class="icon icon-nav-log"></i>
+                            <span class="ptitle">策略管理</span>
+                        </a>
+                        <ul id="collapseEight" class="nav subnav collapse">
+                            <li>
+                                <a href="${base}/admin/strategy/list.do" target="electronicTagIframe" class="auto cur">
+                                    <span>策略规则配置</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${base}/admin/data/classify/list.do" target="electronicTagIframe" class="auto cur">
+                                    <span>数据分类定义</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${base}/admin/data/grade/list.do" target="electronicTagIframe" class="auto cur">
+                                    <span>数据分级定义</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${base}/admin/strategy/list.do" target="electronicTagIframe" class="auto cur">
+                                    <span>数据标识符</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
                 [#--[#list ["admin:flow:approveapprove"] as permission]--]
                 [#--[@shiro.hasPermission name = permission]--]
 
-                [#list ["admin:log:file", "admin:log:manage", "admin:log:alarm"] as permission]
-                    [@shiro.hasPermission name = permission]
+[#--                [#list ["admin:log:file", "admin:log:manage", "admin:log:alarm"] as permission]--]
+[#--                    [@shiro.hasPermission name = permission]--]
                         <ul class="nav menu">
                             <li class="navitem bottomline">
                                 <a class="auto cur" data-toggle="collapse" href="#collapseSeven">
                                     <i class="icon icon-nav-log"></i>
-                                    <span class="ptitle">日志审计</span>
+                                    <span class="ptitle">日志管理</span>
                                 </a>
                                 <ul id="collapseSeven" class="nav subnav collapse">
-                                    [@shiro.hasPermission name = "admin:log:file"]
+[#--                                    [@shiro.hasPermission name = "admin:log:file"]--]
                                         <li>
                                             <a href="${base}/admin/fileLog/list.do" target="electronicTagIframe"
                                                class="auto cur">
-                                                <span>文件操作日志</span>
+                                                <span>文件日志</span>
                                             </a>
                                         </li>
-                                    [/@shiro.hasPermission]
-                                    [@shiro.hasPermission name = "admin:log:alarm"]
+[#--                                    [/@shiro.hasPermission]--]
+[#--                                    [@shiro.hasPermission name = "admin:log:alarm"]--]
                                         <li>
                                             <a href="${base}/admin/alarm/list.do" target="electronicTagIframe" class="auto">
                                                 <span>告警日志</span>
                                             </a>
                                         </li>
-                                    [/@shiro.hasPermission]
-                                    [@shiro.hasPermission name = "admin:log:manage"]
+[#--                                    [/@shiro.hasPermission]--]
+[#--                                    [@shiro.hasPermission name = "admin:log:manage"]--]
                                         <li>
                                             <a href="${base}/admin/managerLog/list.do" target="electronicTagIframe" class="auto cur">
                                                 <span>管理日志</span>
                                             </a>
                                         </li>
-                                    [/@shiro.hasPermission]
+[#--                                    [/@shiro.hasPermission]--]
                                 </ul>
                             </li>
                         </ul>
-                        [#break /]
-                    [/@shiro.hasPermission]
-                [/#list]
+[#--                        [#break /]--]
+[#--                    [/@shiro.hasPermission]--]
+[#--                [/#list]--]
 
                 <ul class="nav" data-ride="collapse">
                     <li class="navitem" style="height: 41px;">

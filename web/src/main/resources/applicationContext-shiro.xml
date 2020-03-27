@@ -17,7 +17,7 @@
         <property name="globalSessionTimeout" value="1800000"/>
         <!-- 删除失效的session -->
         <property name="deleteInvalidSessions" value="true"/>
-        <!-- 是否开启会话验证器，默认是开启的 -->
+        <!-- 是否开启会话验证器，默认是开a启的 -->
         <property name="sessionValidationSchedulerEnabled" value="true"/>
     </bean>
 
@@ -67,6 +67,7 @@
         <property name="unauthorizedUrl" value="/manager/unauthorized.do"/>
         <property name="filterChainDefinitions">
             <value>
+                /admin/** = anon
                 /login.html = anon
                 /authentication/user.do = anon <!--验证用户接口-->
                 /authentication/token.do = anon
@@ -116,7 +117,6 @@
                 /admin/dzbq/** = perms["admin:tag"]
                 &lt;!&ndash;/admin/flow/** = perms["admin:flow:approve"]
                 /admin/task/** = perms["admin:flow:approve"] &ndash;&gt;-->
-                <!--                /admin/** = authc-->
             </value>
         </property>
         <property name="filters">

@@ -169,7 +169,7 @@
 	function noItemSelected(){
 		var ids_ = $("#list_form :checked[name='ids']");
 		if(ids_.length === 0){
-			dsmDialog.error("请先选择软件!")
+			dsmDialog.error("请先选择软件!");
 			return true;
 		}else{
 			return false;

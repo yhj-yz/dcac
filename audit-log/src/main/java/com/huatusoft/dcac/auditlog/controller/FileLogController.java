@@ -31,7 +31,7 @@ public class FileLogController extends BaseController{
      * 跳转到文件操作日志界面
      * @return
      */
-    @GetMapping(value="list")
+    @GetMapping(value="/list")
     public String list(){
         return "/log/fileLog/list.ftl";
     }

@@ -26,7 +26,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserEntity extends BaseEntity {
     @Transient
-    private static final long serialVersionUID = 1664213045998967055L;
+    private static final long serialVersionUID = 1674213045998967055L;
 
     @Transient
     private String did;

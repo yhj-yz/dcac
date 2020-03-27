@@ -37,7 +37,11 @@ public class TableOpera {
             "ht_electronictag_level_mag",
             "ht_electronictag_circulation_address",
             "ht_electronictag_circulation_manage",
-            "ht_electronictag_help_search"
+            "ht_electronictag_help_search",
+            "ht_dcac_data_grade",
+            "ht_dcac_data_big_classify",
+            "ht_dcac_data_small_classify",
+            "ht_dcac_strategy",
     };
 
     public static String []  IGNORE_TABLE ={
