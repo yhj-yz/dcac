@@ -42,6 +42,13 @@ public class TableOpera {
             "ht_dcac_data_big_classify",
             "ht_dcac_data_small_classify",
             "ht_dcac_strategy",
+            "HT_DCAC_DATA_IDENTIFIER",
+            "HT_DCAC_DATA_LEVEL",
+            "HT_DCAC_DATA_LEVEL_RULE",
+            "HT_DCAC_DATA_LEVEL_RULE_SCOPE",
+            "HT_DCAC_STRATEGY_RULE_CONTENT",
+            "HT_DCAC_STRATEGY_RULE",
+            "HT_DCAC_STRATEGY_RULE_TYPE"
     };
 
     public static String []  IGNORE_TABLE ={

@@ -18,8 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "HT_DCAC_DATA_BIG_CLASSIFY")
 public class DataClassifyBigEntity extends BaseEntity {
     @Transient
@@ -33,5 +31,4 @@ public class DataClassifyBigEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "dataClassifyBigEntity",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
     private List<DataClassifySmallEntity> dataClassifySmallEntities = new ArrayList<DataClassifySmallEntity>();
-
 }

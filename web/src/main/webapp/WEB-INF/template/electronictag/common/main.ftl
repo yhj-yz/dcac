@@ -205,7 +205,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="${base}/admin/strategy/list.do" target="electronicTagIframe" class="auto cur">
+                                <a href="${base}/admin/strategy/rule/list.do" target="electronicTagIframe" class="auto cur">
+                                    <span>检测规则定义</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${base}/admin/data/identifier/list.do" target="electronicTagIframe" class="auto cur">
                                     <span>数据标识符</span>
                                 </a>
                             </li>

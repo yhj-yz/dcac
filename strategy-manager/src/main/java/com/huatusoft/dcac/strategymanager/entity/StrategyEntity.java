@@ -18,8 +18,6 @@ import javax.persistence.Transient;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "HT_DCAC_STRATEGY")
 public class StrategyEntity extends BaseEntity {
     @Transient

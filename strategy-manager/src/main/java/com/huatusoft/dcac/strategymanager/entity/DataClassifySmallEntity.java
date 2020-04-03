@@ -16,8 +16,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "HT_DCAC_DATA_SMALL_CLASSIFY")
 public class DataClassifySmallEntity extends BaseEntity {
     @Transient

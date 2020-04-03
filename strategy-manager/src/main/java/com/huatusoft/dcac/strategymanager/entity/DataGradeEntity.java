@@ -18,8 +18,6 @@ import javax.persistence.Transient;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "HT_DCAC_DATA_GRADE")
 public class DataGradeEntity extends BaseEntity {
     @Transient

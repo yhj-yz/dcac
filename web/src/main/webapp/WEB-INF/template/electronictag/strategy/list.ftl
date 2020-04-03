@@ -2,7 +2,7 @@
 <html lang="ch">
 <head>
     <meta charset="UTF-8">
-    <title>策略配置</title>
+    <title>策略规则配置</title>
     [#include "/include/head.ftl"]
     <script type="text/javascript" src="${base}/resources/dsm/js/page.js"></script>
     <style>
@@ -81,17 +81,25 @@
                 <div class="dsm-inline">
                     <label class="dsm-form-label">数据分类：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="strategyDesc" placeholder="数据分类" class="dsm-input required" dzbqSpecialChar="true">
+                        <input type="text" autocomplete="off" name="strategyDesc" placeholder="请选择数据分类" class="dsm-input required" readonly>
                     </div>
-                    <div class="desc"><em>*</em></div>
-                    <button type="button" >
+                    <button type="button" class="btn btn-primary">选择</button>
+                    <button type="button" class="btn btn-primary">清除</button>
                 </div>
                 <div class="dsm-inline">
                     <label class="dsm-form-label">数据分级：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="strategyDesc" placeholder="数据分级" class="dsm-input required" dzbqSpecialChar="true">
+                        <input type="text" autocomplete="off" name="strategyDesc" placeholder="请选择数据分级" class="dsm-input required" readonly>
                     </div>
-                    <div class="desc"><em>*</em></div>
+                    <button type="button" class="btn btn-primary add-strategy">选择</button>
+                    <button type="button" class="btn btn-primary">清除</button>
+                </div>
+                <div class="dsm-inline">
+                    <label class="dsm-form-label">扫描类型：</label>
+                    <div class="dsm-input-inline">
+                        <input type="radio" value="0" class="scanType" name="scanType" style="margin-top: 5px;margin-left: 10px" checked>落地扫描</input>
+                        <input type="radio" value="1" class="scanType" name="scanType" style="margin-left: 10px">全盘扫描</input>
+                    </div>
                 </div>
             </div>
         </form>
@@ -123,7 +131,7 @@
         console.log(111);
         dsmDialog.open({
             type: 1,
-            area:['800px','300px'],
+            area:['1000px','600px'],
             title:"新增策略规则",
             btn:['添加','取消'],
             content : $("#addStrategy"),
