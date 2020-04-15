@@ -4,6 +4,7 @@
  */
 package com.huatusoft.dcac.common.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -186,6 +187,11 @@ public final class JsonUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getJsonString(String jsonString,String field){
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        return jsonObject.getString(field);
     }
 
 }

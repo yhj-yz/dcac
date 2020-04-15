@@ -6,6 +6,7 @@ package com.huatusoft.dcac.auditlog.service.impl;
 
 import com.huatusoft.dcac.auditlog.dao.FileLogDao;
 import com.huatusoft.dcac.auditlog.entity.FileLogEntity;
+import com.huatusoft.dcac.auditlog.entity.FileOperInfo;
 import com.huatusoft.dcac.auditlog.service.FileLogService;
 import com.huatusoft.dcac.base.service.BaseServiceImpl;
 import com.huatusoft.dcac.common.bo.Message;
@@ -17,6 +18,7 @@ import com.huatusoft.dcac.common.xml.XmlDataReaderHelper;
 import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FileLogServiceImpl extends BaseServiceImpl<FileLogEntity, FileLogDao> implements FileLogService {
@@ -45,6 +48,9 @@ public class FileLogServiceImpl extends BaseServiceImpl<FileLogEntity, FileLogDa
 
     @Autowired
     private FileLogXmlTransfer fileLogXmlTransfer;
+
+    @Autowired
+    private FileLogDao fileLogDao;
 
     @Override
     public Page<FileLogEntity> findAll(Pageable pageable, String userAccount, String userName, String ip, String operationType, String deviceName, String docName, String operateTime) {
@@ -128,6 +134,33 @@ public class FileLogServiceImpl extends BaseServiceImpl<FileLogEntity, FileLogDa
             message = new Message(Message.Type.error,"文件无法识别");
         }
         return message;
+    }
+
+    @Override
+    public void save(List<FileOperInfo> paramEntities) throws Exception {
+        try {
+            for (FileOperInfo paramEntity : paramEntities) {
+
+                FileLogEntity fileLog = new FileLogEntity();
+                FileOperInfo paramEntityObj=paramEntity;
+                fileLog.setFileId(paramEntityObj.getFileId());
+                fileLog.setIp(paramEntityObj.getFileIp());
+                fileLog.setDeviceName(paramEntityObj.getFileComputer());
+                fileLog.setClientID(paramEntityObj.getFileClientId());
+                fileLog.setFileTime(paramEntityObj.getFileTime());
+                fileLog.setUserName(paramEntityObj.getFileUserName());
+                fileLog.setFileUser(paramEntityObj.getFileUserAccount());
+                fileLog.setUserAccount(paramEntityObj.getFileUserAccount());
+                fileLog.setDocName(paramEntityObj.getOperDes());
+                FileLogEntity.OperationType oper= FileLogEntity.OperationType.valueOf(paramEntityObj.getFileOper());
+                fileLog.setOperationType(oper);
+                fileLog.setGuid(UUID.randomUUID().toString());
+                fileLog.setOperateTime(DateUtils.parseDate(paramEntity.getFileTime()));
+                fileLogDao.add(fileLog);
+            }
+        } catch (Exception e) {
+            throw new Exception("日志上传错误!");
+        }
     }
 
 //    @Override

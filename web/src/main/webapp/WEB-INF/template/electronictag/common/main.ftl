@@ -210,6 +210,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="${base}/admin/strategy/mask/list.do" target="electronicTagIframe" class="auto cur">
+                                    <span>脱敏规则定义</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="${base}/admin/data/identifier/list.do" target="electronicTagIframe" class="auto cur">
                                     <span>数据标识符</span>
                                 </a>

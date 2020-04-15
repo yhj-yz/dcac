@@ -5,11 +5,15 @@ import com.huatusoft.dcac.common.constant.DefaultNodeConstants;
 import com.huatusoft.dcac.common.constant.PlatformConstants;
 import com.huatusoft.dcac.organizationalstrucure.dao.UserDao;
 import com.huatusoft.dcac.organizationalstrucure.entity.DepartmentEntity;
+import com.huatusoft.dcac.organizationalstrucure.entity.LoginParamEntity;
 import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
 import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.Account;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +26,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -101,5 +106,20 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, UserDao> implem
     @Override
     public void updateLoginCount(String userId, Integer acount) {
         dao.updateLoginFailureCount(userId, acount);
+    }
+
+    @Override
+    public UserEntity login(LoginParamEntity paramEntity) throws Exception {
+        String userName = paramEntity.getLoginName();
+        ByteSource credentialsSalt = ByteSource.Util.bytes(userName);
+        String password = new SimpleHash("MD5",paramEntity.getPassword(),credentialsSalt,10).toString();
+        UserEntity user = userDao.findByAccountAndPassword(userName,password);
+        if (user == null) {
+            throw new Exception("用户不存在");
+        }
+        if (user.getIsLocked() == 1) {
+            throw new Exception("用户已被锁");
+        }
+        return user;
     }
 }

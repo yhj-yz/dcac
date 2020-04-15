@@ -3,6 +3,7 @@ package com.huatusoft.dcac.organizationalstrucure.service;
 import com.huatusoft.dcac.base.service.BaseService;
 import com.huatusoft.dcac.organizationalstrucure.dao.UserDao;
 import com.huatusoft.dcac.organizationalstrucure.entity.DepartmentEntity;
+import com.huatusoft.dcac.organizationalstrucure.entity.LoginParamEntity;
 import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
 import org.springframework.data.domain.Page;
 
@@ -76,4 +77,10 @@ public interface UserService extends BaseService<UserEntity, UserDao> {
      */
     void updateLoginCount(String userId, Integer acount);
 
+    /**
+     * 客户端登陆
+     * @param paramEntity
+     * @return 找不到用户返回null
+     */
+    UserEntity login(LoginParamEntity paramEntity) throws Exception;
 }

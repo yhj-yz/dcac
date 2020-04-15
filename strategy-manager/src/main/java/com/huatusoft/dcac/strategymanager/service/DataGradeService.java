@@ -37,4 +37,13 @@ public interface DataGradeService extends BaseService<DataGradeEntity, DataGrade
      * @return
      */
     boolean isGradeRepeat(String gradeName);
+
+    /**
+     * 更新数据分级
+     * @param gradeId
+     * @param gradeName
+     * @param gradeDesc
+     * @return
+     */
+    Result updateGrade(String gradeId,String gradeName,String gradeDesc);
 }

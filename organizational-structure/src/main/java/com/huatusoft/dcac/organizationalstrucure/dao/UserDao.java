@@ -60,4 +60,12 @@ public interface UserDao extends BaseDao<UserEntity, String> {
     @Modifying
     @Query(value = "UPDATE FROM HT_ELECTRONICTAG_USER SET USER_LOGIN_FAILURE_COUNT = :count WHERE id = :id", nativeQuery = true)
     void updateLoginFailureCount(String id, Integer count);
+
+    /**
+     * 根据用户名和密码查找用户
+     * @param account
+     * @param password
+     * @return
+     */
+    UserEntity findByAccountAndPassword(String account,String password);
 }

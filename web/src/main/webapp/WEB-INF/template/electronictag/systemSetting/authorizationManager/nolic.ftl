@@ -11,7 +11,7 @@
 	<div class="dsm-auth">
 		<div class="authbox">
 			<div class="auth-header">
-				<div class="product">数据分类分级管理系统授权许可</div>
+				<div class="product">个人隐私数据保护系统授权许可</div>
 				<div class="desc">未获得授权，请根据申请码导入授权文件</div>
 				<div class="auth-icon"><img src="${base}/resources/dsm/images/safe.png"></div>
 			</div>

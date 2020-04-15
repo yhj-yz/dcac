@@ -1,5 +1,6 @@
 package com.huatusoft.dcac.strategymanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huatusoft.dcac.base.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -75,14 +75,14 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
             strategyRuleEntity.setRuleDesc(ruleDesc);
             strategyRuleEntity.setLevelDefaultCode(levelDefault);
             strategyRuleDao.add(strategyRuleEntity);
-            addDataLevelRule(ruleScope01,scopeValue01,scopeValue02,scopeValue03,levelValue01,strategyRuleEntity);
-            addDataLevelRule(ruleScope02,scopeValue04,scopeValue05,scopeValue06,levelValue02,strategyRuleEntity);
-            addDataLevelRule(ruleScope03,scopeValue07,scopeValue08,scopeValue09,levelValue03,strategyRuleEntity);
+            addDataLevelRule(ruleScope01,scopeValue01,scopeValue02,scopeValue03,levelValue01,strategyRuleEntity,true);
+            addDataLevelRule(ruleScope02,scopeValue04,scopeValue05,scopeValue06,levelValue02,strategyRuleEntity,true);
+            addDataLevelRule(ruleScope03,scopeValue07,scopeValue08,scopeValue09,levelValue03,strategyRuleEntity,true);
             if(!"".equals(containRule)){
-                addRuleContent(containRule,true,strategyRuleEntity);
+                addRuleContent(containRule,true,strategyRuleEntity,true);
             }
             if(!"".equals(exceptRule)){
-                addRuleContent(exceptRule,false,strategyRuleEntity);
+                addRuleContent(exceptRule,false,strategyRuleEntity,true);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
     }
 
     @Override
-    public void addDataLevelRule(String ruleScope, String scopeValue01, String scopeValue02, String scopeValue03,String levelValue,StrategyRuleEntity strategyRuleEntity) {
+    public void addDataLevelRule(String ruleScope, String scopeValue01, String scopeValue02, String scopeValue03,String levelValue,StrategyRuleEntity strategyRuleEntity,boolean isAdd) {
         DataLevelRuleEntity dataLevelRuleEntity = new DataLevelRuleEntity();
         dataLevelRuleEntity.setRuleScopeCode(ruleScope);
         dataLevelRuleEntity.setLevelCode(levelValue);
@@ -102,11 +102,16 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
         }else {
             dataLevelRuleEntity.setRuleScopeValue(scopeValue03);
         }
-        dataLevelRuleDao.add(dataLevelRuleEntity);
+        if(isAdd){
+            dataLevelRuleDao.add(dataLevelRuleEntity);
+        }else {
+            dataLevelRuleDao.update(dataLevelRuleEntity);
+        }
+
     }
 
     @Override
-    public void addRuleContent(String rule, boolean isContain,StrategyRuleEntity strategyRuleEntity) {
+    public void addRuleContent(String rule, boolean isContain,StrategyRuleEntity strategyRuleEntity,boolean isAdd) {
         String[] rules = rule.split(";");
         for(String newRule : rules){
             String[] newRules = newRule.split(":");
@@ -117,14 +122,19 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
             strategyRuleContentEntity.setMatchContent(ruleContent);
             strategyRuleContentEntity.setRuleContent(ruleContent);
             strategyRuleContentEntity.setStrategyRuleEntity(strategyRuleEntity);
-            if("数据标识符".equals(newRules[0])){
+            if("数据标识符".equals(newRules[0].trim())){
                 strategyRuleContentEntity.setRuleTypeCode("0");
-            }else if("正则表达式".equals(rules[0])){
+            }else if("正则表达式".equals(newRules[0].trim())){
                 strategyRuleContentEntity.setRuleTypeCode("1");
-            }else if("关键字".equals(rules[0])){
+            }else if("关键字".equals(newRules[0].trim())){
                 strategyRuleContentEntity.setRuleTypeCode("2");
             }
-            strategyRuleContentDao.add(strategyRuleContentEntity);
+            if(isAdd){
+                strategyRuleContentDao.add(strategyRuleContentEntity);
+            }else {
+                strategyRuleContentDao.update(strategyRuleContentEntity);
+            }
+
         }
     }
 
@@ -138,4 +148,39 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
         }
         return false;
     }
+
+    @Override
+    public Result updateRule(String ruleId, String ruleName, String ruleDesc, String levelDefault, String ruleScope01, String ruleScope02, String ruleScope03, String scopeValue01, String scopeValue02, String scopeValue03, String scopeValue04, String scopeValue05, String scopeValue06, String scopeValue07, String scopeValue08, String scopeValue09, String levelValue01, String levelValue02, String levelValue03, String containRule, String exceptRule) {
+        if("".equals(containRule)  && "".equals(exceptRule)){
+            return new Result("请添加检测规则!");
+        }
+        try {
+            StrategyRuleEntity strategyRuleEntity = strategyRuleDao.find(ruleId);
+            if(isRuleNameRepeat(ruleName) && !strategyRuleEntity.getRuleName().equals(ruleName)){
+                return new Result("检测规则名称已存在,请重新输入!");
+            }
+            strategyRuleEntity.setRuleDesc(ruleDesc);
+            strategyRuleEntity.setLevelDefaultCode(levelDefault);
+            strategyRuleDao.update(strategyRuleEntity);
+            addDataLevelRule(ruleScope01,scopeValue01,scopeValue02,scopeValue03,levelValue01,strategyRuleEntity,false);
+            addDataLevelRule(ruleScope02,scopeValue04,scopeValue05,scopeValue06,levelValue02,strategyRuleEntity,false);
+            addDataLevelRule(ruleScope03,scopeValue07,scopeValue08,scopeValue09,levelValue03,strategyRuleEntity,false);
+            String[] ids = new String[strategyRuleEntity.getStrategyRuleContentEntities().size()];
+            for(int i = 0 ; i < strategyRuleEntity.getStrategyRuleContentEntities().size(); i++){
+                ids[i] = strategyRuleEntity.getStrategyRuleContentEntities().get(i).getId();
+            }
+            strategyRuleContentDao.delete(StrategyRuleContentEntity.class,ids);
+            if(!"".equals(containRule)){
+                addRuleContent(containRule,true,strategyRuleEntity,false);
+            }
+            if(!"".equals(exceptRule)){
+                addRuleContent(exceptRule,false,strategyRuleEntity,false);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("更新检测规则失败!");
+        }
+        return new Result("200","更新检测规则成功!",null);
+    }
+
 }

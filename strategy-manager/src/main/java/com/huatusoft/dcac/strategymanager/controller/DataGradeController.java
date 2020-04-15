@@ -5,6 +5,7 @@ import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.common.bo.PageVo;
 import com.huatusoft.dcac.common.bo.PageableVo;
 import com.huatusoft.dcac.strategymanager.entity.DataClassifyBigEntity;
+import com.huatusoft.dcac.strategymanager.entity.DataClassifySmallEntity;
 import com.huatusoft.dcac.strategymanager.entity.DataGradeEntity;
 import com.huatusoft.dcac.strategymanager.service.DataGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +88,32 @@ public class DataGradeController extends BaseController {
             return new Result("数据库异常,请稍候再试!");
         }
         return new Result("200","删除数据分级成功!",null);
+    }
+
+    /**
+     * 根据ID获取数据分级
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/getDataGrade")
+    @ResponseBody
+    public DataGradeEntity getDataGrade(String id){
+        if(id == null){
+            return null;
+        }
+        return dataGradeService.find(id);
+    }
+
+    /**
+     * 修改数据分级
+     * @param gradeId
+     * @param gradeName
+     * @param gradeDesc
+     * @return
+     */
+    @PostMapping(value = "/updateGrade")
+    @ResponseBody
+    public Result updateGrade(String gradeId,String gradeName,String gradeDesc){
+        return dataGradeService.updateGrade(gradeId,gradeName,gradeDesc);
     }
 }

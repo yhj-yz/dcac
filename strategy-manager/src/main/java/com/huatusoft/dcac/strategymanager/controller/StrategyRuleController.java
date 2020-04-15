@@ -101,4 +101,23 @@ public class StrategyRuleController extends BaseController {
         return new Result("200","删除规则成功!",null);
     }
 
+    /**
+     * 根据id获取检测规则信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/getStrategyRule")
+    @ResponseBody
+    public StrategyRuleEntity getStrategyRule(String id){
+        if(id == null){
+            return null;
+        }
+        return strategyRuleService.find(id);
+    }
+
+    @PostMapping("/updateRule")
+    @ResponseBody
+    public Result updateRule(String ruleId,String ruleName,String ruleDesc,String levelDefault,String ruleScope01,String ruleScope02,String ruleScope03,String scopeValue01,String scopeValue02,String scopeValue03,String scopeValue04,String scopeValue05,String scopeValue06,String scopeValue07,String scopeValue08,String scopeValue09,String levelValue01,String levelValue02,String levelValue03,String containRule,String exceptRule){
+        return strategyRuleService.updateRule(ruleId,ruleName,ruleDesc,levelDefault,ruleScope01,ruleScope02,ruleScope03,scopeValue01,scopeValue02,scopeValue03,scopeValue04,scopeValue05,scopeValue06,scopeValue07,scopeValue08,scopeValue09,levelValue01,levelValue02,levelValue03,containRule,exceptRule);
+    }
 }

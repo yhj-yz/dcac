@@ -268,7 +268,7 @@
 	$(document).on("click",".js_change",function(){
 		if(noItemSelected()){//如果用户没有勾选
 			return;
-		};
+		}
 		var isOne = true;
 		$("#list_form :checked[name='ids']").each(function(i){
 			if(i >= 1){

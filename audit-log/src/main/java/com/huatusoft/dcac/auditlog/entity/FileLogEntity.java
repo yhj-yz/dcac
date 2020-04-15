@@ -27,7 +27,7 @@ public class FileLogEntity extends LogEntity {
 
     /**文档名称 */
     @Column(name = "DOC_NAME",updatable = false)
-    private String dcoName;
+    private String docName;
 
     /**操作类型 */
     public enum OperationType{
@@ -90,5 +90,34 @@ public class FileLogEntity extends LogEntity {
     /** 操作GUID */
     @Column(name = "OPERATION_GUID")
     private String operationGuid;
-
+    /** 电脑名称 */
+    @Column(name = "COMPUTER_NAME")
+    private String computerName;
+    /** 数据分级编号 */
+    @Column(name = "DATA_GRADE_ID")
+    private String dataClassification;
+    /** 数据分类编号 */
+    @Column(name = "DATA_CLASSIFY_ID")
+    private String dataType;
+    /** 文件名称 */
+    @Column(name = "FILE_NAME")
+    private String fileName;
+    /** 防护策略 */
+    @Column(name = "FILE_OPER")
+    private int fileOper;
+    /** 命中次数 */
+    @Column(name = "HITS")
+    private int hits;
+    /** 登陆名 */
+    @Column(name = "LOGIN_NAME")
+    private String loginName;
+    /** 时间 */
+    @Column(name = "TIME")
+    private String time;
+    /** 文件大小 */
+    @Column(name = "FILE_SIZE")
+    private int fileSize;
+    /** 文件md5 */
+    @Column(name = "FILE_MD5")
+    private String fileMD5;
 }

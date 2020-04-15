@@ -130,7 +130,7 @@ public class FileLogXmlTransfer {
             log.setIp(logVO.getIpAddress());
             log.setIsImport(1);
             log.setOperateTime(sdf.parse(logVO.getCreateDate()));
-            log.setDcoName(logVO.getDocName());
+            log.setDocName(logVO.getDocName());
             log.setDeviceName(logVO.getDeviceName());
             log.setOperationType(FileLogEntity.OperationType.valueOf(logVO.getOperationType()));
             log.setFileServerPath(logVO.getFileServerPath());

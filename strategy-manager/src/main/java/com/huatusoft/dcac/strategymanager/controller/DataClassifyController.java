@@ -5,6 +5,7 @@ import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.common.bo.PageVo;
 import com.huatusoft.dcac.common.bo.PageableVo;
 import com.huatusoft.dcac.strategymanager.entity.DataClassifyBigEntity;
+import com.huatusoft.dcac.strategymanager.entity.DataClassifySmallEntity;
 import com.huatusoft.dcac.strategymanager.service.DataClassifyService;
 import com.huatusoft.dcac.strategymanager.service.DataGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,9 +62,9 @@ public class DataClassifyController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping(value = "/showSmallClassify")
+    @GetMapping(value = "/showClassify")
     @ResponseBody
-    public DataClassifyBigEntity showSmallClassify(String id){
+    public DataClassifyBigEntity showClassify(String id){
         if(id == null){
             return null;
         }
@@ -129,5 +130,45 @@ public class DataClassifyController extends BaseController {
             return new Result("数据库异常,请稍后再试!");
         }
         return new Result("200","删除二级分类成功!",null);
+    }
+
+    /**
+     * 根据小类ID获取小类
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/getSmallClassify")
+    @ResponseBody
+    public DataClassifySmallEntity getSmallClassify(String id){
+        if(id == null){
+            return null;
+        }
+        return dataClassifyService.getSmallClassify(id);
+    }
+
+    /**
+     * 修改一级分类
+     * @param classifyId
+     * @param classifyName
+     * @param classifyDesc
+     * @return
+     */
+    @PostMapping(value = "/updateBigClassify")
+    @ResponseBody
+    public Result updateBigClassify(String classifyId,String classifyName,String classifyDesc){
+        return dataClassifyService.updateBigClassify(classifyId,classifyName,classifyDesc);
+    }
+
+    /**
+     * 修改二级分类
+     * @param classifyId
+     * @param classifyName
+     * @param classifyDesc
+     * @return
+     */
+    @PostMapping(value = "/updateSmallClassify")
+    @ResponseBody
+    public Result updateSmallClassify(String classifyId,String classifyName,String classifyDesc){
+        return dataClassifyService.updateSmallClassify(classifyId,classifyName,classifyDesc);
     }
 }

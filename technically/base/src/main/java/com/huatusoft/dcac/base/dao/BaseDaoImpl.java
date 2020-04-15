@@ -2,6 +2,7 @@ package com.huatusoft.dcac.base.dao;
 
 import com.huatusoft.dcac.base.entity.BaseEntity;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
@@ -48,6 +49,7 @@ public class BaseDaoImpl<E extends BaseEntity, ID extends Serializable>
     }
 
     @Override
+    @Transactional
     public void update(E entity) {
         saveAndFlush(entity);
     }

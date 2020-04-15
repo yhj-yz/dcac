@@ -8,6 +8,7 @@
 	<script src="${base}/resources/dsm/js/page.js"></script>
 	<script src="${base}/resources/dsm/js/fileupload/js/vendor/jquery.ui.widget.js"></script>
 	<script src="${base}/resources/dsm/js/fileupload/js/fileupload.js"></script>
+    <script type="text/javascript" src="${base}/resources/dsm/js/highlight.js"></script>
     <title>文件日志</title>
 </head>
 
@@ -59,12 +60,19 @@
                                                <label for="lcjk"></label>
                                            </div>
                                        </th>
-                                        <th>账户姓名</th>
+                                        <th>文件名称</th>
+                                        <th>文件大小</th>
+                                        <th>文件MD5</th>
+                                        <th>分类信息</th>
+                                        <th>分级信息</th>
+                                        <th>命中次数</th>
+                                        <th>采集时间</th>
+                                        <th>用户账号</th>
                                         <th>IP地址</th>
-                                        <th>设备名</th>
-                                        <th class="w180">操作时间</th>
-                                        <th>操作类型</th>
-                                        <th>文件名</th>
+                                        <th>设备名称</th>
+                                        <th>文件路径</th>
+                                        <th>防护动作</th>
+                                        <th>摘要信息</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,7 +90,7 @@
     </div>
 	[#include "/log/fileimport.ftl"]
     <script src="${base}/resources/dsm/js/dsm-search.js"></script>
-    <script>
+    <script type="text/javascript">
 
         var departmentId = 0;
 
@@ -91,21 +99,60 @@
             refreshPageList({
                 id: "logsearch_form",
                 dataFormat: function (data) {
-					console.log(data);
                     var _id = data.id;
                     var _docName=data.docName==null?"":data.docName;
                     var _uName=(data.userAccount==null?"":data.userAccount) + "["+(data.userName==null?"":data.userName);
+                    var fileName = data.fileName.substring(data.fileName.lastIndexOf("\\")+1,data.fileName.length);
+                    var filePath = data.fileName.substring(0,data.fileName.lastIndexOf("\\"));
+                    var dataClassifyName = "";
+                    $.ajax({
+                        data: {id: data.dataType},
+                        dataType: "json",
+                        type: "get",
+                        async: false,
+                        url: "${base}/admin/data/classify/getSmallClassify.do",
+                        success: function (_data) {
+                            if(_data.classifyName != null) {
+                                dataClassifyName = _data.classifyName;
+                            }
+                        }
+                    });
+                    var dataGradeName = "";
+                    $.ajax({
+                        data: {id: data.dataClassification},
+                        type: "get",
+                        async: false,
+                        url: "${base}/admin/data/grade/getDataGrade.do",
+                        success: function (_data) {
+                            if(_data.gradeName != null){
+                                dataGradeName = _data.gradeName;
+                            }
+                        }
+                    });
+                    var responseTypeName = "";
+                    if(data.fileOper === 0){
+                        responseTypeName = "发现审计";
+                    }else if(data.fileOper === 2){
+                        responseTypeName = "文件加密";
+                    }else if(data.fileOper === 1){
+                        responseTypeName = "内容脱敏";
+                    }
                     var text = "<tr>" +
                                 "<td><div class='dsmcheckbox logList'><input type='checkbox' value='" + _id + "' id='m1_" + _id + "' name='ids'><label for='m1_" + _id + "'></label></div></td>" +
-                                "<td class='hiddentd'><div class='hiddendiv' title='"+_uName+"'>" + _uName+"]</td>" +
-                                "<td>" + (data.ip==null?"":data.ip) + "</td>" +
-                                "<td>" + (data.deviceName==null?"":data.deviceName)  + "</td>" +
-                                "<td>" + parseDate(data.operateTime) + "</td>" +
-                                "<td>" + getOperateType(data.operationType) + "</td>" +
-                                "<td class='hiddentd'><div class='hiddendiv' title='"+_docName+"'>" +_docName + "</td>" +
+                                "<td>" + fileName +"</td>" +
+                                "<td>" + data.fileSize + "KB</td>" +
+                                "<td>" + data.fileMD5 + "</td>" +
+                                "<td>" + dataClassifyName + "</td>" +
+                                "<td>" + dataGradeName + "</td>" +
+                                "<td>" + data.hits + "</td>" +
+                                "<td>" + data.time + "</td>" +
+                                "<td>" + data.userName + "</td>" +
+                                "<td>" + data.ip + "</td>" +
+                                "<td>" + data.computerName + "</td>" +
+                                "<td>" + filePath + "</td>" +
+                                "<td>" + responseTypeName +"</td>" +
                                 "</tr>";
                     return text;
-
                 }
             });
         }

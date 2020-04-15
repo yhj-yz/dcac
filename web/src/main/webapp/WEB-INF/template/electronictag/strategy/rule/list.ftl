@@ -61,7 +61,7 @@
                 <div class="dsm-inline">
                     <label class="dsm-form-label">检测规则名称：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="ruleName" placeholder="检测规则名称" class="dsm-input required">
+                        <input type="text" autocomplete="off" name="ruleName" placeholder="检测规则名称" class="dsm-input required ruleName">
                     </div>
                     <div class="desc"><em>*</em></div>
                 </div>
@@ -69,7 +69,7 @@
                 <div class="dsm-inline">
                     <label class="dsm-form-label">描述：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="ruleDesc" placeholder="描述" class="dsm-input required">
+                        <input type="text" autocomplete="off" name="ruleDesc" placeholder="描述" class="dsm-input required ruleDesc">
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@
                         <div style="border: 1px solid #e4eaec;width: 600px;height: 180px">
                             <div class="dsm-inline">
                                 <label class="dsm-form-label">默认值：</label>
-                                <select style="margin-top: 5px" name="levelDefault">
+                                <select style="margin-top: 5px" name="levelDefault" class="levelDefault">
                                     <option value="0" selected>信息</option>
                                     <option value="1">低</option>
                                     <option value="2">中</option>
@@ -176,10 +176,10 @@
 
                         <div class="dsm-inline" id="chooseRule" style="display: none;">
                             <div style="border: 1px solid #e4eaec;width: 600px;height: 150px">
-                                <input type="radio" value="0" class="ruleType" name="ruleType" style="margin-top: 5px;margin-left: 10px" checked>数据标识符</input>
-                                <input type="radio" value="1" class="ruleType" name="ruleType" style="margin-left: 10px">正则表达式</input>
-                                <input type="radio" value="2" class="ruleType" name="ruleType" style="margin-left: 10px">关键字</input>
-                                <input type="text" id="isContain" value="1" style="display: none"/>
+                                <input type="radio" value="0" id="ruleType01" class="ruleType" name="ruleType" style="margin-top: 5px;margin-left: 10px" checked>数据标识符</input>
+                                <input type="radio" value="1" id="ruleType02" class="ruleType" name="ruleType" style="margin-left: 10px">正则表达式</input>
+                                <input type="radio" value="2" id="ruleType03" class="ruleType" name="ruleType" style="margin-left: 10px">关键字</input>
+                                <input type="hidden" id="isContain" value="1"/>
                                 <div class="dsm-inline">
                                     <button type="button" class="btn btn-primary choose-identifier" style="float: left;margin-left: 10px;margin-top: 10px">选择数据标识符</button>
                                     <input type="text" autocomplete="off" class="dsm-input required match-content" style="width: 400px;float: left;margin-top: 10px;margin-left: 10px" readonly>
@@ -203,6 +203,8 @@
                                 <input type="hidden" name="exceptRule" class="exceptRule">
                             </div>
                         </div>
+
+                        <input type="hidden" name="ruleId" class="ruleId">
                     </div>
 
 
@@ -223,7 +225,7 @@
                 var _text = "<tr>\
 								<td><div class='dsmcheckbox'>\
 								<input type='checkbox' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
-								<td>"+_data.ruleName+"</td>\
+								<td><a onclick='getDetails(\"" + _id + "\")'>"+_data.ruleName+"</a></td>\
 								<td>"+_data.createUserAccount+"</td>\
 								<td>"+_data.ruleDesc+"\
 						 	 </tr>";
@@ -236,6 +238,9 @@
     });
 
     $(document).on('click', '.add-rule', function (e) {
+        $("#ruleForm")[0].reset();
+        $("#contain").html("暂无定义规则");
+        $("#except").html("暂无定义例外规则");
         dsmDialog.open({
             type: 1,
             area:['1000px','600px'],
@@ -463,6 +468,195 @@
             }
         });
     });
+
+    function getDetails(id) {
+        $("#ruleForm")[0].reset();
+        $("#contain").html("暂无定义规则");
+        $("#except").html("暂无定义例外规则");
+        $.ajax({
+            data: {id: id},
+            dataType: "json",
+            type: "get",
+            url: "getStrategyRule.do",
+            success: function (data){
+                var dataLevelRuleEntities = data.dataLevelRuleEntities;
+                var strategyRuleContentEntities = data.strategyRuleContentEntities;
+                $(".ruleName").val(data.ruleName);
+                $(".ruleDesc").val(data.ruleDesc);
+                $(".levelDefault").find("option[value='"+data.levelDefaultCode+"']").prop("selected",true);
+                //严重程度第一部分
+                $(".ruleScope01").find("option[value='"+dataLevelRuleEntities[0].ruleScopeCode+"']").prop("selected",true);
+                if(dataLevelRuleEntities[0].ruleScopeCode === "0"){
+                    var scopeValues = dataLevelRuleEntities[0].ruleScopeValue.split(",");
+                    $(".scopeValue01").val(scopeValues[0]);
+                    $(".scopeValue02").val(scopeValues[1]);
+                    $("#input01").css("display","block");
+                    $("#input02").css("display","none");
+                }else {
+                    $(".scopeValue03").val(dataLevelRuleEntities[0].ruleScopeValue);
+                    $("#input01").css("display","none");
+                    $("#input02").css("display","block");
+                }
+                $(".levelValue01").find("option[value='"+dataLevelRuleEntities[0].levelCode+"']").prop("selected",true);
+                //严重程度第二部分
+                $(".ruleScope02").find("option[value='"+dataLevelRuleEntities[1].ruleScopeCode+"']").prop("selected",true);
+                if(dataLevelRuleEntities[1].ruleScopeCode === "0"){
+                    var scopeValues = dataLevelRuleEntities[1].ruleScopeValue.split(",");
+                    $(".scopeValue04").val(scopeValues[0]);
+                    $(".scopeValue05").val(scopeValues[1]);
+                    $("#input03").css("display","block");
+                    $("#input04").css("display","none");
+                }else {
+                    $(".scopeValue06").val(dataLevelRuleEntities[1].ruleScopeValue);
+                    $("#input03").css("display","none");
+                    $("#input04").css("display","block");
+                }
+                $(".levelValue02").find("option[value='"+dataLevelRuleEntities[1].levelCode+"']").prop("selected",true);
+                //严重程度第三部分
+                $(".ruleScope03").find("option[value='"+dataLevelRuleEntities[2].ruleScopeCode+"']").prop("selected",true);
+                if(dataLevelRuleEntities[2].ruleScopeCode === "0"){
+                    var scopeValues = dataLevelRuleEntities[2].ruleScopeValue.split(",");
+                    $(".scopeValue07").val(scopeValues[0]);
+                    $(".scopeValue08").val(scopeValues[1]);
+                    $("#input05").css("display","block");
+                    $("#input06").css("display","none");
+                }else {
+                    $(".scopeValue09").val(dataLevelRuleEntities[2].ruleScopeValue);
+                    $("#input05").css("display","none");
+                    $("#input06").css("display","block");
+                }
+                $(".levelValue03").find("option[value='"+dataLevelRuleEntities[2].levelCode+"']").prop("selected",true);
+                var containRule = "";
+                var exceptRule = "";
+                for(var index in strategyRuleContentEntities){
+                    if(strategyRuleContentEntities[index].contain){
+                        if($("#contain").html() === "暂无定义规则"){
+                            if(strategyRuleContentEntities[index].ruleTypeCode === "0") {
+                                containRule = "<div style=\"position: relative\">\
+                        <h6>数据标识符: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
+                        <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
+                        </div>";
+                            }else if(strategyRuleContentEntities[index].ruleTypeCode === "1"){
+                                containRule = "<div style=\"position: relative\">\
+                        <h6>正则表达式: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
+                        <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
+                        </div>";
+                            }else if(strategyRuleContentEntities[index].ruleTypeCode === "2"){
+                                containRule = "<div style=\"position: relative\">\
+                        <h6>关键字: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
+                        <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
+                        </div>";
+                            }
+                        }else {
+                            if(strategyRuleContentEntities[index].ruleTypeCode === "0"){
+                                containRule += "<div style=\"position: relative\">\
+                            <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
+                            <h6>数据标识符: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
+                            <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
+                        </div>";
+                            }else if(strategyRuleContentEntities[index].ruleTypeCode === "1"){
+                                containRule += "<div style=\"position: relative\">\
+                            <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
+                            <h6>正则表达式: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
+                            <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
+                        </div>";
+                            }else if(strategyRuleContentEntities[index].ruleTypeCode === "2"){
+                                containRule += "<div style=\"position: relative\">\
+                            <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
+                            <h6>关键字: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
+                            <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
+                        </div>";
+                            }
+                        }
+                    }else {
+                        if($("#except").html() === "暂无定义例外规则"){
+                            if(strategyRuleContentEntities[index].ruleTypeCode === "0") {
+                                exceptRule = "<div style=\"position: relative\">\
+                        <h6>数据标识符: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
+                        <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
+                        </div>";
+                            }else if(strategyRuleContentEntities[index].ruleTypeCode === "1"){
+                                exceptRule = "<div style=\"position: relative\">\
+                        <h6>正则表达式: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
+                        <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
+                        </div>";
+                            }else if(strategyRuleContentEntities[index].ruleTypeCode === "2"){
+                                exceptRule = "<div style=\"position: relative\">\
+                        <h6>关键字: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
+                        <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
+                        </div>";
+                            }
+                        }else {
+                            if(strategyRuleContentEntities[index].ruleTypeCode === "0"){
+                                exceptRule += "<div style=\"position: relative\">\
+                            <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
+                            <h6>数据标识符: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
+                            <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
+                        </div>";
+                            }else if(strategyRuleContentEntities[index].ruleTypeCode === "1"){
+                                exceptRule += "<div style=\"position: relative\">\
+                            <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
+                            <h6>正则表达式: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
+                            <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
+                        </div>";
+                            }else if(strategyRuleContentEntities[index].ruleTypeCode === "2"){
+                                exceptRule += "<div style=\"position: relative\">\
+                            <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
+                            <h6>关键字: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
+                            <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
+                        </div>";
+                            }
+                        }
+                    }
+                }
+                if(containRule != ""){
+                    $("#contain").html(containRule);
+                }
+                if(exceptRule != ""){
+                    $("#except").html(exceptRule);
+                }
+                $(".ruleId").val(data.id);
+            }
+        });
+
+        dsmDialog.open({
+            type: 1,
+            area:['1000px','600px'],
+            title:"修改检测规则",
+            btn:['修改','取消'],
+            content : $("#addRule"),
+            yes: function(index,layero) {
+                var containRule = "";
+                $("#contain h6").each(function (i) {
+                    containRule += this.innerHTML+";";
+                });
+                $(".containRule").val(containRule);
+                var exceptRule = "";
+                $("#except h6").each(function (i) {
+                    exceptRule += this.innerHTML+";";
+                });
+                $(".exceptRule").val(exceptRule);
+                $.ajax({
+                    data:$('#ruleForm').serialize(),
+                    type:"post",
+                    url:"updateRule.do",
+                    dataType:"json",
+                    success: function(data) {
+                        if(data.status == "500"){
+                            dsmDialog.error(data.msg);
+                        }else {
+                            dsmDialog.msg(data.msg);
+                            dsmDialog.close(index);
+                            refreshPage();
+                        }
+                    },
+                    error: function() {
+                        dsmDialog.msg("网络错误,请稍后尝试");
+                    }
+                });
+            }
+        });
+    }
 </script>
 </body>
 </html>

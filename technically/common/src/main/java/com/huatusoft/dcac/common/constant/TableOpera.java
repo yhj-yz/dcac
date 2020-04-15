@@ -48,7 +48,11 @@ public class TableOpera {
             "HT_DCAC_DATA_LEVEL_RULE_SCOPE",
             "HT_DCAC_STRATEGY_RULE_CONTENT",
             "HT_DCAC_STRATEGY_RULE",
-            "HT_DCAC_STRATEGY_RULE_TYPE"
+            "HT_DCAC_STRATEGY_RULE_TYPE",
+            "HT_DCAC_STRATEGY_MASK_RULE",
+            "HT_DCAC_STRATEGY_MASK_TYPE",
+            "HT_DCAC_STRATEGY_RESPONSE",
+            "HT_DCAC_STRATEGY_SCAN"
     };
 
     public static String []  IGNORE_TABLE ={

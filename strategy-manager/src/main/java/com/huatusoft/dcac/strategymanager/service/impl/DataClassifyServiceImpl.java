@@ -119,4 +119,37 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
     public void deleteSmallClassify(String[] classifyIds) {
         dataClassifySmallDao.delete(DataClassifySmallEntity.class,classifyIds);
     }
+
+    @Override
+    public DataClassifySmallEntity getSmallClassify(String id) {
+        return dataClassifySmallDao.find(id);
+    }
+
+    @Override
+    public Result updateBigClassify(String classifyId, String classifyName, String classifyDesc) {
+        try {
+            DataClassifyBigEntity dataClassifyBigEntity = dataClassifyBigDao.find(classifyId);
+            dataClassifyBigEntity.setClassifyName(classifyName);
+            dataClassifyBigEntity.setClassifyDesc(classifyDesc);
+            dataClassifyBigDao.update(dataClassifyBigEntity);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Result("修改一级分类失败!");
+        }
+        return new Result("200","修改一级分类成功!",null);
+    }
+
+    @Override
+    public Result updateSmallClassify(String classifyId, String classifyName, String classifyDesc) {
+        try {
+            DataClassifySmallEntity dataClassifySmallEntity = dataClassifySmallDao.find(classifyId);
+            dataClassifySmallEntity.setClassifyName(classifyName);
+            dataClassifySmallEntity.setClassifyDesc(classifyDesc);
+            dataClassifySmallDao.update(dataClassifySmallEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("修改二级分类失败!");
+        }
+        return new Result("200","修改二级分类成功!",null);
+    }
 }

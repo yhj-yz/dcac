@@ -4,6 +4,7 @@ import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseService;
 import com.huatusoft.dcac.strategymanager.dao.DataClassifyBigDao;
 import com.huatusoft.dcac.strategymanager.entity.DataClassifyBigEntity;
+import com.huatusoft.dcac.strategymanager.entity.DataClassifySmallEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -62,4 +63,29 @@ public interface DataClassifyService extends BaseService<DataClassifyBigEntity, 
      * @return
      */
     void deleteSmallClassify(String[] classifyIds);
+
+    /**
+     * 根据ID获取数据分类小类
+     * @param id
+     * @return
+     */
+    DataClassifySmallEntity getSmallClassify(String id);
+
+    /**
+     * 修改一级分类
+     * @param classifyId
+     * @param classifyName
+     * @param classifyDesc
+     * @return
+     */
+    Result updateBigClassify(String classifyId,String classifyName,String classifyDesc);
+
+    /**
+     * 修改二级分类
+     * @param classifyId
+     * @param classifyName
+     * @param classifyDesc
+     * @return
+     */
+    Result updateSmallClassify(String classifyId,String classifyName,String classifyDesc);
 }

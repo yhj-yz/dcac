@@ -66,15 +66,16 @@
                 <div class="dsm-inline">
                     <label class="dsm-form-label" style="width: 150px">数据分类名称(一级)：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="classifyName" placeholder="分类名称(一级)" class="dsm-input required" dzbqSpecialChar="true">
+                        <input type="text" autocomplete="off" name="classifyName" placeholder="分类名称(一级)" class="dsm-input required bigClassifyName">
                     </div>
                 </div>
                 <div class="dsm-inline">
                     <label class="dsm-form-label dsm-form" style="width: 150px">描述：</label>
                     <div class="dsm-input-inline" >
-                        <input type="text" autocomplete="off" name="classifyDesc" placeholder="描述" class="dsm-input required" dzbqSpecialChar="true">
+                        <input type="text" autocomplete="off" name="classifyDesc" placeholder="描述" class="dsm-input required bigClassifyDesc">
                     </div>
                 </div>
+                <input type="hidden" name="classifyId" class="bigClassifyId">
             </div>
         </form>
     </div>
@@ -87,16 +88,16 @@
                 <div class="dsm-inline">
                     <label class="dsm-form-label" style="width: 150px">数据分类名称(二级)：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="classifyName" placeholder="分类名称(二级)" class="dsm-input required" dzbqSpecialChar="true">
+                        <input type="text" autocomplete="off" name="classifyName" placeholder="分类名称(二级)" class="dsm-input required smallClassifyName">
                     </div>
                 </div>
                 <div class="dsm-inline">
                     <label class="dsm-form-label dsm-form" style="width: 150px">描述：</label>
                     <div class="dsm-input-inline" >
-                        <input type="text" autocomplete="off" name="classifyDesc" placeholder="描述" class="dsm-input required" dzbqSpecialChar="true">
+                        <input type="text" autocomplete="off" name="classifyDesc" placeholder="描述" class="dsm-input required smallClassifyDesc">
                     </div>
                 </div>
-                <input type="hidden" name="classifyId">
+                <input type="hidden" name="classifyId" class="smallClassifyId">
             </div>
         </form>
     </div>
@@ -142,10 +143,10 @@
 								<td><div class='dsmcheckbox'>\
 								<input type='checkbox' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td></td> \
-								<td>" + _data.classifyName + "</td>\
+								<td><a onclick='getBigDetails(\"" + _id + "\")'>" + _data.classifyName + "</a></td>\
 								<td>" + _data.createUserAccount + "</td>\
 								<td>" + _data.classifyDesc + "</td>\
-								<td><a onclick='getDetails(\"" + _id + "\")'>详情</a></td>\
+								<td><a onclick='getSmallDetails(\"" + _id + "\")'>详情</a></td>\
 						 	</tr>";
                 return _text;
             }});
@@ -167,7 +168,7 @@
 
     //新增二级分类
     $(document).on('click', '.add-classify-two', function (e) {
-        // $("#addSmallClassify").find("input").val("");
+        $("#smallClassifyForm")[0].reset();
         if(noItemSelected()){//如果用户没有勾选
             return;
         }
@@ -226,6 +227,7 @@
 
     //新增一级分类
     $(document).on('click', '.add-classify-one', function (e) {
+        $("#bigClassifyForm")[0].reset();
         dsmDialog.open({
             type: 1,
             area:['800px','300px'],
@@ -256,13 +258,13 @@
     });
 
     //获取二级分类界面信息
-    function getDetails(classifyId){
+    function getSmallDetails(classifyId){
         $("#detail_list tbody").html("");
         $.ajax({
             data: {id: classifyId},
             dataType: "json",
             type: "get",
-            url: "showSmallClassify.do",
+            url: "showClassify.do",
             success: function (data){
                 var smallClassify = data.dataClassifySmallEntities;
                 var text = "";
@@ -271,7 +273,7 @@
                         text += "<tr>\
 									<td><div class='dsmcheckbox'>\
 									<input type='checkbox' name='classifyIds' id='p_" + smallClassify[index].id + "' value='" + smallClassify[index].id + "'/><label for='p_" + smallClassify[index].id + "'></label></div></td>\
-									<td>" + smallClassify[index].classifyName + "</td>\
+									<td><a onclick='updateSmallDetails(\"" + smallClassify[index].id + "\")'>" + smallClassify[index].classifyName + "</a></td>\
 									<td>" + smallClassify[index].createUserAccount + "</td>\
 									<td>" + smallClassify[index].classifyDesc + "</td>\
 								 </tr>";
@@ -366,6 +368,92 @@
         }else{
             return false;
         }
+    }
+
+    function getBigDetails(id) {
+        $.ajax({
+            data: {id: id},
+            dataType: "json",
+            type: "get",
+            url: "showClassify.do",
+            success: function (data){
+                $(".bigClassifyName").val(data.classifyName);
+                $(".bigClassifyDesc").val(data.classifyDesc);
+                $(".bigClassifyId").val(id);
+            }
+        });
+
+        dsmDialog.open({
+            type: 1,
+            area:['800px','300px'],
+            title:"修改一级分类",
+            btn:['修改','取消'],
+            content : $("#addBigClassify"),
+            yes: function(index,layero) {
+                $.ajax({
+                    data:$('#bigClassifyForm').serialize(),
+                    type:"post",
+                    url:"updateBigClassify.do",
+                    dataType:"json",
+                    success: function(data) {
+                        if(data.status == "500"){
+                            dsmDialog.error(data.msg);
+                        }else {
+                            dsmDialog.msg(data.msg);
+                            dsmDialog.close(index);
+                            refreshPage();
+                        }
+                    },
+                    error: function() {
+                        dsmDialog.msg("网络错误,请稍后尝试");
+                    }
+                });
+            }
+        });
+    }
+
+    function updateSmallDetails(id) {
+        $.ajax({
+            data: {id: id},
+            dataType: "json",
+            type: "get",
+            url: "getSmallClassify.do",
+            success: function (data){
+                $(".smallClassifyName").val(data.classifyName);
+                $(".smallClassifyDesc").val(data.classifyDesc);
+                $(".smallClassifyId").val(id);
+            }
+        });
+
+        dsmDialog.open({
+            type: 1,
+            area:['700px','300px'],
+            title:"修改二级分类",
+            btn:['修改','取消'],
+            content : $("#addSmallClassify"),
+            yes: function(index,layero) {
+                $.ajax({
+                    data:$('#smallClassifyForm').serialize(),
+                    type:"post",
+                    url:"updateSmallClassify.do",
+                    dataType:"json",
+                    success: function(data) {
+                        if(data.status == "500"){
+                            dsmDialog.error(data.msg);
+                        }else {
+                            dsmDialog.msg(data.msg);
+                            dsmDialog.close(index);
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1500);
+                        }
+                    },
+                    error: function() {
+                        dsmDialog.msg("网络错误,请稍后尝试");
+                    }
+                });
+            }
+        });
     }
 </script>
 </body>

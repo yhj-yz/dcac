@@ -78,4 +78,18 @@ public class DataGradeServiceImpl extends BaseServiceImpl<DataGradeEntity, DataG
         }
         return false;
     }
+
+    @Override
+    public Result updateGrade(String gradeId, String gradeName, String gradeDesc) {
+        try {
+            DataGradeEntity dataGradeEntity = dataGradeDao.find(gradeId);
+            dataGradeEntity.setGradeName(gradeName);
+            dataGradeEntity.setGradeDesc(gradeDesc);
+            dataGradeDao.update(dataGradeEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("修改数据分级失败!");
+        }
+        return new Result("200","修改数据分级成功!",null);
+    }
 }

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <shopxx>
-	<setting name="siteName" value="数据分类分级管理系统" />
+	<setting name="siteName" value="个人隐私数据保护系统" />
 	<setting name="siteUrl" value="http://localhost:8080/dsmxx/" />
 	<setting name="siteVersion" value="1.0.00" />
 	<setting name="dataVersion" value="5.0.1" />

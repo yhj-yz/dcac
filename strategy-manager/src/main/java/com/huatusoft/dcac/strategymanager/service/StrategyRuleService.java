@@ -58,14 +58,14 @@ public interface StrategyRuleService extends BaseService<StrategyRuleEntity, Str
      * @param levelValue
      * @param strategyRuleEntity
      */
-    void addDataLevelRule(String ruleScope,String scopeValue01,String scopeValue02,String scopeValue03,String levelValue,StrategyRuleEntity strategyRuleEntity);
+    void addDataLevelRule(String ruleScope,String scopeValue01,String scopeValue02,String scopeValue03,String levelValue,StrategyRuleEntity strategyRuleEntity,boolean isAdd);
 
     /**
      * 添加规则内容
      * @param rule
      * @param isContain
      */
-    void addRuleContent(String rule, boolean isContain,StrategyRuleEntity strategyRuleEntity);
+    void addRuleContent(String rule, boolean isContain,StrategyRuleEntity strategyRuleEntity,boolean isAdd);
 
     /**
      * 判断规则名称是否重复
@@ -73,4 +73,31 @@ public interface StrategyRuleService extends BaseService<StrategyRuleEntity, Str
      * @return
      */
     boolean isRuleNameRepeat(String ruleName);
+
+    /**
+     * 更新检测规则
+     * @param ruleId
+     * @param ruleName
+     * @param ruleDesc
+     * @param levelDefault
+     * @param ruleScope01
+     * @param ruleScope02
+     * @param ruleScope03
+     * @param scopeValue01
+     * @param scopeValue02
+     * @param scopeValue03
+     * @param scopeValue04
+     * @param scopeValue05
+     * @param scopeValue06
+     * @param scopeValue07
+     * @param scopeValue08
+     * @param scopeValue09
+     * @param levelValue01
+     * @param levelValue02
+     * @param levelValue03
+     * @param containRule
+     * @param exceptRule
+     * @return
+     */
+    Result updateRule(String ruleId,String ruleName,String ruleDesc,String levelDefault,String ruleScope01,String ruleScope02,String ruleScope03,String scopeValue01,String scopeValue02,String scopeValue03,String scopeValue04,String scopeValue05,String scopeValue06,String scopeValue07,String scopeValue08,String scopeValue09,String levelValue01,String levelValue02,String levelValue03,String containRule,String exceptRule);
 }

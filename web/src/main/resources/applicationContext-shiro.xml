@@ -68,6 +68,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /admin/** = anon
+                /DGAPI/** = anon
                 /login.html = anon
                 /authentication/user.do = anon <!--验证用户接口-->
                 /authentication/token.do = anon

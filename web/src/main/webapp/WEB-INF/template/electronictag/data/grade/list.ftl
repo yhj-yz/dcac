@@ -2,7 +2,7 @@
 <html lang="ch">
 <head>
     <meta charset="UTF-8">
-    <title>策略配置</title>
+    <title>数据分级定义</title>
     [#include "/include/head.ftl"]
     <script type="text/javascript" src="${base}/resources/dsm/js/page.js"></script>
     <style>
@@ -63,16 +63,17 @@
                 <div class="dsm-inline">
                     <label class="dsm-form-label">数据分级名称：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="gradeName" placeholder="数据分级名称" class="dsm-input required" dzbqSpecialChar="true" >
+                        <input type="text" autocomplete="off" name="gradeName" placeholder="数据分级名称" class="dsm-input required gradeName" >
                     </div>
                     <div class="desc"><em>*</em></div>
                 </div>
                 <div class="dsm-inline">
                     <label class="dsm-form-label">描述：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="gradeDesc" placeholder="描述" class="dsm-input required" dzbqSpecialChar="true">
+                        <input type="text" autocomplete="off" name="gradeDesc" placeholder="描述" class="dsm-input required gradeDesc">
                     </div>
                 </div>
+                <input type="hidden" name="gradeId" class="gradeId">
             </div>
         </form>
     </div>
@@ -88,7 +89,7 @@
 								<td><div class='dsmcheckbox'>\
 								<input type='checkbox' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td></td> \
-								<td>"+_data.gradeName+"</td>\
+								<td><a onclick='getDetails(\"" + _id + "\")'>"+_data.gradeName+"</a></td>\
 								<td>"+_data.createUserAccount+"</td>\
 								<td>"+_data.gradeDesc+"\
 						 	 </tr>";
@@ -101,10 +102,11 @@
     });
 
     $(document).on('click', '.add-grade', function (e) {
+        $("#gradeForm")[0].reset();
         dsmDialog.open({
             type: 1,
             area:['800px','300px'],
-            title:"新增分级",
+            title:"新增数据分级",
             btn:['添加','取消'],
             content : $("#addGrade"),
             yes: function(index,layero) {
@@ -172,6 +174,48 @@
         }else{
             return false;
         }
+    }
+
+    function getDetails(id) {
+        $.ajax({
+            data: {id: id},
+            dataType: "json",
+            type: "get",
+            url: "getDataGrade.do",
+            success: function (data){
+                $(".gradeName").val(data.gradeName);
+                $(".gradeDesc").val(data.gradeDesc);
+                $(".gradeId").val(id);
+            }
+        });
+
+        dsmDialog.open({
+            type: 1,
+            area:['800px','300px'],
+            title:"修改数据分级",
+            btn:['修改','取消'],
+            content : $("#addGrade"),
+            yes: function(index,layero) {
+                $.ajax({
+                    data:$('#gradeForm').serialize(),
+                    type:"post",
+                    url:"updateGrade.do",
+                    dataType:"json",
+                    success: function(data) {
+                        if(data.status == "500"){
+                            dsmDialog.error(data.msg);
+                        }else {
+                            dsmDialog.msg(data.msg);
+                            dsmDialog.close(index);
+                            refreshPage();
+                        }
+                    },
+                    error: function() {
+                        dsmDialog.msg("网络错误,请稍后尝试");
+                    }
+                });
+            }
+        });
     }
 </script>
 </body>

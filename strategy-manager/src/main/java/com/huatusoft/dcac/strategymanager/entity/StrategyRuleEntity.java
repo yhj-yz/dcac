@@ -1,5 +1,6 @@
 package com.huatusoft.dcac.strategymanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huatusoft.dcac.base.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,4 +38,9 @@ public class StrategyRuleEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "strategyRuleEntity",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
     private List<StrategyRuleContentEntity> strategyRuleContentEntities = new ArrayList<StrategyRuleContentEntity>();
+
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name = "STRATEGY_RULE",joinColumns = @JoinColumn(name = "ruleId"),inverseJoinColumns = @JoinColumn(name = "strategyId"))
+    @JsonIgnore
+    private List<StrategyEntity> strategyEntities = new ArrayList<StrategyEntity>();
 }
