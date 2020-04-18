@@ -3,6 +3,7 @@ package com.huatusoft.dcac.strategymanager.dao;
 import com.huatusoft.dcac.base.dao.BaseDao;
 import com.huatusoft.dcac.strategymanager.entity.DataGradeEntity;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -17,4 +18,11 @@ public interface DataGradeDao extends BaseDao<DataGradeEntity,String> {
      * @return
      */
     DataGradeEntity findByGradeName(String gradeName);
+
+    /**
+     * 根据id数组获取数据分级
+     * @param ids
+     * @return
+     */
+    List<DataGradeEntity> findByIdIn(String[] ids);
 }

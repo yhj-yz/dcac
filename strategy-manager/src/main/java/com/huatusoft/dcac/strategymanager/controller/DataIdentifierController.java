@@ -26,7 +26,7 @@ public class DataIdentifierController extends BaseController {
     private DataIdentifierService dataIdentifierService;
 
     /**
-     * 跳转到数据标识符界面
+     * 跳转到隐私检测模板界面
      * @return
      */
     @GetMapping(value = "/list")

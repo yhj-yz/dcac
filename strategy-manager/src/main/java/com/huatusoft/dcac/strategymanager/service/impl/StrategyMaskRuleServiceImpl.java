@@ -95,4 +95,21 @@ public class StrategyMaskRuleServiceImpl extends BaseServiceImpl<StrategyMaskRul
         }
         return new Result("200","修改脱敏规则成功!",null);
     }
+
+    @Override
+    public Result deleteRule(String[] ids) {
+        List<StrategyMaskRuleEntity> strategyMaskRuleEntities = strategyMaskRuleDao.findByIdIn(ids);
+        for(StrategyMaskRuleEntity strategyMaskRuleEntity : strategyMaskRuleEntities){
+            if(strategyMaskRuleEntity.getStrategyEntities().size() > 0){
+                return new Result(strategyMaskRuleEntity.getRuleName()+"该脱敏规则已被使用,请重新选择!");
+            }
+        }
+        try {
+            delete(StrategyMaskRuleEntity.class,ids);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("删除脱敏规则失败,请稍后再试!");
+        }
+        return new Result("200","删除脱敏规则成功!",null);
+    }
 }

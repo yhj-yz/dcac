@@ -28,15 +28,17 @@ public interface StrategyService extends BaseService<StrategyEntity, StrategyDao
      * 添加策略
      * @param strategyName
      * @param strategyDesc
-     * @param dataClassifyName
-     * @param dataGradeName
+     * @param dataClassifyId
+     * @param dataGradeId
      * @param scanType
-     * @param ruleName
+     * @param scanPath
+     * @param ruleId
      * @param responseType
-     * @param maskRuleName
+     * @param maskRuleId
+     * @param matchValue
      * @return
      */
-    Result addStrategy(String strategyName, String strategyDesc, String dataClassifyName, String dataGradeName, String scanType, String ruleName, String responseType, String maskRuleName);
+    Result addStrategy(String strategyName, String strategyDesc, String dataClassifyId, String dataGradeId, String scanType, String scanPath, String ruleId, String responseType, String maskRuleId, String matchValue);
 
     /**
      * 根据id生成策略
@@ -48,15 +50,18 @@ public interface StrategyService extends BaseService<StrategyEntity, StrategyDao
 
     /**
      * 更新策略
+     * @param strategyId
      * @param strategyName
      * @param strategyDesc
-     * @param dataClassifyName
-     * @param dataGradeName
+     * @param dataClassifyId
+     * @param dataGradeId
      * @param scanType
-     * @param ruleName
+     * @param scanPath
+     * @param ruleId
      * @param responseType
-     * @param maskRuleName
+     * @param maskRuleId
+     * @param matchValue
      * @return
      */
-    Result updateStrategy(String strategyId,String strategyName,String strategyDesc,String dataClassifyName,String dataGradeName,String scanType,String ruleName,String responseType,String maskRuleName);
+    Result updateStrategy(String strategyId,String strategyName,String strategyDesc,String dataClassifyId,String dataGradeId,String scanType,String scanPath,String ruleId,String responseType,String maskRuleId,String matchValue);
 }

@@ -92,14 +92,8 @@ public class DataClassifyController extends BaseController {
         if(ids == null){
             return  new Result("请勾选一级分类");
         }
-        try {
-            String[] classifyIds = ids.split(",");
-            dataClassifyService.delete(DataClassifyBigEntity.class,classifyIds);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result("删除一级分类失败");
-        }
-        return new Result("200","删除一级分类成功",null);
+        String[] classifyIds = ids.split(",");
+        return dataClassifyService.deleteBigClassify(classifyIds);
     }
 
     @PostMapping(value = "addSmallClassify")
@@ -122,20 +116,14 @@ public class DataClassifyController extends BaseController {
         if(ids == null){
             return new Result("请勾选删除的二级分类!");
         }
-        try{
-            String[] classifyIds = ids.split(",");
-            dataClassifyService.deleteSmallClassify(classifyIds);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result("数据库异常,请稍后再试!");
-        }
-        return new Result("200","删除二级分类成功!",null);
+        String[] classifyIds = ids.split(",");
+        return dataClassifyService.deleteSmallClassify(classifyIds);
     }
-
     /**
      * 根据小类ID获取小类
      * @param id
      * @return
+
      */
     @GetMapping(value = "/getSmallClassify")
     @ResponseBody

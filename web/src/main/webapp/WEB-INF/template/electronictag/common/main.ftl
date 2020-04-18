@@ -216,7 +216,7 @@
                             </li>
                             <li>
                                 <a href="${base}/admin/data/identifier/list.do" target="electronicTagIframe" class="auto cur">
-                                    <span>数据标识符</span>
+                                    <span>隐私检测模板</span>
                                 </a>
                             </li>
                         </ul>

@@ -176,12 +176,12 @@
 
                         <div class="dsm-inline" id="chooseRule" style="display: none;">
                             <div style="border: 1px solid #e4eaec;width: 600px;height: 150px">
-                                <input type="radio" value="0" id="ruleType01" class="ruleType" name="ruleType" style="margin-top: 5px;margin-left: 10px" checked>数据标识符</input>
+                                <input type="radio" value="0" id="ruleType01" class="ruleType" name="ruleType" style="margin-top: 5px;margin-left: 10px" checked>隐私检测模板</input>
                                 <input type="radio" value="1" id="ruleType02" class="ruleType" name="ruleType" style="margin-left: 10px">正则表达式</input>
                                 <input type="radio" value="2" id="ruleType03" class="ruleType" name="ruleType" style="margin-left: 10px">关键字</input>
                                 <input type="hidden" id="isContain" value="1"/>
                                 <div class="dsm-inline">
-                                    <button type="button" class="btn btn-primary choose-identifier" style="float: left;margin-left: 10px;margin-top: 10px">选择数据标识符</button>
+                                    <button type="button" class="btn btn-primary choose-identifier" style="float: left;margin-left: 10px;margin-top: 10px">选择隐私检测模板</button>
                                     <input type="text" autocomplete="off" class="dsm-input required match-content" style="width: 400px;float: left;margin-top: 10px;margin-left: 10px" readonly>
                                 </div>
                                 <div class="dsm-inline">
@@ -224,7 +224,7 @@
                 var _id = _data.id;
                 var _text = "<tr>\
 								<td><div class='dsmcheckbox'>\
-								<input type='checkbox' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
+								<input type='checkbox' name='ids' class='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td><a onclick='getDetails(\"" + _id + "\")'>"+_data.ruleName+"</a></td>\
 								<td>"+_data.createUserAccount+"</td>\
 								<td>"+_data.ruleDesc+"\
@@ -243,7 +243,7 @@
         $("#except").html("暂无定义例外规则");
         dsmDialog.open({
             type: 1,
-            area:['1000px','600px'],
+            area:['900px','450px'],
             title:"新增检测规则",
             btn:['添加','取消'],
             content : $("#addRule"),
@@ -368,7 +368,7 @@
         if(html === "暂无定义规则" || html === "暂无定义例外规则"){
             if(ruleType === "0") {
                 html = "<div style=\"position: relative\">\
-                        <h6>数据标识符: 匹配&quot;" + match_content + "&quot;</h6>\
+                        <h6>隐私检测模板: 匹配&quot;" + match_content + "&quot;</h6>\
                         <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
                         </div>";
             }else if(ruleType === "1"){
@@ -386,7 +386,7 @@
             if(ruleType === "0"){
                 html += "<div style=\"position: relative\">\
                             <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
-                            <h6>数据标识符: 匹配&quot;"+match_content+"&quot;</h6>\
+                            <h6>隐私检测模板: 匹配&quot;"+match_content+"&quot;</h6>\
                             <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
                         </div>";
             }else if(ruleType === "1"){
@@ -458,12 +458,11 @@
         dsmDialog.open({
             type: 2,
             area:['800px','500px'],
-            title:"选择数据标识符",
+            title:"选择隐私检测模板",
             btn:['确认','取消'],
             content: "${base}/admin/data/identifier/list.do?isChoose=1",
             yes: function(index,layero) {
-                alert($("#layui-layer-iframe2").contents().find(".ids:checked").parent().parent().parent().find("td").eq(1).text());
-                $(".match-content").val($("#layui-layer-iframe2").contents().find(".ids:checked").parent().parent().parent().find("td").eq(1).text());
+                $(".match-content").val($("#layui-layer-iframe"+index).contents().find(".ids:checked").parent().parent().parent().find("td").eq(1).text());
                 dsmDialog.close(index);
             }
         });
@@ -533,7 +532,7 @@
                         if($("#contain").html() === "暂无定义规则"){
                             if(strategyRuleContentEntities[index].ruleTypeCode === "0") {
                                 containRule = "<div style=\"position: relative\">\
-                        <h6>数据标识符: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
+                        <h6>隐私检测模板: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
                         <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
                         </div>";
                             }else if(strategyRuleContentEntities[index].ruleTypeCode === "1"){
@@ -551,7 +550,7 @@
                             if(strategyRuleContentEntities[index].ruleTypeCode === "0"){
                                 containRule += "<div style=\"position: relative\">\
                             <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
-                            <h6>数据标识符: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
+                            <h6>隐私检测模板: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
                             <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
                         </div>";
                             }else if(strategyRuleContentEntities[index].ruleTypeCode === "1"){
@@ -572,7 +571,7 @@
                         if($("#except").html() === "暂无定义例外规则"){
                             if(strategyRuleContentEntities[index].ruleTypeCode === "0") {
                                 exceptRule = "<div style=\"position: relative\">\
-                        <h6>数据标识符: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
+                        <h6>隐私检测模板: 匹配&quot;" + strategyRuleContentEntities[index].matchContent + "&quot;</h6>\
                         <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: -15px;left: 500px\">\
                         </div>";
                             }else if(strategyRuleContentEntities[index].ruleTypeCode === "1"){
@@ -590,7 +589,7 @@
                             if(strategyRuleContentEntities[index].ruleTypeCode === "0"){
                                 exceptRule += "<div style=\"position: relative\">\
                             <HR style=\"border: 1px dotted #e4eaec;margin-top: 10px;\">\
-                            <h6>数据标识符: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
+                            <h6>隐私检测模板: 匹配&quot;"+strategyRuleContentEntities[index].matchContent+"&quot;</h6>\
                             <input type=\"button\" value=\"×\" onclick=\"deleteElement(this)\" style=\"position: absolute;top: 5px;left: 500px\">\
                         </div>";
                             }else if(strategyRuleContentEntities[index].ruleTypeCode === "1"){

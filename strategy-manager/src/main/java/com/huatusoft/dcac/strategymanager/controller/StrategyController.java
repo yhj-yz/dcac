@@ -52,21 +52,32 @@ public class StrategyController extends BaseController{
      * 添加策略
      * @param strategyName
      * @param strategyDesc
-     * @param dataClassifyName
-     * @param dataGradeName
      * @param scanType
-     * @param ruleName
      * @param responseType
-     * @param maskRuleName
      * @return
      */
     @PostMapping(value = "/addStrategy")
     @ResponseBody
-    public Result addStrategy(String strategyName,String strategyDesc,String dataClassifyName,String dataGradeName,String scanType,String ruleName,String responseType,String maskRuleName){
+    public Result addStrategy(String strategyName,String strategyDesc,String dataClassifyId,String dataGradeId,String scanType,String scanPath,String ruleId,String responseType,String maskRuleId,String matchValue){
         if(strategyName == null || "".equals(strategyName)){
             return new Result("请填写策略名称!");
         }
-        return strategyService.addStrategy(strategyName,strategyDesc,dataClassifyName,dataGradeName,scanType,ruleName,responseType,maskRuleName);
+        if(dataClassifyId == null || "".equals(dataClassifyId)){
+            return new Result("请选择数据分类!");
+        }
+        if(dataGradeId == null || "".equals(dataGradeId)){
+            return new Result("请选择数据分级!");
+        }
+        if(ruleId == null || "".equals(ruleId)){
+            return new Result("请选择检测规则!");
+        }
+        if("2".equals(scanType) && (null == scanPath || "".equals(scanPath))){
+            return new Result("请输入扫描路径!");
+        }
+        if("1".equals(responseType) && (null == maskRuleId || "".equals(maskRuleId))){
+            return new Result("请选择脱敏规则!");
+        }
+        return strategyService.addStrategy(strategyName,strategyDesc,dataClassifyId,dataGradeId,scanType,scanPath,ruleId,responseType,maskRuleId,matchValue);
     }
 
     /**
@@ -101,8 +112,26 @@ public class StrategyController extends BaseController{
 
     @PostMapping(value = "/updateStrategy")
     @ResponseBody
-    public Result updateStrategy(String strategyId,String strategyName,String strategyDesc,String dataClassifyName,String dataGradeName,String scanType,String ruleName,String responseType,String maskRuleName){
-        return strategyService.updateStrategy(strategyId,strategyName,strategyDesc,dataClassifyName,dataGradeName,scanType,ruleName,responseType,maskRuleName);
+    public Result updateStrategy(String strategyId,String strategyName,String strategyDesc,String dataClassifyId,String dataGradeId,String scanType,String scanPath,String ruleId,String responseType,String maskRuleId,String matchValue){
+        if(null == strategyName || "".equals(strategyName)){
+            return new Result("请输入策略名称!");
+        }
+        if(null == ruleId || "".equals(ruleId)){
+            return new Result("请选择检测规则!");
+        }
+        if(null == dataClassifyId || "".equals(dataClassifyId)){
+            return new Result("请选择数据分级!");
+        }
+        if(null == dataGradeId || "".equals(dataGradeId)){
+            return new Result("请选择数据分类!");
+        }
+        if("2".equals(scanType) && (null == scanPath || "".equals(scanPath))){
+            return new Result("请输入扫描路径!");
+        }
+        if("1".equals(responseType) && (null == maskRuleId || "".equals(maskRuleId))){
+            return new Result("请选择脱敏规则!");
+        }
+        return strategyService.updateStrategy(strategyId,strategyName,strategyDesc,dataClassifyId,dataGradeId,scanType,scanPath,ruleId,responseType,maskRuleId,matchValue);
     }
 
 }

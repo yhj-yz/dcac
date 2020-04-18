@@ -86,14 +86,8 @@ public class StrategyMaskRuleController extends BaseController {
         if(ids == null){
             return  new Result("请勾选规则");
         }
-        try {
-            String[] ruleIds = ids.split(",");
-            strategyMaskRuleService.delete(StrategyMaskRuleEntity.class,ruleIds);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result("删除脱敏规则失败!");
-        }
-        return new Result("200","删除脱敏规则成功!",null);
+        String[] ruleIds = ids.split(",");
+        return strategyMaskRuleService.deleteRule(ruleIds);
     }
 
     /**
@@ -112,7 +106,6 @@ public class StrategyMaskRuleController extends BaseController {
 
     /**
      * 修改脱敏规则
-     * @param id
      * @param ruleName
      * @param ruleDesc
      * @param ruleType

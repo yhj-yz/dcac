@@ -92,11 +92,11 @@
                             <tr style="height: 40px">
                                 <td>
                                     <select style="margin-top: 5px;float: left;margin-left: 5px" name="ruleType" class="ruleType">
-                                        <option value="0">数据标识符</option>
+                                        <option value="0">隐私检测模板</option>
                                         <option value="1" selected>正则表达式</option>
                                         <option value="2">关键字</option>
                                     </select>
-                                    <input type="text" autocomplete="off" name="maskContent" style="margin-left: 5px;margin-top: 5px" class="required maskContent" readonly>
+                                    <input type="text" autocomplete="off" name="maskContent" style="margin-left: 5px;margin-top: 5px" class="required maskContent">
                                 </td>
                                 <td>
                                     <select style="margin-top: 5px;float: left;margin-left: 5px" name="maskType" class="maskType" onfocus="this.defaultIndex=this.selectedIndex;"
@@ -127,7 +127,7 @@
                 var _id = _data.id;
                 var ruleTypeName = "";
                 if(_data.ruleTypeCode === "0"){
-                    ruleTypeName = "数据标识符";
+                    ruleTypeName = "隐私检测模板";
                 }else if(_data.ruleTypeCode === "1"){
                     ruleTypeName = "正则表达式";
                 }else if(_data.ruleTypeCode === "2"){
@@ -141,7 +141,7 @@
                 }
                 var _text = "<tr>\
 								<td><div class='dsmcheckbox'>\
-								<input type='checkbox' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
+								<input type='checkbox' name='ids' class='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td><a onclick='getDetails(\"" + _id + "\")'>"+_data.ruleName+"</a></td> \
 								<td>"+ ruleTypeName+"</td>\
 								<td>"+ maskTypeName+"</td>\
@@ -247,7 +247,7 @@
             dsmDialog.open({
                 type: 2,
                 area:['800px','500px'],
-                title:"选择数据标识符",
+                title:"选择隐私检测模板",
                 btn:['确认','取消'],
                 content: "${base}/admin/data/identifier/list.do?isChoose=1",
                 yes: function(index,layero) {
@@ -258,9 +258,9 @@
         }else if($(".ruleType").val() === "1"){
             $(".maskType").val("0");
             $(".maskEffect").val("******");
-            $(".maskEffect").attr("readOnly",true);
+            $(".maskEffect").prop("readOnly",true);
             $(".choose-identifier").css("display","none");
-            $(".maskContent").attr("readOnly",false);
+            $(".maskContent").prop("readOnly",false);
         }
     });
 
@@ -278,12 +278,17 @@
                 $(".maskType").find("option[value='"+data.maskTypeCode+"']").prop("selected",true);
                 $(".maskEffect").val(data.maskEffect);
                 $(".ruleId").val(id);
+                if(data.maskTypeCode === "0"){
+                    $(".maskEffect").prop("readOnly",true);
+                }else if(data.maskTypeCode === "1"){
+                    $(".maskEffect").prop("readOnly",false);
+                }
             }
         });
 
         dsmDialog.open({
             type: 1,
-            area:['800px','300px'],
+            area:['900px','400px'],
             title:"修改脱敏规则",
             btn:['修改','取消'],
             content : $("#addRule"),

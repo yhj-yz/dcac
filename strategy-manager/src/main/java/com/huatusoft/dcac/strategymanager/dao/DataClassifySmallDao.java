@@ -17,4 +17,11 @@ public interface DataClassifySmallDao extends BaseDao<DataClassifySmallEntity,St
      * @return
      */
     DataClassifySmallEntity findByClassifyName(String classifyName);
+
+    /**
+     * 根据id数组查询二级数据分级
+     * @param ids
+     * @return
+     */
+    List<DataClassifySmallEntity> findByIdIn(String[] ids);
 }

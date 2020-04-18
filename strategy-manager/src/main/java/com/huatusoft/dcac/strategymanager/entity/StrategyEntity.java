@@ -29,17 +29,25 @@ public class StrategyEntity extends BaseEntity {
     @Column(name = "STRATEGY_DESC",length = 255)
     private String strategyDesc;
     /**数据分类编号*/
-    @Column(name = "DATA_CLASSIFY_ID",length = 32)
-    private String dataClassifyId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "DATA_CLASSIFY_ID")
+    private DataClassifySmallEntity dataClassifySmallEntity;
     /**数据分级编号*/
-    @Column(name = "DATA_GRADE_ID",length = 32)
-    private String dataGradeId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "DATA_GRADE_ID")
+    private DataGradeEntity dataGradeEntity;
     /**扫描类型*/
     @Column(name = "SCAN_TYPE_CODE",length = 1)
     private String scanTypeCode;
     /**响应类型*/
     @Column(name = "RESPONSE_TYPE_CODE",length = 1)
     private String responseTypeCode;
+    /**扫描路径*/
+    @Column(name = "SCAN_PATH",length = 255)
+    private String scanPath;
+    /**匹配数*/
+    @Column(name = "MATCH_VALUE",length = 10)
+    private int matchValue;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "STRATEGY_RULE",joinColumns = @JoinColumn(name = "strategyId"),inverseJoinColumns = @JoinColumn(name = "ruleId"))

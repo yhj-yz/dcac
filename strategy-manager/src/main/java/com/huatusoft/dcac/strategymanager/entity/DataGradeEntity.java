@@ -1,15 +1,15 @@
 package com.huatusoft.dcac.strategymanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huatusoft.dcac.base.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yhj
@@ -28,4 +28,8 @@ public class DataGradeEntity extends BaseEntity {
     /**数据分级描述*/
     @Column(name = "GRADE_DESC",length = 255)
     private String gradeDesc;
+    /**策略*/
+    @OneToMany(mappedBy = "dataGradeEntity",fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JsonIgnore
+    private List<StrategyEntity> strategyEntities = new ArrayList<StrategyEntity>();
 }

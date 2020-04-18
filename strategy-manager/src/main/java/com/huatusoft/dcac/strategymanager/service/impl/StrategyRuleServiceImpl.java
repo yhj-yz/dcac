@@ -5,11 +5,9 @@ import com.huatusoft.dcac.base.service.BaseServiceImpl;
 import com.huatusoft.dcac.strategymanager.dao.DataLevelRuleDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyRuleContentDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyRuleDao;
-import com.huatusoft.dcac.strategymanager.entity.DataGradeEntity;
-import com.huatusoft.dcac.strategymanager.entity.DataLevelRuleEntity;
-import com.huatusoft.dcac.strategymanager.entity.StrategyRuleContentEntity;
-import com.huatusoft.dcac.strategymanager.entity.StrategyRuleEntity;
+import com.huatusoft.dcac.strategymanager.entity.*;
 import com.huatusoft.dcac.strategymanager.service.StrategyRuleService;
+import jdk.nashorn.internal.runtime.ECMAException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -122,7 +120,7 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
             strategyRuleContentEntity.setMatchContent(ruleContent);
             strategyRuleContentEntity.setRuleContent(ruleContent);
             strategyRuleContentEntity.setStrategyRuleEntity(strategyRuleEntity);
-            if("数据标识符".equals(newRules[0].trim())){
+            if("隐私检测模板".equals(newRules[0].trim())){
                 strategyRuleContentEntity.setRuleTypeCode("0");
             }else if("正则表达式".equals(newRules[0].trim())){
                 strategyRuleContentEntity.setRuleTypeCode("1");
@@ -181,6 +179,23 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
             return new Result("更新检测规则失败!");
         }
         return new Result("200","更新检测规则成功!",null);
+    }
+
+    @Override
+    public Result deleteRule(String[] ids) {
+        List<StrategyRuleEntity> strategyRuleEntities = strategyRuleDao.findByIdIn(ids);
+        for(StrategyRuleEntity strategyRuleEntity : strategyRuleEntities){
+            if(strategyRuleEntity.getStrategyEntities().size() > 0){
+                return new Result(strategyRuleEntity.getRuleName()+"该检测规则正在被使用,请重新选择!");
+            }
+        }
+        try {
+            delete(StrategyRuleEntity.class,ids);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("删除检测规则失败,请稍后再试!");
+        }
+        return new Result("200","删除检测规则成功!",null);
     }
 
 }

@@ -46,4 +46,11 @@ public interface DataGradeService extends BaseService<DataGradeEntity, DataGrade
      * @return
      */
     Result updateGrade(String gradeId,String gradeName,String gradeDesc);
+
+    /**
+     * 删除数据分级
+     * @param gradeIds
+     * @return
+     */
+    Result deleteGrade(String[] gradeIds);
 }

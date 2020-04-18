@@ -62,7 +62,7 @@ public interface DataClassifyService extends BaseService<DataClassifyBigEntity, 
      * @param classifyIds
      * @return
      */
-    void deleteSmallClassify(String[] classifyIds);
+    Result deleteSmallClassify(String[] classifyIds);
 
     /**
      * 根据ID获取数据分类小类
@@ -88,4 +88,11 @@ public interface DataClassifyService extends BaseService<DataClassifyBigEntity, 
      * @return
      */
     Result updateSmallClassify(String classifyId,String classifyName,String classifyDesc);
+
+    /**
+     * 删除数据分类大类
+     * @param classifyIds
+     * @return
+     */
+    Result deleteBigClassify(String[] classifyIds);
 }

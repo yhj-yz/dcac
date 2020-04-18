@@ -87,7 +87,7 @@
                 var _id = _data.id;
                 var _text = "<tr>\
 								<td><div class='dsmcheckbox'>\
-								<input type='checkbox' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
+								<input type='checkbox' name='ids' class='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td></td> \
 								<td><a onclick='getDetails(\"" + _id + "\")'>"+_data.gradeName+"</a></td>\
 								<td>"+_data.createUserAccount+"</td>\
@@ -105,7 +105,7 @@
         $("#gradeForm")[0].reset();
         dsmDialog.open({
             type: 1,
-            area:['800px','300px'],
+            area:['750px','350px'],
             title:"新增数据分级",
             btn:['添加','取消'],
             content : $("#addGrade"),

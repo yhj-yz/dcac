@@ -84,21 +84,19 @@ public class StrategyRuleController extends BaseController {
         return strategyRuleService.addStrategyRule(ruleName,ruleDesc,levelDefault,ruleScope01,ruleScope02,ruleScope03,scopeValue01,scopeValue02,scopeValue03,scopeValue04,scopeValue05,scopeValue06,scopeValue07,scopeValue08,scopeValue09,levelValue01,levelValue02,levelValue03,containRule,exceptRule);
     }
 
-
+    /**
+     * 删除检测规则
+     * @param ids
+     * @return
+     */
     @PostMapping(value = "deleteRule")
     @ResponseBody
     public Result deleteRule(String ids){
         if(ids == null){
             return  new Result("请勾选规则");
         }
-        try {
-            String[] ruleIds = ids.split(",");
-            strategyRuleService.delete(StrategyRuleEntity.class,ruleIds);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result("删除规则失败!");
-        }
-        return new Result("200","删除规则成功!",null);
+        String[] ruleIds = ids.split(",");
+        return  strategyRuleService.deleteRule(ruleIds);
     }
 
     /**

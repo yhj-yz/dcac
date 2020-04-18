@@ -4,8 +4,10 @@ import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseServiceImpl;
 import com.huatusoft.dcac.strategymanager.dao.DataClassifyBigDao;
 import com.huatusoft.dcac.strategymanager.dao.DataClassifySmallDao;
+import com.huatusoft.dcac.strategymanager.dao.StrategyDao;
 import com.huatusoft.dcac.strategymanager.entity.DataClassifyBigEntity;
 import com.huatusoft.dcac.strategymanager.entity.DataClassifySmallEntity;
+import com.huatusoft.dcac.strategymanager.entity.StrategyEntity;
 import com.huatusoft.dcac.strategymanager.service.DataClassifyService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,8 +118,20 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
     }
 
     @Override
-    public void deleteSmallClassify(String[] classifyIds) {
-        dataClassifySmallDao.delete(DataClassifySmallEntity.class,classifyIds);
+    public Result deleteSmallClassify(String[] classifyIds) {
+        List<DataClassifySmallEntity> dataClassifySmallEntities = dataClassifySmallDao.findByIdIn(classifyIds);
+        for(DataClassifySmallEntity dataClassifySmallEntity : dataClassifySmallEntities){
+            if(dataClassifySmallEntity.getStrategyEntities().size() > 0){
+                return new Result(dataClassifySmallEntity.getClassifyName()+"该数据分级已被使用,请重新选择!");
+            }
+        }
+        try {
+            dataClassifySmallDao.delete(DataClassifySmallEntity.class,classifyIds);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("删除二级数据分类失败,请稍后再试!");
+        }
+        return new Result("200","删除二级数据分类成功!",null);
     }
 
     @Override
@@ -151,5 +165,29 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
             return new Result("修改二级分类失败!");
         }
         return new Result("200","修改二级分类成功!",null);
+    }
+
+    @Override
+    public Result deleteBigClassify(String[] classifyIds) {
+        for(String bigClassifyId : classifyIds){
+            DataClassifyBigEntity dataClassifyBigEntity = dataClassifyBigDao.find(bigClassifyId);
+            String[] smallClassifyIds = new String[dataClassifyBigEntity.getDataClassifySmallEntities().size()];
+            for(int i = 0; i < dataClassifyBigEntity.getDataClassifySmallEntities().size(); i++){
+                smallClassifyIds[i] = dataClassifyBigEntity.getDataClassifySmallEntities().get(i).getId();
+            }
+            List<DataClassifySmallEntity> dataClassifySmallEntities = dataClassifySmallDao.findByIdIn(smallClassifyIds);
+            for(DataClassifySmallEntity dataClassifySmallEntity : dataClassifySmallEntities){
+                if(dataClassifySmallEntity.getStrategyEntities().size() > 0){
+                    return new Result(dataClassifySmallEntity.getClassifyName()+"该数据分级已被使用,请重新选择!");
+                }
+            }
+        }
+        try {
+            dataClassifyBigDao.delete(DataClassifyBigEntity.class,classifyIds);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("删除一级数据分类失败,请稍后再试!");
+        }
+        return new Result("200","删除一级数据分类成功!",null);
     }
 }

@@ -9,7 +9,6 @@ import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import com.huatusoft.dcac.strategymanager.dao.*;
 import com.huatusoft.dcac.strategymanager.entity.*;
 import com.huatusoft.dcac.strategymanager.service.StrategyService;
-import net.sf.ehcache.config.PersistenceConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -87,39 +86,39 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
     }
 
     @Override
-    public Result addStrategy(String strategyName, String strategyDesc, String dataClassifyName, String dataGradeName, String scanType, String ruleName, String responseType, String maskRuleName) {
-        DataClassifySmallEntity dataClassifySmallEntity = dataClassifySmallDao.findByClassifyName(dataClassifyName);
-        if(dataClassifySmallEntity == null ){
-            return new Result("不存在相应的数据分类!");
-        }
-        DataGradeEntity dataGradeEntity = dataGradeDao.findByGradeName(dataGradeName);
-        if(dataGradeEntity == null ){
-            return new Result("不存在相应的数据分级!");
-        }
-        StrategyRuleEntity strategyRuleEntity = strategyRuleDao.findByRuleName(ruleName);
-        if(strategyRuleEntity == null){
-            return new Result("不存在相应的检测规则!");
-        }
-        StrategyMaskRuleEntity strategyMaskRuleEntity = strategyMaskRuleDao.findByRuleName(maskRuleName);
-        if(strategyMaskRuleEntity == null){
-            return new Result("不存在相应脱敏规则!");
-        }
+    public Result addStrategy(String strategyName, String strategyDesc, String dataClassifyId, String dataGradeId, String scanType, String scanPath, String ruleId, String responseType, String maskRuleId,String matchValue) {
         if(isNameRepeat(strategyName)){
-            return new Result("已存在策略名称");
+            return new Result("已存在策略名称!");
         }
+        DataClassifySmallEntity dataClassifySmallEntity = dataClassifySmallDao.find(dataClassifyId);
+        DataGradeEntity dataGradeEntity = dataGradeDao.find(dataGradeId);
+        StrategyRuleEntity strategyRuleEntity = strategyRuleDao.find(ruleId);
         try {
             StrategyEntity strategyEntity = new StrategyEntity();
+            try {
+                int match_value = Integer.parseInt(matchValue);
+                strategyEntity.setMatchValue(match_value);
+            }catch (NumberFormatException e){
+                e.printStackTrace();
+                return new Result("输入的匹配数必须为数字!");
+            }
             strategyEntity.setStrategyName(strategyName);
             strategyEntity.setStrategyDesc(strategyDesc);
-            strategyEntity.setDataClassifyId(dataClassifySmallEntity.getId());
-            strategyEntity.setDataGradeId(dataGradeEntity.getId());
+            //路径扫描
+            if("2".equals(scanType)){
+                strategyEntity.setScanPath(scanPath);
+            }
+            strategyEntity.setDataClassifySmallEntity(dataClassifySmallEntity);
+            strategyEntity.setDataGradeEntity(dataGradeEntity);
             strategyEntity.setScanTypeCode(scanType);
             List<StrategyRuleEntity> strategyRuleEntities = new ArrayList<StrategyRuleEntity>();
             strategyRuleEntities.add(strategyRuleEntity);
             strategyEntity.setStrategyRuleEntities(strategyRuleEntities);
-            List<StrategyMaskRuleEntity> strategyMaskRuleEntities = new ArrayList<StrategyMaskRuleEntity>();
-            strategyMaskRuleEntities.add(strategyMaskRuleEntity);
-            strategyEntity.setStrategyMaskRuleEntities(strategyMaskRuleEntities);
+            if(null != maskRuleId && !"".equals(maskRuleId)){
+                String[] maskRuleIds = maskRuleId.split(",");
+                List<StrategyMaskRuleEntity> strategyMaskRuleEntities = strategyMaskRuleDao.findByIdIn(maskRuleIds);
+                strategyEntity.setStrategyMaskRuleEntities(strategyMaskRuleEntities);
+            }
             strategyEntity.setResponseTypeCode(responseType);
             strategyDao.add(strategyEntity);
             UserEntity current = userService.getCurrentUser();
@@ -128,7 +127,7 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
             userService.update(current);
         }catch (Exception e){
             e.printStackTrace();
-            return new Result("数据库异常,请稍后再试!");
+            return new Result("新增策略失败,请稍后再试!");
         }
         return new Result("200","新增策略成功!",null);
     }
@@ -146,36 +145,41 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
     }
 
     @Override
-    public Result updateStrategy(String strategyId,String strategyName, String strategyDesc, String dataClassifyName, String dataGradeName, String scanType, String ruleName, String responseType, String maskRuleName) {
-        DataClassifySmallEntity dataClassifySmallEntity = dataClassifySmallDao.findByClassifyName(dataClassifyName);
-        if(dataClassifySmallEntity == null ){
-            return new Result("不存在相应的数据分类!");
-        }
-        DataGradeEntity dataGradeEntity = dataGradeDao.findByGradeName(dataGradeName);
-        if(dataGradeEntity == null ){
-            return new Result("不存在相应的数据分级!");
-        }
-        StrategyRuleEntity strategyRuleEntity = strategyRuleDao.findByRuleName(ruleName);
-        if(strategyRuleEntity == null){
-            return new Result("不存在相应的检测规则!");
-        }
-        StrategyMaskRuleEntity strategyMaskRuleEntity = strategyMaskRuleDao.findByRuleName(maskRuleName);
-        if(strategyMaskRuleEntity == null){
-            return new Result("不存在相应脱敏规则!");
-        }
+    public Result updateStrategy(String strategyId,String strategyName, String strategyDesc, String dataClassifyId, String dataGradeId, String scanType,String scanPath, String ruleId, String responseType, String maskRuleId,String matchValue) {
+        DataClassifySmallEntity dataClassifySmallEntity = dataClassifySmallDao.find(dataClassifyId);
+        DataGradeEntity dataGradeEntity = dataGradeDao.find(dataGradeId);
+        StrategyRuleEntity strategyRuleEntity = strategyRuleDao.find(ruleId);
         try {
             StrategyEntity strategyEntity = strategyDao.find(strategyId);
+            if(isNameRepeat(strategyName) && !strategyName.equals(strategyEntity.getStrategyName())){
+                return new Result("策略名称已存在!");
+            }
+            try {
+                int match_value = Integer.parseInt(matchValue);
+                strategyEntity.setMatchValue(match_value);
+            }catch (NumberFormatException e){
+                e.printStackTrace();
+                return new Result("输入的匹配数必须为数字!");
+            }
             strategyEntity.setStrategyName(strategyName);
             strategyEntity.setStrategyDesc(strategyDesc);
-            strategyEntity.setDataClassifyId(dataClassifySmallEntity.getId());
-            strategyEntity.setDataGradeId(dataGradeEntity.getId());
+            //路径扫描
+            if("2".equals(scanType)){
+                strategyEntity.setScanPath(scanPath);
+            }
+            strategyEntity.setDataClassifySmallEntity(dataClassifySmallEntity);
+            strategyEntity.setDataGradeEntity(dataGradeEntity);
             strategyEntity.setScanTypeCode(scanType);
             List<StrategyRuleEntity> strategyRuleEntities = new ArrayList<StrategyRuleEntity>();
             strategyRuleEntities.add(strategyRuleEntity);
             strategyEntity.setStrategyRuleEntities(strategyRuleEntities);
-            List<StrategyMaskRuleEntity> strategyMaskRuleEntities = new ArrayList<StrategyMaskRuleEntity>();
-            strategyMaskRuleEntities.add(strategyMaskRuleEntity);
-            strategyEntity.setStrategyMaskRuleEntities(strategyMaskRuleEntities);
+            if(null != maskRuleId && !"".equals(maskRuleId)){
+                String[] maskRuleIds = maskRuleId.split(",");
+                List<StrategyMaskRuleEntity> strategyMaskRuleEntities = strategyMaskRuleDao.findByIdIn(maskRuleIds);
+                strategyEntity.setStrategyMaskRuleEntities(strategyMaskRuleEntities);
+            }else {
+                strategyEntity.setStrategyMaskRuleEntities(null);
+            }
             strategyEntity.setResponseTypeCode(responseType);
             strategyDao.update(strategyEntity);
             UserEntity current = userService.getCurrentUser();
@@ -255,8 +259,8 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
                     "<ScreeningMethod>" + strategyEntity.getStrategyRuleEntities().get(0).getStrategyRuleContentEntities().get(0).getRuleTypeCode() + "</ScreeningMethod>\n" +
                     "<Keywords>" + strategyEntity.getStrategyRuleEntities().get(0).getStrategyRuleContentEntities().get(0).getMatchContent() + "</Keywords> \n" +
                     "<ProtectionMethod>" + strategyEntity.getResponseTypeCode() + "</ProtectionMethod>\n" +
-                    "<DataType>" + strategyEntity.getDataClassifyId() + "</DataType>\n" +
-                    "<DataClassification>" + strategyEntity.getDataGradeId() + "</DataClassification>\n" +
+                    "<DataType>" + strategyEntity.getDataClassifySmallEntity().getId() + "</DataType>\n" +
+                    "<DataClassification>" + strategyEntity.getDataGradeEntity().getId() + "</DataClassification>\n" +
                     "</SL>\n");
         }
         return sb;

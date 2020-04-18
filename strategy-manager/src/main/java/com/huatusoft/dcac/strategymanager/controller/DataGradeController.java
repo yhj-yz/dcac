@@ -76,18 +76,12 @@ public class DataGradeController extends BaseController {
      */
     @PostMapping(value = "deleteGrade")
     @ResponseBody
-    public Result deleteGrade(String ids){
-        if(ids == null){
+    public Result deleteGrade(String ids) {
+        if (ids == null) {
             return new Result("请勾选删除的数据分级!");
         }
-        try {
-            String[] gradeIds = ids.split(",");
-            dataGradeService.delete(DataGradeEntity.class,gradeIds);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result("数据库异常,请稍候再试!");
-        }
-        return new Result("200","删除数据分级成功!",null);
+        String[] gradeIds = ids.split(",");
+        return dataGradeService.deleteGrade(gradeIds);
     }
 
     /**

@@ -100,4 +100,11 @@ public interface StrategyRuleService extends BaseService<StrategyRuleEntity, Str
      * @return
      */
     Result updateRule(String ruleId,String ruleName,String ruleDesc,String levelDefault,String ruleScope01,String ruleScope02,String ruleScope03,String scopeValue01,String scopeValue02,String scopeValue03,String scopeValue04,String scopeValue05,String scopeValue06,String scopeValue07,String scopeValue08,String scopeValue09,String levelValue01,String levelValue02,String levelValue03,String containRule,String exceptRule);
+
+    /**
+     * 删除检测规则
+     * @param ids
+     * @return
+     */
+    Result deleteRule(String[] ids);
 }

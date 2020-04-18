@@ -185,7 +185,7 @@
             $("input[name='classifyId']").val($("#list_form :checked[name='ids']").val());
             dsmDialog.open({
                 type: 1,
-                area:['800px','300px'],
+                area:['750px','350px'],
                 title:"新增二级分类",
                 btn:['添加','取消'],
                 content : $("#addSmallClassify"),
@@ -230,7 +230,7 @@
         $("#bigClassifyForm")[0].reset();
         dsmDialog.open({
             type: 1,
-            area:['800px','300px'],
+            area:['750px','350px'],
             title:"新增一级分类",
             btn:['添加','取消'],
             content : $("#addBigClassify"),
@@ -272,7 +272,7 @@
                     for (var index in smallClassify) {
                         text += "<tr>\
 									<td><div class='dsmcheckbox'>\
-									<input type='checkbox' name='classifyIds' id='p_" + smallClassify[index].id + "' value='" + smallClassify[index].id + "'/><label for='p_" + smallClassify[index].id + "'></label></div></td>\
+									<input type='checkbox' name='classifyIds' class='classifyIds' id='p_" + smallClassify[index].id + "' value='" + smallClassify[index].id + "'/><label for='p_" + smallClassify[index].id + "'></label></div></td>\
 									<td><a onclick='updateSmallDetails(\"" + smallClassify[index].id + "\")'>" + smallClassify[index].classifyName + "</a></td>\
 									<td>" + smallClassify[index].createUserAccount + "</td>\
 									<td>" + smallClassify[index].classifyDesc + "</td>\
@@ -285,7 +285,7 @@
         });
         dsmDialog.open({
             type: 1,
-            area:['800px','500px'],
+            area:['750px','350px'],
             btn:false,
             title:"详情",
             content: $('#detail_form')
@@ -385,7 +385,7 @@
 
         dsmDialog.open({
             type: 1,
-            area:['800px','300px'],
+            area:['750px','350px'],
             title:"修改一级分类",
             btn:['修改','取消'],
             content : $("#addBigClassify"),

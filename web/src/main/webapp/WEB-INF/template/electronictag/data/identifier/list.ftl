@@ -2,7 +2,7 @@
 <html lang="ch">
 <head>
     <meta charset="UTF-8">
-    <title>数据标识符</title>
+    <title>隐私检测模板</title>
     [#include "/include/head.ftl"]
     <script type="text/javascript" src="${base}/resources/dsm/js/page.js"></script>
     <style>
@@ -20,7 +20,7 @@
 					}' /]
             [#assign form="search_form"]
             [#include "/include/search.ftl"]
-            <button type="button" class="btn btn-primary add-grade">导入数据标识符</button>
+            <button type="button" class="btn btn-primary add-grade">导入隐私检测模板</button>
             <div id="managerContent" style="margin-top: 10px">
                 <div class="table-view">
                     <form id="list_form" >
@@ -71,12 +71,13 @@
     //刷新分页列表
     function refreshPage(){
         refreshPageList({id :"search_form",
+            asyncSuccess:"function",
             pageSize:10,
             dataFormat :function(_data){
                 var _id = _data.id;
                 var _text = "<tr>\
-								<td><div class='dsmcheckbox'>\
-								<input type='checkbox' onclick='isCheck' class='ids' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
+								<td class='idList'><div class='dsmcheckbox'>\
+								<input type='checkbox' class='ids' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td>"+_data.identifierName+"</td>\
 								<td>"+_data.identifierType+"</td>\
 						 	 </tr>";
@@ -94,13 +95,20 @@
 
     $(function () {
         refreshPage();
+
+        $(this).bind('DOMNodeInserted', function(e) {
+            if (getQueryString("isChoose") == null) {
+                $(".w40").css("display", "none");
+                $(".idList").css("display", "none");
+            }
+        });
     });
 
     $(document).on('click', '.add-grade', function (e) {
         dsmDialog.open({
             type: 1,
             area:['800px','300px'],
-            title:"导入数据标识符",
+            title:"导入隐私检测模板",
             btn:['添加','取消'],
             content : $("#addGrade"),
             yes: function(index,layero) {

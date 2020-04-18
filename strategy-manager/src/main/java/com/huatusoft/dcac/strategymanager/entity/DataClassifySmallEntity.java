@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yhj
@@ -31,4 +33,9 @@ public class DataClassifySmallEntity extends BaseEntity {
     @JoinColumn(name = "BIG_ID")
     @JsonIgnore
     private DataClassifyBigEntity dataClassifyBigEntity;
+
+    /**策略*/
+    @OneToMany(mappedBy = "dataClassifySmallEntity",fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JsonIgnore
+    private List<StrategyEntity> strategyEntities = new ArrayList<StrategyEntity>();
 }

@@ -48,7 +48,7 @@ function refreshPageList(option){
 	var list_formid = $("#" + formid).attr("data-list-formid");
 	var $tab_ = $("#" + list_formid).find("tbody");
 
-	$('.js_checkboxAll').prop("checked", false);
+	$('.js_checkboxAll').prop("checked",false);
 	$.ajax({
 		dataType: "json",
 		data: $("#" + formid).serialize(),

@@ -50,4 +50,11 @@ public interface StrategyMaskRuleService extends BaseService<StrategyMaskRuleEnt
      * @return
      */
     Result updateMaskRule(String ruleId,String ruleName,String ruleDesc,String ruleType,String maskContent,String maskType,String maskEffect);
+
+    /**
+     * 删除脱敏规则
+     * @param ids
+     * @return
+     */
+    Result deleteRule(String[] ids);
 }
