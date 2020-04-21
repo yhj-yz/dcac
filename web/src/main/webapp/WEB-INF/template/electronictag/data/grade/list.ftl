@@ -23,7 +23,6 @@
             [#include "/include/search.ftl"]
             <button type="button" class="btn btn-primary add-grade">新增分级</button>
             <button type="button" class="btn btn-primary delete-grade">删除分级</button>
-            [#--            <button type="button" class="btn btn-primary">修改策略</button>--]
             <div id="managerContent" style="margin-top: 10px">
                 <div class="table-view">
                     <form id="list_form" >
@@ -37,7 +36,7 @@
                                         <label for="checkboxFiveInput"></label>
                                     </div>
                                 </th>
-                                <th>序号</th>
+[#--                                <th>序号</th>--]
                                 <th>名称</th>
                                 <th>创建者</th>
                                 <th>描述</th>
@@ -88,7 +87,6 @@
                 var _text = "<tr>\
 								<td><div class='dsmcheckbox'>\
 								<input type='checkbox' name='ids' class='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
-								<td></td> \
 								<td><a onclick='getDetails(\"" + _id + "\")'>"+_data.gradeName+"</a></td>\
 								<td>"+_data.createUserAccount+"</td>\
 								<td>"+_data.gradeDesc+"\

@@ -81,7 +81,7 @@ public class DataClassifyController extends BaseController {
     @ResponseBody
     public Result addBigClassify(String classifyName,String classifyDesc){
         if(classifyName == null || "".equals(classifyName)){
-            return new Result("一级分类名称为必填字段!");
+            return new Result("分类名称为必填字段!");
         }
         return dataClassifyService.addBigClassify(classifyName,classifyDesc);
     }
@@ -90,7 +90,7 @@ public class DataClassifyController extends BaseController {
     @ResponseBody
     public Result deleteBigClassify(String ids){
         if(ids == null){
-            return  new Result("请勾选一级分类");
+            return  new Result("请勾选分类");
         }
         String[] classifyIds = ids.split(",");
         return dataClassifyService.deleteBigClassify(classifyIds);
@@ -99,8 +99,8 @@ public class DataClassifyController extends BaseController {
     @PostMapping(value = "addSmallClassify")
     @ResponseBody
     public Result addSmallClassify(String classifyId,String classifyName,String classifyDesc){
-        if(classifyId == null || "".equals(classifyId) || classifyName == null || "".equals(classifyName)){
-            return new Result("请输入必要字段!");
+        if(classifyName == null || "".equals(classifyName)){
+            return new Result("请输入子类名称!");
         }
         return dataClassifyService.addSmallClassify(classifyId,classifyName,classifyDesc);
     }
@@ -114,7 +114,7 @@ public class DataClassifyController extends BaseController {
     @ResponseBody
     public Result deleteSmallClassify(String ids){
         if(ids == null){
-            return new Result("请勾选删除的二级分类!");
+            return new Result("请勾选删除的子类!");
         }
         String[] classifyIds = ids.split(",");
         return dataClassifyService.deleteSmallClassify(classifyIds);

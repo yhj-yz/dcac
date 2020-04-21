@@ -49,11 +49,17 @@ public class StrategyEntity extends BaseEntity {
     @Column(name = "MATCH_VALUE",length = 10)
     private int matchValue;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(name = "STRATEGY_RULE",joinColumns = @JoinColumn(name = "strategyId"),inverseJoinColumns = @JoinColumn(name = "ruleId"))
     private List<StrategyRuleEntity> strategyRuleEntities = new ArrayList<StrategyRuleEntity>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(name = "STRATEGY_MASK",joinColumns = @JoinColumn(name = "strategyId"),inverseJoinColumns = @JoinColumn(name = "ruleId"))
     private List<StrategyMaskRuleEntity> strategyMaskRuleEntities = new ArrayList<StrategyMaskRuleEntity>();
+
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "STRATEGY_GROUP",joinColumns = @JoinColumn(name = "strategyId"),inverseJoinColumns = @JoinColumn(name = "groupId"))
+    private List<StrategyGroupEntity> strategyGroupEntities = new ArrayList<StrategyGroupEntity>();
+
 }

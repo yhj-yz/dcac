@@ -72,25 +72,27 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
             strategyRuleEntity.setRuleName(ruleName);
             strategyRuleEntity.setRuleDesc(ruleDesc);
             strategyRuleEntity.setLevelDefaultCode(levelDefault);
-            strategyRuleDao.add(strategyRuleEntity);
-            addDataLevelRule(ruleScope01,scopeValue01,scopeValue02,scopeValue03,levelValue01,strategyRuleEntity,true);
-            addDataLevelRule(ruleScope02,scopeValue04,scopeValue05,scopeValue06,levelValue02,strategyRuleEntity,true);
-            addDataLevelRule(ruleScope03,scopeValue07,scopeValue08,scopeValue09,levelValue03,strategyRuleEntity,true);
+            List<DataLevelRuleEntity> dataLevelEntities = new ArrayList<>();
+            addDataLevelRule(ruleScope01,scopeValue01,scopeValue02,scopeValue03,levelValue01,dataLevelEntities,strategyRuleEntity);
+            addDataLevelRule(ruleScope02,scopeValue04,scopeValue05,scopeValue06,levelValue02,dataLevelEntities,strategyRuleEntity);
+            addDataLevelRule(ruleScope03,scopeValue07,scopeValue08,scopeValue09,levelValue03,dataLevelEntities,strategyRuleEntity);
+            strategyRuleEntity.setDataLevelRuleEntities(dataLevelEntities);
             if(!"".equals(containRule)){
-                addRuleContent(containRule,true,strategyRuleEntity,true);
+                addRuleContent(containRule,true,strategyRuleEntity);
             }
             if(!"".equals(exceptRule)){
-                addRuleContent(exceptRule,false,strategyRuleEntity,true);
+                addRuleContent(exceptRule,false,strategyRuleEntity);
             }
+            strategyRuleDao.add(strategyRuleEntity);
         }catch (Exception e){
             e.printStackTrace();
-            return new Result("数据库错误,请稍后再试");
+            return new Result("添加检测规则失败,请稍后再试!");
         }
         return new Result("200","添加检测规则成功!",null);
     }
 
     @Override
-    public void addDataLevelRule(String ruleScope, String scopeValue01, String scopeValue02, String scopeValue03,String levelValue,StrategyRuleEntity strategyRuleEntity,boolean isAdd) {
+    public void addDataLevelRule(String ruleScope, String scopeValue01, String scopeValue02, String scopeValue03,String levelValue,List<DataLevelRuleEntity> dataLevelRuleEntities,StrategyRuleEntity strategyRuleEntity) {
         DataLevelRuleEntity dataLevelRuleEntity = new DataLevelRuleEntity();
         dataLevelRuleEntity.setRuleScopeCode(ruleScope);
         dataLevelRuleEntity.setLevelCode(levelValue);
@@ -100,16 +102,12 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
         }else {
             dataLevelRuleEntity.setRuleScopeValue(scopeValue03);
         }
-        if(isAdd){
-            dataLevelRuleDao.add(dataLevelRuleEntity);
-        }else {
-            dataLevelRuleDao.update(dataLevelRuleEntity);
-        }
-
+        dataLevelRuleEntities.add(dataLevelRuleEntity);
     }
 
     @Override
-    public void addRuleContent(String rule, boolean isContain,StrategyRuleEntity strategyRuleEntity,boolean isAdd) {
+    public void addRuleContent(String rule, boolean isContain,StrategyRuleEntity strategyRuleEntity) {
+        List<StrategyRuleContentEntity> strategyRuleContentEntities = new ArrayList<StrategyRuleContentEntity>();
         String[] rules = rule.split(";");
         for(String newRule : rules){
             String[] newRules = newRule.split(":");
@@ -127,13 +125,9 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
             }else if("关键字".equals(newRules[0].trim())){
                 strategyRuleContentEntity.setRuleTypeCode("2");
             }
-            if(isAdd){
-                strategyRuleContentDao.add(strategyRuleContentEntity);
-            }else {
-                strategyRuleContentDao.update(strategyRuleContentEntity);
-            }
-
+            strategyRuleContentEntities.add(strategyRuleContentEntity);
         }
+        strategyRuleEntity.setStrategyRuleContentEntities(strategyRuleContentEntities);
     }
 
     @Override
@@ -159,21 +153,22 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
             }
             strategyRuleEntity.setRuleDesc(ruleDesc);
             strategyRuleEntity.setLevelDefaultCode(levelDefault);
-            strategyRuleDao.update(strategyRuleEntity);
-            addDataLevelRule(ruleScope01,scopeValue01,scopeValue02,scopeValue03,levelValue01,strategyRuleEntity,false);
-            addDataLevelRule(ruleScope02,scopeValue04,scopeValue05,scopeValue06,levelValue02,strategyRuleEntity,false);
-            addDataLevelRule(ruleScope03,scopeValue07,scopeValue08,scopeValue09,levelValue03,strategyRuleEntity,false);
+            List<DataLevelRuleEntity> dataLevelRuleEntities = new ArrayList<DataLevelRuleEntity>();
+            addDataLevelRule(ruleScope01,scopeValue01,scopeValue02,scopeValue03,levelValue01,dataLevelRuleEntities,strategyRuleEntity);
+            addDataLevelRule(ruleScope02,scopeValue04,scopeValue05,scopeValue06,levelValue02,dataLevelRuleEntities,strategyRuleEntity);
+            addDataLevelRule(ruleScope03,scopeValue07,scopeValue08,scopeValue09,levelValue03,dataLevelRuleEntities,strategyRuleEntity);
             String[] ids = new String[strategyRuleEntity.getStrategyRuleContentEntities().size()];
             for(int i = 0 ; i < strategyRuleEntity.getStrategyRuleContentEntities().size(); i++){
                 ids[i] = strategyRuleEntity.getStrategyRuleContentEntities().get(i).getId();
             }
             strategyRuleContentDao.delete(StrategyRuleContentEntity.class,ids);
             if(!"".equals(containRule)){
-                addRuleContent(containRule,true,strategyRuleEntity,false);
+                addRuleContent(containRule,true,strategyRuleEntity);
             }
             if(!"".equals(exceptRule)){
-                addRuleContent(exceptRule,false,strategyRuleEntity,false);
+                addRuleContent(exceptRule,false,strategyRuleEntity);
             }
+            strategyRuleDao.update(strategyRuleEntity);
         }catch (Exception e){
             e.printStackTrace();
             return new Result("更新检测规则失败!");

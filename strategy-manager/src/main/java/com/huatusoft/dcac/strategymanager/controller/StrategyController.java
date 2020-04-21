@@ -91,14 +91,8 @@ public class StrategyController extends BaseController{
         if(ids == null){
             return  new Result("请勾选规则");
         }
-        try {
-            String[] strategyIds = ids.split(",");
-            strategyService.delete(StrategyEntity.class,strategyIds);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result("删除策略失败!");
-        }
-        return new Result("200","删除策略成功!",null);
+        String[] strategyIds = ids.split(",");
+        return strategyService.deleteRule(strategyIds);
     }
 
     @GetMapping(value = "/showStrategy")

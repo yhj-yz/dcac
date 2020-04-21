@@ -33,13 +33,13 @@ public class StrategyRuleEntity extends BaseEntity {
     @Column(name = "LEVEL_DEFAULT_CODE",length = 1)
     private String levelDefaultCode;
 
-    @OneToMany(mappedBy = "strategyRuleEntity",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "strategyRuleEntity",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.PERSIST,CascadeType.MERGE})
     private List<DataLevelRuleEntity> dataLevelRuleEntities = new ArrayList<DataLevelRuleEntity>();
 
-    @OneToMany(mappedBy = "strategyRuleEntity",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "strategyRuleEntity",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.PERSIST,CascadeType.MERGE})
     private List<StrategyRuleContentEntity> strategyRuleContentEntities = new ArrayList<StrategyRuleContentEntity>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToMany
     @JoinTable(name = "STRATEGY_RULE",joinColumns = @JoinColumn(name = "ruleId"),inverseJoinColumns = @JoinColumn(name = "strategyId"))
     @JsonIgnore
     private List<StrategyEntity> strategyEntities = new ArrayList<StrategyEntity>();

@@ -86,6 +86,9 @@ public class DataGradeServiceImpl extends BaseServiceImpl<DataGradeEntity, DataG
     public Result updateGrade(String gradeId, String gradeName, String gradeDesc) {
         try {
             DataGradeEntity dataGradeEntity = dataGradeDao.find(gradeId);
+            if(isGradeRepeat(gradeName) && !gradeName.equals(dataGradeEntity.getGradeName())){
+                return new Result("分级名称已存在,请重新输入!");
+            }
             dataGradeEntity.setGradeName(gradeName);
             dataGradeEntity.setGradeDesc(gradeDesc);
             dataGradeDao.update(dataGradeEntity);

@@ -19,7 +19,7 @@
                 	"ruleName":"规则名称",
                 	"ruleType":"规则类型",
                 	"maskType":"脱敏方式",
-                	"maskEffect":"脱敏效果",
+                	"maskEffect":"脱敏后内容",
                 	"createUserAccount":"创建者",
                 	"ruleDesc":"描述"
 					}' /]
@@ -43,8 +43,9 @@
                                 </th>
                                 <th>规则名称</th>
                                 <th>规则类型</th>
+                                <th>待脱敏内容</th>
                                 <th>脱敏方式</th>
-                                <th>脱敏效果</th>
+                                <th>脱敏后内容</th>
                                 <th>创建者</th>
                                 <th>描述</th>
                             </tr>
@@ -144,6 +145,7 @@
 								<input type='checkbox' name='ids' class='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td><a onclick='getDetails(\"" + _id + "\")'>"+_data.ruleName+"</a></td> \
 								<td>"+ ruleTypeName+"</td>\
+								<td>"+ _data.maskContent+"</td>\
 								<td>"+ maskTypeName+"</td>\
 								<td>"+_data.maskEffect+"</td>\
 								<td>"+_data.createUserAccount+"</td>\

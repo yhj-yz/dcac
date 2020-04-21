@@ -62,6 +62,9 @@ public class StrategyMaskRuleServiceImpl extends BaseServiceImpl<StrategyMaskRul
 
     @Override
     public Result addRule(String ruleName, String ruleDesc, String ruleType, String maskContent, String maskType, String maskEffect) {
+        if(isRuleNameRepeat(ruleName)){
+            return new Result("脱敏规则已存在,请重新输入!");
+        }
         try {
             StrategyMaskRuleEntity strategyMaskRuleEntity = new StrategyMaskRuleEntity();
             strategyMaskRuleEntity.setRuleName(ruleName);
@@ -82,6 +85,9 @@ public class StrategyMaskRuleServiceImpl extends BaseServiceImpl<StrategyMaskRul
     public Result updateMaskRule(String ruleId, String ruleName, String ruleDesc, String ruleType, String maskContent, String maskType, String maskEffect) {
         try {
             StrategyMaskRuleEntity strategyMaskRuleEntity = strategyMaskRuleDao.find(ruleId);
+            if(isRuleNameRepeat(ruleName) && !strategyMaskRuleEntity.getRuleName().equals(ruleName)){
+                return new Result("脱敏规则名称已存在,请重新输入!");
+            }
             strategyMaskRuleEntity.setRuleName(ruleName);
             strategyMaskRuleEntity.setRuleDesc(ruleDesc);
             strategyMaskRuleEntity.setRuleTypeCode(ruleType);
@@ -111,5 +117,20 @@ public class StrategyMaskRuleServiceImpl extends BaseServiceImpl<StrategyMaskRul
             return new Result("删除脱敏规则失败,请稍后再试!");
         }
         return new Result("200","删除脱敏规则成功!",null);
+    }
+
+    /**
+     * 判断脱敏规则是否重名
+     * @param ruleName
+     * @return
+     */
+    private boolean isRuleNameRepeat(String ruleName){
+        List<StrategyMaskRuleEntity> strategyMaskRuleEntities = strategyMaskRuleDao.findAll();
+        for(StrategyMaskRuleEntity strategyMaskRuleEntity : strategyMaskRuleEntities){
+            if(strategyMaskRuleEntity.getRuleName().equals(ruleName)){
+                return true;
+            }
+        }
+        return false;
     }
 }

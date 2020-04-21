@@ -64,4 +64,11 @@ public interface StrategyService extends BaseService<StrategyEntity, StrategyDao
      * @return
      */
     Result updateStrategy(String strategyId,String strategyName,String strategyDesc,String dataClassifyId,String dataGradeId,String scanType,String scanPath,String ruleId,String responseType,String maskRuleId,String matchValue);
+
+    /**
+     * 删除策略
+     * @param strategyIds
+     * @return
+     */
+    Result deleteRule(String[] strategyIds);
 }

@@ -193,6 +193,23 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
         return new Result("200","修改策略成功!",null);
     }
 
+    @Override
+    public Result deleteRule(String[] strategyIds) {
+        List<StrategyEntity> strategyEntities = strategyDao.findByIdIn(strategyIds);
+        for(StrategyEntity strategyEntity : strategyEntities){
+            if(strategyEntity.getStrategyGroupEntities().size() > 0){
+                return new Result(strategyEntity.getStrategyName()+"该策略正在被使用,请重新选择!");
+            }
+        }
+        try {
+            delete(StrategyEntity.class,strategyIds);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("删除策略失败,请稍后再试!");
+        }
+        return new Result("删除策略成功!");
+    }
+
     public StringBuffer getStrategyData(String loginName){
         StringBuffer sb = new StringBuffer();
 

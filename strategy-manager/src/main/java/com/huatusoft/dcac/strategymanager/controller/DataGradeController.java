@@ -110,4 +110,5 @@ public class DataGradeController extends BaseController {
     public Result updateGrade(String gradeId,String gradeName,String gradeDesc){
         return dataGradeService.updateGrade(gradeId,gradeName,gradeDesc);
     }
+
 }

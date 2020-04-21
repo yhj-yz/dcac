@@ -62,7 +62,7 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
     @Override
     public Result addBigClassify(String classifyName, String classifyDesc) {
         if(isBigClassifyRepeat(classifyName)){
-            return new Result("一级分类名称已存在,请重新输入!");
+            return new Result("分类名称已存在,请重新输入!");
         }
         try {
             DataClassifyBigEntity dataClassifyBigEntity = new DataClassifyBigEntity();
@@ -73,13 +73,13 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
             e.printStackTrace();
             return new Result("数据库异常,请稍后再试!");
         }
-        return new Result("200","添加一级分类成功!",null);
+        return new Result("200","添加分类成功!",null);
     }
 
     @Override
     public Result addSmallClassify(String classifyId, String classifyName, String classifyDesc) {
         if(isSmallClassifyRepeat(classifyId,classifyName)){
-            return new Result("二级分类名称已存在,请重新输入");
+            return new Result("子类名称已存在,请重新输入");
         }
         try {
             DataClassifyBigEntity bigEntity = dataClassifyBigDao.find(classifyId);
@@ -92,7 +92,7 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
             e.printStackTrace();
             return new Result("数据库异常,请稍后再试!");
         }
-        return new Result("200","添加二级分类成功!",null);
+        return new Result("200","添加子类成功!",null);
     }
 
     @Override
@@ -122,16 +122,16 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
         List<DataClassifySmallEntity> dataClassifySmallEntities = dataClassifySmallDao.findByIdIn(classifyIds);
         for(DataClassifySmallEntity dataClassifySmallEntity : dataClassifySmallEntities){
             if(dataClassifySmallEntity.getStrategyEntities().size() > 0){
-                return new Result(dataClassifySmallEntity.getClassifyName()+"该数据分级已被使用,请重新选择!");
+                return new Result(dataClassifySmallEntity.getClassifyName()+"该数据分类已被使用,请重新选择!");
             }
         }
         try {
             dataClassifySmallDao.delete(DataClassifySmallEntity.class,classifyIds);
         }catch (Exception e){
             e.printStackTrace();
-            return new Result("删除二级数据分类失败,请稍后再试!");
+            return new Result("删除子类失败,请稍后再试!");
         }
-        return new Result("200","删除二级数据分类成功!",null);
+        return new Result("200","删除子类成功!",null);
     }
 
     @Override
@@ -143,28 +143,34 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
     public Result updateBigClassify(String classifyId, String classifyName, String classifyDesc) {
         try {
             DataClassifyBigEntity dataClassifyBigEntity = dataClassifyBigDao.find(classifyId);
+            if(isBigClassifyRepeat(classifyName) && !classifyName.equals(dataClassifyBigEntity.getClassifyName())){
+                return new Result("分类名称已存在,请重新输入!");
+            }
             dataClassifyBigEntity.setClassifyName(classifyName);
             dataClassifyBigEntity.setClassifyDesc(classifyDesc);
             dataClassifyBigDao.update(dataClassifyBigEntity);
         }catch (Exception e) {
             e.printStackTrace();
-            return new Result("修改一级分类失败!");
+            return new Result("修改分类失败!");
         }
-        return new Result("200","修改一级分类成功!",null);
+        return new Result("200","修改分类成功!",null);
     }
 
     @Override
     public Result updateSmallClassify(String classifyId, String classifyName, String classifyDesc) {
         try {
             DataClassifySmallEntity dataClassifySmallEntity = dataClassifySmallDao.find(classifyId);
+            if(isSmallClassifyRepeat(dataClassifySmallEntity.getDataClassifyBigEntity().getId(),classifyName) && !classifyName.equals(dataClassifySmallEntity.getClassifyName())){
+                return new Result("子类名称已存在,请重新输入!");
+            }
             dataClassifySmallEntity.setClassifyName(classifyName);
             dataClassifySmallEntity.setClassifyDesc(classifyDesc);
             dataClassifySmallDao.update(dataClassifySmallEntity);
         }catch (Exception e){
             e.printStackTrace();
-            return new Result("修改二级分类失败!");
+            return new Result("修改子类失败!");
         }
-        return new Result("200","修改二级分类成功!",null);
+        return new Result("200","修改子类成功!",null);
     }
 
     @Override
@@ -178,7 +184,7 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
             List<DataClassifySmallEntity> dataClassifySmallEntities = dataClassifySmallDao.findByIdIn(smallClassifyIds);
             for(DataClassifySmallEntity dataClassifySmallEntity : dataClassifySmallEntities){
                 if(dataClassifySmallEntity.getStrategyEntities().size() > 0){
-                    return new Result(dataClassifySmallEntity.getClassifyName()+"该数据分级已被使用,请重新选择!");
+                    return new Result(dataClassifySmallEntity.getClassifyName()+"该数据分类已被使用,请重新选择!");
                 }
             }
         }
@@ -186,8 +192,8 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
             dataClassifyBigDao.delete(DataClassifyBigEntity.class,classifyIds);
         }catch (Exception e){
             e.printStackTrace();
-            return new Result("删除一级数据分类失败,请稍后再试!");
+            return new Result("删除分类失败,请稍后再试!");
         }
-        return new Result("200","删除一级数据分类成功!",null);
+        return new Result("200","删除分类成功!",null);
     }
 }

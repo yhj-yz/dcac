@@ -45,7 +45,7 @@ public class StrategyMaskRuleEntity extends BaseEntity {
     @Column(name = "RULE_DESC",length = 255)
     private String ruleDesc;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToMany
     @JoinTable(name = "STRATEGY_MASK",joinColumns = @JoinColumn(name = "ruleId"),inverseJoinColumns = @JoinColumn(name = "strategyId"))
     @JsonIgnore
     private List<StrategyEntity> strategyEntities = new ArrayList<StrategyEntity>();

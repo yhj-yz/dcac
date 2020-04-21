@@ -190,6 +190,11 @@
                         </a>
                         <ul id="collapseEight" class="nav subnav collapse">
                             <li>
+                                <a href="${base}/admin/strategy/group/list.do" target="electronicTagIframe" class="auto cur">
+                                    <span>组策略</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="${base}/admin/strategy/list.do" target="electronicTagIframe" class="auto cur">
                                     <span>策略规则配置</span>
                                 </a>

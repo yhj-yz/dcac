@@ -3,9 +3,13 @@ package com.huatusoft.dcac.strategymanager.service;
 import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseService;
 import com.huatusoft.dcac.strategymanager.dao.StrategyRuleDao;
+import com.huatusoft.dcac.strategymanager.entity.DataLevelRuleEntity;
+import com.huatusoft.dcac.strategymanager.entity.StrategyRuleContentEntity;
 import com.huatusoft.dcac.strategymanager.entity.StrategyRuleEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * @author yhj
@@ -58,14 +62,14 @@ public interface StrategyRuleService extends BaseService<StrategyRuleEntity, Str
      * @param levelValue
      * @param strategyRuleEntity
      */
-    void addDataLevelRule(String ruleScope,String scopeValue01,String scopeValue02,String scopeValue03,String levelValue,StrategyRuleEntity strategyRuleEntity,boolean isAdd);
+    void addDataLevelRule(String ruleScope, String scopeValue01, String scopeValue02, String scopeValue03, String levelValue, List<DataLevelRuleEntity> dataLevelRuleEntities,StrategyRuleEntity strategyRuleEntity);
 
     /**
      * 添加规则内容
      * @param rule
      * @param isContain
      */
-    void addRuleContent(String rule, boolean isContain,StrategyRuleEntity strategyRuleEntity,boolean isAdd);
+    void addRuleContent(String rule, boolean isContain,StrategyRuleEntity strategyRuleEntity);
 
     /**
      * 判断规则名称是否重复

@@ -145,10 +145,11 @@
                                             <label for="checkboxFiveInput1"></label>
                                         </div>
                                     </th>
-                                    <th>脱敏规则名称</th>
+                                    <th style="width: 100px">脱敏规则名称</th>
                                     <th>规则类型</th>
+                                    <th>待脱敏内容</th>
                                     <th>脱敏方式</th>
-                                    <th>脱敏效果</th>
+                                    <th>脱敏后内容</th>
                                     <th>描述</th>
                                 </tr>
                                 </thead>
@@ -183,7 +184,7 @@
                 var _id = _data.id;
                 var _text = "<tr>\
 								<td><div class='dsmcheckbox'>\
-								<input type='checkbox' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
+								<input type='checkbox' name='ids' class='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td><a onclick='getDetails(\"" + _id + "\")'>"+_data.strategyName+"</a></td> \
 								<td><div>"+ _data.dataClassifySmallEntity.classifyName +"</td></div>\
 								<td><div>"+ _data.dataGradeEntity.gradeName +"</td></div>\
@@ -216,7 +217,7 @@
         $(".maskRuleId").val(maskRuleId);
         dsmDialog.open({
             type: 1,
-            area:['1000px','600px'],
+            area:['950px','550px'],
             title:"新增策略规则",
             btn:['添加','取消'],
             content : $("#addStrategy"),
@@ -364,6 +365,7 @@
 								        <input type='checkbox' name='maskRuleIds' class='maskRuleIds' id='m_" + strategyMaskRuleEntities[index].id + "' value='" + strategyMaskRuleEntities[index].id + "'/><label for='m_" + strategyMaskRuleEntities[index].id + "'></label></div></td>\
 								        <td>"+strategyMaskRuleEntities[index].ruleName+"</td>\
 								        <td>"+ruleType+"</td>\
+								        <td>"+strategyMaskRuleEntities[index].maskContent+"</td>\
 								        <td>"+maskType+"</td>\
 								        <td>"+strategyMaskRuleEntities[index].maskEffect+"</td>\
 								        <td>"+strategyMaskRuleEntities[index].ruleDesc+"</td>\
@@ -551,20 +553,22 @@
                     }
                     var maskRuleName = $(this).parents("tr").find("td").eq(1).text();
                     var ruleType = $(this).parents("tr").find("td").eq(2).text();
-                    var maskType = $(this).parents("tr").find("td").eq(3).text();
-                    var maskEffect = $(this).parents("tr").find("td").eq(4).text();
-                    var ruleDesc = $(this).parents("tr").find("td").eq(6).text();
+                    var maskContent = $(this).parents("tr").find("td").eq(3).text();
+                    var maskType = $(this).parents("tr").find("td").eq(4).text();
+                    var maskEffect = $(this).parents("tr").find("td").eq(5).text();
+                    var ruleDesc = $(this).parents("tr").find("td").eq(7).text();
                     html += "<tr>\
 								<td><div class='dsmcheckbox' style='margin-left: 10px'>\
 								<input type='checkbox' name='maskRuleIds' class='maskRuleIds' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td>"+maskRuleName+"</td>\
 								<td>"+ruleType+"</td>\
+								<td>"+maskContent+"</td>\
 								<td>"+maskType+"</td>\
 								<td>"+maskEffect+"</td>\
 								<td>"+ruleDesc+"</td>\
 						 	 </tr>";
                 });
-                if(isSelected == true){
+                if(isSelected === true){
                     return false;
                 }
                 $(".maskRuleForm tbody").append(html);
