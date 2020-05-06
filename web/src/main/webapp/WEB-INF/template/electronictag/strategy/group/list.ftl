@@ -39,8 +39,8 @@
 					}' /]
             [#assign form="search_form"]
             [#include "/include/search.ftl"]
-            <button type="button" class="btn btn-primary add-strategy-group">新增策略组</button>
-            <button type="button" class="btn btn-primary delete-strategy-group">删除策略组</button>
+            <button type="button" class="btn btn-primary add-strategy-group">新增组策略</button>
+            <button type="button" class="btn btn-primary delete-strategy-group">删除组策略</button>
             <div id="managerContent" style="margin-top: 10px">
                 <div class="table-view">
                     <form id="list_form" >
@@ -152,7 +152,7 @@
         $("input[type=hidden]").val("");
         dsmDialog.open({
             type: 1,
-            area:['900px','400px'],
+            area:['900px','500px'],
             title:"新增组策略",
             btn:['添加','取消'],
             content : $("#addStrategyGroup"),
@@ -235,14 +235,17 @@
                 $(".groupDesc").val(data.groupDesc);
                 var strategyEntities = data.strategyEntities;
                 var html = "";
+                console.log(strategyEntities.length);
                 for(var index in strategyEntities){
                     var idPriority = strategyEntities[index].id.split(";");
                     var _id = idPriority[0];
-                    var priority = idPriority[1];
+                    var priority = parseInt(idPriority[1]);
                     var priorityHtml = "";
-                    if(priority == 0){
+                    if(priority === 0 && strategyEntities.length === 1){
+                        priorityHtml = "<a priority='"+priority+"'></a>";
+                    }else if(priority === 0 && strategyEntities.length > 1){
                         priorityHtml = "<a class='to_bottom' priority='"+priority+"' onclick='moveDown(this)'></a>";
-                    }else if(priority == strategyEntities.length - 1){
+                    }else if(priority === strategyEntities.length - 1){
                         priorityHtml = "<a class='to_top' priority='"+priority+"' onclick='moveUp(this)'></a>";
                     }else {
                         priorityHtml = "<a class='to_top' priority='"+priority+"' onclick='moveUp(this)'></a><a class='to_bottom' onclick='moveDown(this)'></a>"
@@ -273,7 +276,7 @@
 
         dsmDialog.open({
             type: 1,
-            area:['900px','400px'],
+            area:['900px','500px'],
             title:"修改组策略",
             btn:['修改','取消'],
             content : $("#addStrategyGroup"),

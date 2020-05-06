@@ -1,5 +1,5 @@
 [#assign search_data=searchMap?eval /]
-<div class="dsm-searchbar">
+<div class="dsm-searchbar" style="height: auto">
 	<div class="filter" id="search">
 		[#list search_data?keys as key ]
 		[#if key?ends_with('-checkb')][#-- checkbox查询 --]

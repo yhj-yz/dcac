@@ -620,7 +620,7 @@
 
         dsmDialog.open({
             type: 1,
-            area:['1000px','600px'],
+            area:['900px','450px'],
             title:"修改检测规则",
             btn:['修改','取消'],
             content : $("#addRule"),

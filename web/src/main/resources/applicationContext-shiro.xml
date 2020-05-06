@@ -67,7 +67,6 @@
         <property name="unauthorizedUrl" value="/manager/unauthorized.do"/>
         <property name="filterChainDefinitions">
             <value>
-                /admin/** = anon
                 /DGAPI/** = anon
                 /login.html = anon
                 /authentication/user.do = anon <!--验证用户接口-->
@@ -76,48 +75,48 @@
                 /authentication/login.do = authc <!--登陆接口-->
                 /authentication/main.do = authc
                 /logout.do = logout
-                <!--/admin/ = anon
-                /admin/index.jsp = anon
-                /admin/uptest/list.jhtml = anon
-                /admin/file/uploadflowfiles.jhtml = anon
-                /admin/login.jsp = authc
-                /admin/logout.jsp = logout
-                /admin/common/captcha.jhtml = anon
-                /admin/authorizationManager/nolic.jhtml = anon
-                /admin/authorizationManager/importlic.jhtml = anon
+<!--                /admin/ = anon-->
+<!--                /admin/index.jsp = anon-->
+<!--                /admin/uptest/list.jhtml = anon-->
+<!--                /admin/file/uploadflowfiles.jhtml = anon-->
+<!--                /admin/login.jsp = authc-->
+<!--                /admin/logout.jsp = logout-->
+<!--                /admin/common/captcha.jhtml = anon-->
+<!--                /admin/authorizationManager/nolic.jhtml = anon-->
+<!--                /admin/authorizationManager/importlic.jhtml = anon-->
 
-                /admin/organization_management/.jhtml = perms["admin:org"]
-                /admin/*/set_user_control.jhtml = perms["admin:dept:multi"]
-                /admin/*/set_user_permission.jhtml = perms["admin:dept:multi"]
-                /admin/*/set_user_backup.jhtml = perms["admin:dept:multi"]
-                /admin/user/offline.jhtml = perms["admin:dept:multi"]
+<!--                /admin/organization_management/.jhtml = perms["admin:org"]-->
+<!--                /admin/*/set_user_control.jhtml = perms["admin:dept:multi"]-->
+<!--                /admin/*/set_user_permission.jhtml = perms["admin:dept:multi"]-->
+<!--                /admin/*/set_user_backup.jhtml = perms["admin:dept:multi"]-->
+<!--                /admin/user/offline.jhtml = perms["admin:dept:multi"]-->
 
-                /admin/department/save.jhtml = perms["admin:dept:mono"]
-                /admin/department/update.jhtml = perms["admin:dept:mono"]
-                /admin/department/delete.jhtml = perms["admin:dept:mono"]
-                /admin/user/save.jhtml = perms["admin:dept:mono"]
-                /admin/user/update.jhtml = perms["admin:dept:mono"]
-                /admin/user/delete.jhtml = perms["admin:dept:mono"]
+<!--                /admin/department/save.jhtml = perms["admin:dept:mono"]-->
+<!--                /admin/department/update.jhtml = perms["admin:dept:mono"]-->
+<!--                /admin/department/delete.jhtml = perms["admin:dept:mono"]-->
+<!--                /admin/user/save.jhtml = perms["admin:dept:mono"]-->
+<!--                /admin/user/update.jhtml = perms["admin:dept:mono"]-->
+<!--                /admin/user/delete.jhtml = perms["admin:dept:mono"]-->
 
-                /admin/system_param/** = perms["admin:system:paramset"]
-                /admin/authorizationManager/** = perms["admin:system:authmanager"]
+<!--                /admin/system_param/** = perms["admin:system:paramset"]-->
+<!--                /admin/authorizationManager/** = perms["admin:system:authmanager"]-->
 
-                /admin/security_level/** = perms["admin:security:level"]
-                /admin/permissionset/** = perms["admin:security:permission"]
-                /admin/backupManager/** = perms["admin:security:backup"]
-                /admin/contrManagerController/** = perms["admin:security:program"]
-                /admin/controlledStrategy/** = perms["admin:security:control"]
+<!--                /admin/security_level/** = perms["admin:security:level"]-->
+<!--                /admin/permissionset/** = perms["admin:security:permission"]-->
+<!--                /admin/backupManager/** = perms["admin:security:backup"]-->
+<!--                /admin/contrManagerController/** = perms["admin:security:program"]-->
+<!--                /admin/controlledStrategy/** = perms["admin:security:control"]-->
 
-                /admin/managerLog/** = perms["admin:log:manage"]
-                /admin/fileLog/** = perms["admin:log:file"]
-                /admin/alarm/** = perms["admin:log:alarm"]
+<!--                /admin/managerLog/** = perms["admin:log:manage"]-->
+<!--                /admin/fileLog/** = perms["admin:log:file"]-->
+<!--                /admin/alarm/** = perms["admin:log:alarm"]-->
 
-                /admin/circulation/** = perms["admin:circulation:address"]
-                /admin/circulationManage/** = perms["admin:circulation:manage"]
+<!--                /admin/circulation/** = perms["admin:circulation:address"]-->
+<!--                /admin/circulationManage/** = perms["admin:circulation:manage"]-->
 
-                /admin/dzbq/** = perms["admin:tag"]
-                &lt;!&ndash;/admin/flow/** = perms["admin:flow:approve"]
-                /admin/task/** = perms["admin:flow:approve"] &ndash;&gt;-->
+<!--                /admin/dzbq/** = perms["admin:tag"]-->
+<!--                /admin/flow/** = perms["admin:flow:approve"]-->
+<!--                /admin/task/** = perms["admin:flow:approve"] -->
             </value>
         </property>
         <property name="filters">

@@ -54,6 +54,15 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private StrategyGroupDao strategyGroupDao;
+
+    @Autowired
+    private StrategyGroupRelationDao strategyGroupRelationDao;
+
+    @Autowired
+    private DataIdentifierDao dataIdentifierDao;
+
     @Override
     public Page<StrategyEntity> findAllByPage(Pageable pageable, String strategyName, String strategyDesc,String updateTime) {
         Specification<StrategyEntity> specification = new Specification<StrategyEntity>() {
@@ -121,10 +130,6 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
             }
             strategyEntity.setResponseTypeCode(responseType);
             strategyDao.add(strategyEntity);
-            UserEntity current = userService.getCurrentUser();
-            current.setPolicyFileEdited(true);
-            current.setPolicy(0);
-            userService.update(current);
         }catch (Exception e){
             e.printStackTrace();
             return new Result("新增策略失败,请稍后再试!");
@@ -213,25 +218,25 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
     public StringBuffer getStrategyData(String loginName){
         StringBuffer sb = new StringBuffer();
 
-        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><Config cfg_id=\"1\" date=\"2020.04.09\" product=\"Vamtoo-DCAC\" version=\"V5.0.1000\">");
+        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><Config version=\"V5.0.1000\" product=\"Vamtoo-DCAC\" date=\"2020.04.09\" cfg_id=\"1\">");
 
-        List<StrategyEntity> strategyEntities = null;
+        List<StrategyGroupEntity> strategyGroupEntities = null;
         UserEntity loginUser = null;
         try {
             if (!"".equals(loginName)) {
                 loginUser = userDao.findByAccountEquals(loginName);
                 if(loginUser != null){
-                    strategyEntities = strategyDao.findByCreateUserAccount(loginName);
+                    strategyGroupEntities = strategyGroupDao.findByCreateUserAccount(loginName);
                 }else {
                     return sb;
                 }
             }
-            sb.append(findList(strategyEntities, true) +"</StrategyList>\n" +
-                    "  <User>\n" +
-                    "    <UserID>"+loginUser.getId()+"</UserID>\n" +
-                    "    <UserName>"+loginUser.getAccount()+"</UserName>\n" +
-                    "    <Password>"+loginUser.getPassword()+"</Password>\n" +
-                    "  </User>\n"+
+            sb.append(findList(strategyGroupEntities, true) +"</StrategyList>" +
+                    "<User>" +
+                    "<UserID>"+loginUser.getId()+"</UserID>" +
+                    "<UserName>"+loginUser.getAccount()+"</UserName>" +
+                    "<Password>"+loginUser.getPassword()+"</Password>" +
+                    "</User>"+
                     "</Config>");
         }catch (Exception e){
             e.printStackTrace();
@@ -245,7 +250,7 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
      *
      * @return
      */
-    private StringBuffer findList(List<StrategyEntity> list, boolean hasNode) {
+    private StringBuffer findList(List<StrategyGroupEntity> list, boolean hasNode) {
 
         StringBuffer sb = new StringBuffer();
 
@@ -254,14 +259,17 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
             if (list == null) {
                 return sb;
             }
-            for (StrategyEntity strategyEntity : list) {
-                sb.append(getNodeXml(strategyEntity));
+            List<StrategyGroup> strategyGroups =  strategyGroupRelationDao.findByStrategyGroupEntityOrderByPriorityAsc(list.get(0));
+            for(StrategyGroup strategyGroup : strategyGroups){
+                sb.append(getNodeXml(strategyGroup.getStrategyEntity()));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return sb;
     }
+
     /**
      * 拼接策略子节点
      * @param strategyEntity
@@ -272,13 +280,25 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
         if (strategyEntity == null) {
             return sb;
         } else {
-            sb.append("<SL n=\"" + strategyEntity.getStrategyName() + "\">\n" +
-                    "<ScreeningMethod>" + strategyEntity.getStrategyRuleEntities().get(0).getStrategyRuleContentEntities().get(0).getRuleTypeCode() + "</ScreeningMethod>\n" +
-                    "<Keywords>" + strategyEntity.getStrategyRuleEntities().get(0).getStrategyRuleContentEntities().get(0).getMatchContent() + "</Keywords> \n" +
-                    "<ProtectionMethod>" + strategyEntity.getResponseTypeCode() + "</ProtectionMethod>\n" +
-                    "<DataType>" + strategyEntity.getDataClassifySmallEntity().getId() + "</DataType>\n" +
-                    "<DataClassification>" + strategyEntity.getDataGradeEntity().getId() + "</DataClassification>\n" +
-                    "</SL>\n");
+            sb.append("<StrategyInfo id=\"" + strategyEntity.getId() + "\" description=\"" + strategyEntity.getStrategyDesc() + "\" name=\"" + strategyEntity.getStrategyName() + "\">" +
+                    "<DataType>" + strategyEntity.getDataClassifySmallEntity().getId() + "</DataType>" +
+                    "<DataClassification>" + strategyEntity.getDataGradeEntity().getId() + "</DataClassification>" +
+                    "<HitsThreshold>"+strategyEntity.getMatchValue()+"</HitsThreshold>"+
+                    "<DetectionRules id=\"" + strategyEntity.getStrategyRuleEntities().get(0).getId() + "\" description=\"" + strategyEntity.getStrategyRuleEntities().get(0).getRuleDesc() + "\" name=\"" + strategyEntity.getStrategyRuleEntities().get(0).getRuleName() + "\">" +
+                    "<MatchingRules>");
+            for (StrategyRuleContentEntity strategyRuleContentEntity : strategyEntity.getStrategyRuleEntities().get(0).getStrategyRuleContentEntities()) {
+                sb.append(getStrategyRule(strategyRuleContentEntity));
+            }
+            sb.append("</MatchingRules>" +
+                    "</DetectionRules>" +
+                    "<ResponseRules type=\""+strategyEntity.getResponseTypeCode()+"\">");
+            if("1".equals(strategyEntity.getResponseTypeCode())){
+                for(StrategyMaskRuleEntity strategyMaskRuleEntity : strategyEntity.getStrategyMaskRuleEntities()){
+                    sb.append(getMaskRule(strategyMaskRuleEntity));
+                }
+            }
+            sb.append("</ResponseRules>"+
+                    "</StrategyInfo>");
         }
         return sb;
     }
@@ -291,5 +311,30 @@ public class StrategyServiceImpl extends BaseServiceImpl<StrategyEntity, Strateg
             }
         }
         return false;
+    }
+
+    private StringBuffer getStrategyRule(StrategyRuleContentEntity strategyRuleContentEntity){
+        StringBuffer sb = new StringBuffer();
+        if(strategyRuleContentEntity == null){
+            return sb;
+        }else {
+            sb.append("<MR id=\""+strategyRuleContentEntity.getId()+"\" info=\""+strategyRuleContentEntity.getRuleContent()+"\" type=\""+strategyRuleContentEntity.getRuleTypeCode()+"\"/>");
+        }
+        return sb;
+    }
+
+    private StringBuffer getMaskRule(StrategyMaskRuleEntity strategyMaskRuleEntity){
+        StringBuffer sb = new StringBuffer();
+        if(strategyMaskRuleEntity == null){
+            return sb;
+        }else {
+            if("0".equals(strategyMaskRuleEntity.getRuleTypeCode())){
+                DataIdentifierEntity dataIdentifierEntity = dataIdentifierDao.findByIdentifierName(strategyMaskRuleEntity.getMaskContent());
+                sb.append("<DesensitizationInfo type=\""+strategyMaskRuleEntity.getRuleTypeCode()+"\" replace_after=\""+strategyMaskRuleEntity.getMaskEffect()+"\" replace_before=\""+dataIdentifierEntity.getIdentifierRule()+"\"/>");
+            }else {
+                sb.append("<DesensitizationInfo type=\""+strategyMaskRuleEntity.getRuleTypeCode()+"\" replace_after=\""+strategyMaskRuleEntity.getMaskEffect()+"\" replace_before=\""+strategyMaskRuleEntity.getMaskContent()+"\"/>");
+            }
+        }
+        return sb;
     }
 }

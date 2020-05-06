@@ -2,6 +2,9 @@ package com.huatusoft.dcac.strategymanager.service.impl;
 
 import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseServiceImpl;
+import com.huatusoft.dcac.organizationalstrucure.dao.UserDao;
+import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
+import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import com.huatusoft.dcac.strategymanager.dao.DataClassifyBigDao;
 import com.huatusoft.dcac.strategymanager.dao.DataClassifySmallDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyDao;
@@ -34,6 +37,9 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
 
     @Autowired
     private DataClassifySmallDao dataClassifySmallDao;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public Page<DataClassifyBigEntity> findAllByPage(Pageable pageable, String bigClassifyName, String smallClassifyName, String createUserAccount, String classifyDesc) {
@@ -166,6 +172,10 @@ public class DataClassifyServiceImpl extends BaseServiceImpl<DataClassifyBigEnti
             dataClassifySmallEntity.setClassifyName(classifyName);
             dataClassifySmallEntity.setClassifyDesc(classifyDesc);
             dataClassifySmallDao.update(dataClassifySmallEntity);
+            UserEntity current = userService.getCurrentUser();
+            current.setPolicyFileEdited(true);
+            current.setPolicy(0);
+            userService.update(current);
         }catch (Exception e){
             e.printStackTrace();
             return new Result("修改子类失败!");

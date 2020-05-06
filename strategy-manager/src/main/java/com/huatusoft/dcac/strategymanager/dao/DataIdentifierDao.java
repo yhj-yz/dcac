@@ -9,4 +9,11 @@ import com.huatusoft.dcac.strategymanager.entity.DataIdentifierEntity;
  */
 public interface DataIdentifierDao extends BaseDao<DataIdentifierEntity,String>{
 
+    /**
+     * 根据数据标识符名查询数据标识符信息
+     * @param identifierName
+     * @return
+     */
+    DataIdentifierEntity findByIdentifierName(String identifierName);
+
 }

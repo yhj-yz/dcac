@@ -39,12 +39,26 @@ public class DataClassifyController extends BaseController {
         return "/data/classify/list.ftl";
     }
 
+    /**
+     * 分页查询
+     * @param pageSize
+     * @param pageNumber
+     * @param bigClassifyName
+     * @param smallClassifyName
+     * @param createUserAccount
+     * @param classifyDesc
+     * @return
+     */
     @GetMapping(value = "/search")
     @ResponseBody
     public PageVo<DataClassifyBigEntity> search(Integer pageSize, Integer pageNumber, String bigClassifyName, String smallClassifyName, String createUserAccount, String classifyDesc){
         Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
         Page<DataClassifyBigEntity> page = dataClassifyService.findAllByPage(pageable,bigClassifyName,smallClassifyName,createUserAccount,classifyDesc);
-        return new PageVo<DataClassifyBigEntity>(page.getContent(),page.getTotalElements(),new PageableVo(page.getNumber()+1,page.getSize()));
+        long total = page.getTotalElements();
+        for(DataClassifyBigEntity dataClassifyBigEntity : page.getContent()){
+            total += dataClassifyBigEntity.getDataClassifySmallEntities().size();
+        }
+        return new PageVo<DataClassifyBigEntity>(page.getContent(),total,new PageableVo(page.getNumber()+1,page.getSize()));
     }
 
     /**

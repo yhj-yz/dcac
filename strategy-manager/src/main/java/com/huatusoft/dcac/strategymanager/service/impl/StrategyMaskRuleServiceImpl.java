@@ -2,13 +2,19 @@ package com.huatusoft.dcac.strategymanager.service.impl;
 
 import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseServiceImpl;
+import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
+import com.huatusoft.dcac.organizationalstrucure.service.UserService;
+import com.huatusoft.dcac.strategymanager.dao.DataIdentifierDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyMaskRuleDao;
+import com.huatusoft.dcac.strategymanager.entity.DataIdentifierEntity;
 import com.huatusoft.dcac.strategymanager.entity.StrategyMaskRuleEntity;
 import com.huatusoft.dcac.strategymanager.entity.StrategyRuleEntity;
 import com.huatusoft.dcac.strategymanager.service.StrategyMaskRuleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.QueryAnnotation;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -29,6 +35,12 @@ public class StrategyMaskRuleServiceImpl extends BaseServiceImpl<StrategyMaskRul
 
     @Autowired
     private StrategyMaskRuleDao strategyMaskRuleDao;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private DataIdentifierDao dataIdentifierDao;
 
     @Override
     public Page<StrategyMaskRuleEntity> findAllByPage(Pageable pageable, String ruleName, String ruleType, String maskType, String maskEffect, String createUserAccount, String ruleDesc) {
@@ -95,6 +107,10 @@ public class StrategyMaskRuleServiceImpl extends BaseServiceImpl<StrategyMaskRul
             strategyMaskRuleEntity.setMaskTypeCode(maskType);
             strategyMaskRuleEntity.setMaskEffect(maskEffect);
             strategyMaskRuleDao.update(strategyMaskRuleEntity);
+            UserEntity current = userService.getCurrentUser();
+            current.setPolicyFileEdited(true);
+            current.setPolicy(0);
+            userService.update(current);
         }catch (Exception e){
             e.printStackTrace();
             return new Result("修改脱敏规则失败!");

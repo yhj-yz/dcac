@@ -115,7 +115,7 @@
                 var _id = _data.id;
                 _text += "<tr>\
 								<td><div class='dsmcheckbox'>\
-								<input type='checkbox' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
+								<input type='checkbox' name='ids' class='classifyIds' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td><a onclick='getBigDetails(\"" + _id + "\")'>" + _data.classifyName + "</a></td>\
 								<td></td>\
 								<td>" + _data.createUserAccount + "</td>\
@@ -124,7 +124,7 @@
                 for(var index in _data.dataClassifySmallEntities){
                     _text +="<tr>\
 								<td><div class='dsmcheckbox'>\
-								<input type='checkbox' name='ids' id='m_" + _data.dataClassifySmallEntities[index].id + "' value='" + _data.dataClassifySmallEntities[index].id + "'/><label for='m_" + _data.dataClassifySmallEntities[index].id + "'></label></div></td>\
+								<input type='checkbox' name='ids'  class='classifyIds' id='m_"+ _data.dataClassifySmallEntities[index].id + "' value='" + _data.dataClassifySmallEntities[index].id + "'/><label for='m_" + _data.dataClassifySmallEntities[index].id + "'></label></div></td>\
 								<td><a onclick='updateSmallDetails(\"" + _data.dataClassifySmallEntities[index].id + "\")'>" + _data.dataClassifySmallEntities[index].classifyName + "</a></td>\
 								<td>" +_data.classifyName+"</td>\
 								<td>" + _data.dataClassifySmallEntities[index].createUserAccount + "</td>\

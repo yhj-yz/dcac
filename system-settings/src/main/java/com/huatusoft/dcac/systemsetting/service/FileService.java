@@ -19,7 +19,7 @@ public interface FileService{
 
     /***
      * 根据客户端上传md5值获取xml
-     * @param md5
+     * @param loginName
      * @return
      */
     File GetXMLFileByMd5(String loginName, HttpServletRequest request);

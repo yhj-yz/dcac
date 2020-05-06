@@ -17,8 +17,8 @@ public interface DataClassifyService extends BaseService<DataClassifyBigEntity, 
     /**
      * 分页查询
      * @param pageable
-     * @param bigDataClassifyName
-     * @param smallDataClassifyName
+     * @param bigClassifyName
+     * @param smallClassifyName
      * @param createUserAccount
      * @param classifyDesc
      * @return

@@ -16,6 +16,12 @@ import com.huatusoft.dcac.common.util.ExceptionUtils;
 import com.huatusoft.dcac.common.util.XmlUtils;
 import com.huatusoft.dcac.common.xml.XmlDataReaderHelper;
 import com.huatusoft.dcac.organizationalstrucure.service.UserService;
+import com.huatusoft.dcac.strategymanager.dao.DataClassifySmallDao;
+import com.huatusoft.dcac.strategymanager.dao.DataGradeDao;
+import com.huatusoft.dcac.strategymanager.dao.StrategyDao;
+import com.huatusoft.dcac.strategymanager.entity.DataClassifySmallEntity;
+import com.huatusoft.dcac.strategymanager.entity.DataGradeEntity;
+import com.huatusoft.dcac.strategymanager.entity.StrategyEntity;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -52,45 +58,97 @@ public class FileLogServiceImpl extends BaseServiceImpl<FileLogEntity, FileLogDa
     @Autowired
     private FileLogDao fileLogDao;
 
+    @Autowired
+    private DataClassifySmallDao dataClassifySmallDao;
+
+    @Autowired
+    private DataGradeDao dataGradeDao;
+
+    @Autowired
+    private StrategyDao strategyDao;
+
     @Override
-    public Page<FileLogEntity> findAll(Pageable pageable, String userAccount, String userName, String ip, String operationType, String deviceName, String docName, String operateTime) {
+    public Page<FileLogEntity> findAll(Pageable pageable, String fileName,String fileSize,String fileMD5,String classifyName,String gradeName,String time,String userAccount,String department,String ipAddress,String equipName,String filePath,String responseType,String strategyName) {
         Specification<FileLogEntity> specification = new Specification<FileLogEntity>() {
             @Override
             public Predicate toPredicate(Root<FileLogEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<Predicate>();
-                if (StringUtils.isNotBlank(userAccount)) {
-                    predicates.add(criteriaBuilder.like(root.get("userAccount").as(String.class), "%" + userAccount + "%"));
+                if (StringUtils.isNotBlank(fileName)) {
+                    predicates.add(criteriaBuilder.like(root.get("fileName").as(String.class), "%" + fileName + "%"));
                 }
-                if (StringUtils.isNotBlank(userName)) {
-                    predicates.add(criteriaBuilder.like(root.get("userName").as(String.class), "%" + userName + "%"));
+                if (StringUtils.isNotBlank(fileSize)) {
+                    predicates.add(criteriaBuilder.equal(root.get("fileSize").as(String.class),fileSize.substring(0,fileSize.length())));
                 }
-                if (StringUtils.isNotBlank(ip)) {
-                    predicates.add(criteriaBuilder.like(root.get("ip").as(String.class), "%" + ip + "%"));
+                if (StringUtils.isNotBlank(fileMD5)) {
+                    predicates.add(criteriaBuilder.like(root.get("fileMD5").as(String.class), "%" + fileMD5 + "%"));
                 }
-                if (StringUtils.isNotBlank(operationType)) {
-                    predicates.add(criteriaBuilder.like(root.get("operationType").as(String.class), "%" + operationType + "%"));
+                if (StringUtils.isNotBlank(classifyName)) {
+                    DataClassifySmallEntity dataClassifySmallEntity = dataClassifySmallDao.findByClassifyName(classifyName);
+                    if(dataClassifySmallEntity != null){
+                        predicates.add(criteriaBuilder.like(root.get("dataType").as(String.class), "%" + dataClassifySmallEntity.getId() + "%"));
+                    }else {
+                        predicates.add(criteriaBuilder.like(root.get("dataType").as(String.class), "%中文%"));
+                    }
                 }
-                if (StringUtils.isNotBlank(deviceName)) {
-                    predicates.add(criteriaBuilder.like(root.get("deviceName").as(String.class), "%" + deviceName + "%"));
+                if (StringUtils.isNotBlank(gradeName)) {
+                    DataGradeEntity dataGradeEntity = dataGradeDao.findByGradeName(gradeName);
+                    if(dataGradeEntity!= null){
+                        predicates.add(criteriaBuilder.like(root.get("dataClassification").as(String.class), "%" + dataGradeEntity.getId() + "%"));
+                    }else {
+                        predicates.add(criteriaBuilder.like(root.get("dataClassification").as(String.class), "%中文%"));
+                    }
                 }
-                if (StringUtils.isNotBlank(docName)) {
-                    predicates.add(criteriaBuilder.like(root.get("docName").as(String.class), "%" + docName + "%"));
-                }
-                if (StringUtils.isNotBlank(operateTime)) {
-                    String[] operationTime = operateTime.split("_");
+                if (StringUtils.isNotBlank(time)) {
+                    String[] times = time.split("_");
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     Date startTime = null;
                     Date endTime = null;
                     try {
-                        startTime = format.parse(operationTime[0]);
-                        endTime = format.parse(operationTime[1]);
+                        startTime = format.parse(times[0]);
+                        endTime = format.parse(times[1]);
                     }catch (Exception e){
-                        LOGGER.info("日期转换错误");
                         e.printStackTrace();
+                        LOGGER.error("日期转换错误!");
                     }
-                    predicates.add(criteriaBuilder.between(root.get("operateTime"), startTime, endTime));
+                    predicates.add(criteriaBuilder.between(root.get("time").as(java.sql.Date.class),startTime,endTime));
                 }
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                if (StringUtils.isNotBlank(userAccount)) {
+                    predicates.add(criteriaBuilder.like(root.get("userName").as(String.class), "%" + userAccount + "%"));
+                }
+                if (StringUtils.isNotBlank(department)) {
+                    predicates.add(criteriaBuilder.like(root.get("department").as(String.class), "%" + department + "%"));
+                }
+                if (StringUtils.isNotBlank(equipName)) {
+                    predicates.add(criteriaBuilder.like(root.get("computerName").as(String.class), "%" + equipName + "%"));
+                }
+                if (StringUtils.isNotBlank(ipAddress)) {
+                    predicates.add(criteriaBuilder.like(root.get("ip").as(String.class), "%" + ipAddress + "%"));
+                }
+                if (StringUtils.isNotBlank(filePath)) {
+                    predicates.add(criteriaBuilder.like(root.get("fileName").as(String.class), "%" + filePath + "%"));
+                }
+                if (StringUtils.isNotBlank(responseType)) {
+                    String responseTypeCode = "中文";
+                    if("发现审计".equals(responseType)){
+                        responseTypeCode = "0";
+                    }else if("内容脱敏".equals(responseType)){
+                        responseTypeCode = "1";
+                    }else if("文件加密".equals(responseType)){
+                        responseTypeCode = "2";
+                    }
+                    predicates.add(criteriaBuilder.like(root.get("fileOper").as(String.class), "%" + responseTypeCode + "%"));
+                }
+                if (StringUtils.isNotBlank(strategyName)) {
+                    StrategyEntity strategyEntity = strategyDao.findByStrategyName(strategyName);
+                    if(strategyEntity != null){
+                        predicates.add(criteriaBuilder.like(root.get("strategyId").as(String.class), "%" + strategyEntity.getId() + "%"));
+                    }else {
+                        predicates.add(criteriaBuilder.like(root.get("strategyId").as(String.class), "%中文%"));
+                    }
+                }
+                criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
+                criteriaQuery.orderBy(criteriaBuilder.desc(root.get("time").as(String.class)));
+                return criteriaQuery.getRestriction();
             }
         };
         return findAllPageByCondition(specification, pageable);
@@ -143,17 +201,9 @@ public class FileLogServiceImpl extends BaseServiceImpl<FileLogEntity, FileLogDa
 
                 FileLogEntity fileLog = new FileLogEntity();
                 FileOperInfo paramEntityObj=paramEntity;
-                fileLog.setFileId(paramEntityObj.getFileId());
                 fileLog.setIp(paramEntityObj.getFileIp());
-                fileLog.setDeviceName(paramEntityObj.getFileComputer());
-                fileLog.setClientID(paramEntityObj.getFileClientId());
-                fileLog.setFileTime(paramEntityObj.getFileTime());
                 fileLog.setUserName(paramEntityObj.getFileUserName());
-                fileLog.setFileUser(paramEntityObj.getFileUserAccount());
                 fileLog.setUserAccount(paramEntityObj.getFileUserAccount());
-                fileLog.setDocName(paramEntityObj.getOperDes());
-                FileLogEntity.OperationType oper= FileLogEntity.OperationType.valueOf(paramEntityObj.getFileOper());
-                fileLog.setOperationType(oper);
                 fileLog.setGuid(UUID.randomUUID().toString());
                 fileLog.setOperateTime(DateUtils.parseDate(paramEntity.getFileTime()));
                 fileLogDao.add(fileLog);

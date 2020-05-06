@@ -5,6 +5,8 @@ import com.huatusoft.dcac.strategymanager.entity.StrategyEntity;
 import com.huatusoft.dcac.strategymanager.entity.StrategyGroup;
 import com.huatusoft.dcac.strategymanager.entity.StrategyGroupEntity;
 
+import java.util.List;
+
 /**
  * @author yhj
  * @date 2020-4-20
@@ -17,4 +19,11 @@ public interface StrategyGroupRelationDao extends BaseDao<StrategyGroup,String> 
      * @return
      */
     StrategyGroup findByStrategyGroupEntityAndStrategyEntity(StrategyGroupEntity strategyGroupEntity, StrategyEntity strategyEntity);
+
+    /**
+     * 根据策略组以及优先级正序查找策略关联信息
+     * @param strategyGroupEntity
+     * @return
+     */
+    List<StrategyGroup> findByStrategyGroupEntityOrderByPriorityAsc(StrategyGroupEntity strategyGroupEntity);
 }

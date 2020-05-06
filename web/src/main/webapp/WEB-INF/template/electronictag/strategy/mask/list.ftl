@@ -253,7 +253,7 @@
                 btn:['确认','取消'],
                 content: "${base}/admin/data/identifier/list.do?isChoose=1",
                 yes: function(index,layero) {
-                    $(".maskContent").val($("#layui-layer-iframe2").contents().find(".ids:checked").parent().parent().parent().find("td").eq(1).text());
+                    $(".maskContent").val($("#layui-layer-iframe"+index).contents().find(".ids:checked").parent().parent().parent().find("td").eq(1).text());
                     dsmDialog.close(index);
                 }
             });

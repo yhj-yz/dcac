@@ -28,4 +28,12 @@ public class DataIdentifierEntity extends BaseEntity{
     /**标识符类别*/
     @Column(name = "IDENTIFIER_TYPE",length = 100)
     private String identifierType;
+
+    /**标识符描述*/
+    @Column(name = "IDENTIFIER_DESC",length = 255)
+    private String identifierDesc;
+
+    /**标识符检测规则*/
+    @Column(name = "IDENTIFIER_RULE",length = 512)
+    private String identifierRule;
 }

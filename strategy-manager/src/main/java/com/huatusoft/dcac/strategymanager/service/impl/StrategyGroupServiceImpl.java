@@ -2,6 +2,8 @@ package com.huatusoft.dcac.strategymanager.service.impl;
 
 import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseServiceImpl;
+import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
+import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import com.huatusoft.dcac.strategymanager.dao.StrategyDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyGroupDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyGroupRelationDao;
@@ -39,6 +41,9 @@ public class StrategyGroupServiceImpl extends BaseServiceImpl<StrategyGroupEntit
     @Autowired
     private StrategyGroupRelationDao strategyGroupRelationDao;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public Page<StrategyGroupEntity> findAllByPage(Pageable pageable, String groupName, String groupDesc, String createUserAccount) {
         Specification<StrategyGroupEntity> specification = new Specification<StrategyGroupEntity>() {
@@ -62,6 +67,10 @@ public class StrategyGroupServiceImpl extends BaseServiceImpl<StrategyGroupEntit
 
     @Override
     public Result addStrategyGroup(String groupName, String groupDesc, String strategyId) {
+        UserEntity current = userService.getCurrentUser();
+        if(isUserCreated(current.getAccount())){
+            return new Result("当前用户已创建过组策略,请勿在创建!");
+        }
         if(isGroupNameRepeat(groupName)){
             return new Result("组策略名称重复,请重新输入!");
         }
@@ -87,6 +96,9 @@ public class StrategyGroupServiceImpl extends BaseServiceImpl<StrategyGroupEntit
                 strategyGroup.setStrategyGroupEntity(strategyGroupEntity);
                 strategyGroup.setPriority(priority);
                 strategyGroupRelationDao.add(strategyGroup);
+                current.setPolicyFileEdited(true);
+                current.setPolicy(0);
+                userService.update(current);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -133,6 +145,10 @@ public class StrategyGroupServiceImpl extends BaseServiceImpl<StrategyGroupEntit
             strategyGroup.setPriority(priority);
             strategyGroupRelationDao.add(strategyGroup);
         }
+        UserEntity current = userService.getCurrentUser();
+        current.setPolicyFileEdited(true);
+        current.setPolicy(0);
+        userService.update(current);
         return new Result("200","修改组策略成功!",null);
     }
 
@@ -147,6 +163,18 @@ public class StrategyGroupServiceImpl extends BaseServiceImpl<StrategyGroupEntit
             if(strategyGroupEntity.getGroupName().equals(groupName)){
                 return true;
             }
+        }
+        return false;
+    }
+
+    /**
+     * 判断用户是否创建过策略组
+     * @param userAccount
+     * @return
+     */
+    private boolean isUserCreated(String userAccount){
+        if(strategyGroupDao.findByCreateUserAccount(userAccount).size() >= 1){
+            return true;
         }
         return false;
     }

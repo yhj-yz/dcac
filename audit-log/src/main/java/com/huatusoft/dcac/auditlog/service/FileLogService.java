@@ -16,19 +16,26 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface FileLogService extends BaseService<FileLogEntity, FileLogDao>{
+
     /**
      * 分页查询
      * @param pageable
+     * @param fileName
+     * @param fileSize
+     * @param fileMD5
+     * @param classifyName
+     * @param gradeName
+     * @param time
      * @param userAccount
-     * @param userName
-     * @param ip
-     * @param operationType
-     * @param deviceName
-     * @param docName
-     * @param operateTime
+     * @param department
+     * @param ipAddress
+     * @param equipName
+     * @param filePath
+     * @param responseType
+     * @param strategyName
      * @return
      */
-    Page<FileLogEntity> findAll(Pageable pageable, String userAccount, String userName, String ip, String operationType, String deviceName, String docName, String operateTime);
+    Page<FileLogEntity> findAll(Pageable pageable, String fileName,String fileSize,String fileMD5,String classifyName,String gradeName,String time,String userAccount,String department,String ipAddress,String equipName,String filePath,String responseType,String strategyName);
 
     /**
      * 检验格式

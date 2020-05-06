@@ -65,7 +65,7 @@ public class FileServiceImpl implements FileService,ServletContextAware {
 
     @Override
     public File GetXMLFileByMd5(String loginName, HttpServletRequest request) {
-        String xmlPath = System.getProperty("user.dir") +"\\"+ loginName + ".xml";
+        String xmlPath =  this.getClass().getClassLoader().getResource("/").getPath() + "\\" + loginName + ".xml";
         File loginNameXml = GetXmlByLoginName(loginName, xmlPath);
 
         if (loginNameXml != null) {
@@ -102,7 +102,7 @@ public class FileServiceImpl implements FileService,ServletContextAware {
      */
     private File GetXMLFileByDataBase(String path, String loginName, HttpServletRequest request) {
         String fileName = java.util.UUID.randomUUID() + ".xml";
-        String xmlPath = System.getProperty("user.dir") +"\\strategy-manager\\" + fileName;
+        String xmlPath = this.getClass().getClassLoader().getResource("/").getPath() +"\\strategy-manager\\" + fileName;
         if (createXml(xmlPath, loginName)) {
             FileUtils.copyFileCover(xmlPath, path, true);
             File xmlFile = new File(path);

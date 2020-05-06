@@ -24,4 +24,11 @@ public interface StrategyDao extends BaseDao<StrategyEntity,String> {
      * @return
      */
     List<StrategyEntity> findByIdIn(String[] ids);
+
+    /**
+     * 根据策略名称查询策略信息
+     * @param strategyName
+     * @return
+     */
+    StrategyEntity findByStrategyName(String strategyName);
 }

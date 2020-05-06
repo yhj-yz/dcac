@@ -2,11 +2,28 @@
 <html lang="ch">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
     <title>隐私检测模板</title>
     [#include "/include/head.ftl"]
     <script type="text/javascript" src="${base}/resources/dsm/js/page.js"></script>
     <style>
         .highlight {background-color: yellow}
+
+        .table1 tbody {
+            display:block;
+            height:412px;
+            overflow-y:scroll;
+        }
+
+        .table1 thead,.table1 tbody tr {
+            display:table;
+            width:100%;
+            table-layout:fixed;
+        }
+
+        .table1 thead {
+            width: calc( 100% - 1em )
+        }
     </style>
     <script type="text/javascript" src="${base}/resources/dsm/js/highlight.js"></script>
 </head>
@@ -20,11 +37,11 @@
 					}' /]
             [#assign form="search_form"]
             [#include "/include/search.ftl"]
-            <button type="button" class="btn btn-primary add-grade">导入隐私检测模板</button>
+            <button type="button" class="btn btn-primary add-Identifier">导入隐私检测模板</button>
             <div id="managerContent" style="margin-top: 10px">
                 <div class="table-view">
                     <form id="list_form" >
-                        <table id="datalist" class="table" cellspacing="0" width="100%">
+                        <table id="datalist" class="table table1" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th class="w40">
@@ -36,6 +53,8 @@
                                 </th>
                                 <th>名称</th>
                                 <th>类别</th>
+                                <th>描述</th>
+                                <th>检测规则</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -43,7 +62,6 @@
                         </table>
                     </form>
                     <form id="search_form" action="search.do" data-func-name="refreshPage();" data-list-formid="datalist">
-[#--                        <input type="hidden" name="strategyName">--]
                     </form>
                 </div>
             </div>
@@ -51,15 +69,15 @@
     </div>
 </div>
 
-<div id="addGrade" style="display:none;">
+<div id="addIdentifier" style="display:none;">
     <div class="dsmForms">
-        <form id="gradeForm">
+        <form id="identifierForm" enctype="multipart/form-data" method="post">
             <div class="dsm-inline">
                 <label class="dsm-form-label">选择文件：</label>
                 <div class="dsm-input-block">
-                    <input id="fileNameShow" type="text"  autocomplete="off" placeholder=""  disabled="true" class="dsm-input w268 f-l m-r-10 " >
+                    <input id="fileNameShow" type="text"  autocomplete="off"  disabled="true" class="dsm-input w268 f-l m-r-10 " >
                     <div class="dsm-upload-button f-l m-r-f10">
-                        <input type="file" name="file" class="dsm-upload-file js_file" data-fileid="fileInfo" accept=".xml">
+                        <input type="file" name="file" class="dsm-upload-file js_file" data-fileid="fileInfo" accept=".csv">
                         <span class="fbtname">浏览</span>
                     </div>
                 </div>
@@ -80,6 +98,8 @@
 								<input type='checkbox' class='ids' name='ids' id='m_" + _id + "' value='" + _id + "'/><label for='m_" + _id + "'></label></div></td>\
 								<td>"+_data.identifierName+"</td>\
 								<td>"+_data.identifierType+"</td>\
+								<td>"+_data.identifierDesc+"</td>\
+								<td>"+_data.identifierRule+"</td>\
 						 	 </tr>";
                 return _text;
             }});
@@ -104,19 +124,28 @@
         });
     });
 
-    $(document).on('click', '.add-grade', function (e) {
+    $(document).on('click', '.add-Identifier', function (e) {
+        $("#identifierForm")[0].reset();
         dsmDialog.open({
             type: 1,
             area:['800px','300px'],
             title:"导入隐私检测模板",
             btn:['添加','取消'],
-            content : $("#addGrade"),
+            content : $("#addIdentifier"),
             yes: function(index,layero) {
+                if($(".js_file")[0].files[0] == null){
+                    dsmDialog.error("请选择导入文件!");
+                    return;
+                }
+                var data = new FormData();
+                data.append("file",$(".js_file")[0].files[0]);
                 $.ajax({
-                    data:$('#gradeForm').serialize(),
+                    data:data,
                     type:"post",
-                    url:"addGrade.do",
+                    url:"importIdentifier.do",
                     dataType:"json",
+                    processData: false,
+                    contentType: false,
                     success: function(data) {
                         if(data.status == "500"){
                             dsmDialog.error(data.msg);
@@ -149,9 +178,9 @@
         var fileObj  = $(this);
         var filePath=$(this).val();
         var licNameArr=filePath.split('.');
-        if(licNameArr[licNameArr.length-1]!="xml")
+        if(licNameArr[licNameArr.length-1]!="csv")
         {
-            dsmDialog.error('请选择格式为.xml的文件！');
+            dsmDialog.error('请选择格式为.csv的文件！');
             return false;
         }
         else{

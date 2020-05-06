@@ -199,6 +199,7 @@
        refreshPage();
    });
 
+    //添加策略
     $(document).on('click', '.add-strategy', function (e) {
         $("#strategyForm")[0].reset();
         $("#scanType01").prop("checked","checked");
@@ -248,7 +249,7 @@
         refreshPage();
     });
 
-    //删除规则
+    //删除策略
     $(document).on('click', '.delete-strategy', function (e) {
         if(noItemSelected()){//如果用户没有勾选
             return;
@@ -384,7 +385,7 @@
         });
         dsmDialog.open({
             type: 1,
-            area:['1000px','600px'],
+            area:['950px','550px'],
             btn:['修改','取消'],
             title:"修改策略",
             content : $("#addStrategy"),
@@ -414,7 +415,7 @@
         });
     }
 
-    //选择数据分级
+    //选择数据分类
     $(document).on('click', '.choose-dataClassify', function (e) {
         dsmDialog.open({
             type: 2,
@@ -424,11 +425,15 @@
             content: "${base}/admin/data/classify/list.do",
             yes: function(index,layero) {
                 if($("#layui-layer-iframe"+index).contents().find(".classifyIds:checked").size() < 1){
-                    dsmDialog.error("请选择二级数据分类!");
+                    dsmDialog.error("请选择分类!");
                     return false;
                 }
                 if($("#layui-layer-iframe"+index).contents().find(".classifyIds:checked").size() > 1){
-                    dsmDialog.error("数据分类只能选择一条!");
+                    dsmDialog.error("分类只能选择一条!");
+                    return false;
+                }
+                if($("#layui-layer-iframe"+index).contents().find(".classifyIds:checked").parents("tr").find("td").eq(2).html() === ""){
+                    dsmDialog.error("请选择子类!");
                     return false;
                 }
                 $(".dataClassifyName").val($("#layui-layer-iframe"+index).contents().find(".classifyIds:checked").parents("tr").find("td").eq(1).text());
@@ -455,7 +460,7 @@
                     dsmDialog.error("数据分级只能选择一条!");
                     return false;
                 }
-                $(".dataGradeName").val($("#layui-layer-iframe"+index).contents().find(".ids:checked").parents("tr").find("td").eq(2).text());
+                $(".dataGradeName").val($("#layui-layer-iframe"+index).contents().find(".ids:checked").parents("tr").find("td").eq(1).text());
                 $(".dataGradeId").val($("#layui-layer-iframe"+index).contents().find(".ids:checked").val());
                 dsmDialog.close(index);
             }
@@ -619,7 +624,6 @@
             $(".matchValue").val(0);
         }
     });
-
 
 </script>
 </body>

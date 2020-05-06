@@ -2,6 +2,9 @@ package com.huatusoft.dcac.strategymanager.service.impl;
 
 import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseServiceImpl;
+import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
+import com.huatusoft.dcac.organizationalstrucure.service.UserService;
+import com.huatusoft.dcac.strategymanager.dao.DataIdentifierDao;
 import com.huatusoft.dcac.strategymanager.dao.DataLevelRuleDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyRuleContentDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyRuleDao;
@@ -37,6 +40,12 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
 
     @Autowired
     private StrategyRuleContentDao strategyRuleContentDao;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private DataIdentifierDao dataIdentifierDao;
 
     @Override
     public Page<StrategyRuleEntity> findAllByPage(Pageable pageable, String ruleName, String createUserAccount, String ruleDesc) {
@@ -116,13 +125,16 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
             StrategyRuleContentEntity strategyRuleContentEntity = new StrategyRuleContentEntity();
             strategyRuleContentEntity.setContain(isContain);
             strategyRuleContentEntity.setMatchContent(ruleContent);
-            strategyRuleContentEntity.setRuleContent(ruleContent);
             strategyRuleContentEntity.setStrategyRuleEntity(strategyRuleEntity);
             if("隐私检测模板".equals(newRules[0].trim())){
+                DataIdentifierEntity dataIdentifierEntity = dataIdentifierDao.findByIdentifierName(ruleContent);
+                strategyRuleContentEntity.setRuleContent(dataIdentifierEntity.getIdentifierRule());
                 strategyRuleContentEntity.setRuleTypeCode("0");
             }else if("正则表达式".equals(newRules[0].trim())){
+                strategyRuleContentEntity.setRuleContent(ruleContent);
                 strategyRuleContentEntity.setRuleTypeCode("1");
             }else if("关键字".equals(newRules[0].trim())){
+                strategyRuleContentEntity.setRuleContent(ruleContent);
                 strategyRuleContentEntity.setRuleTypeCode("2");
             }
             strategyRuleContentEntities.add(strategyRuleContentEntity);
@@ -169,6 +181,10 @@ public class StrategyRuleServiceImpl extends BaseServiceImpl<StrategyRuleEntity,
                 addRuleContent(exceptRule,false,strategyRuleEntity);
             }
             strategyRuleDao.update(strategyRuleEntity);
+            UserEntity current = userService.getCurrentUser();
+            current.setPolicyFileEdited(true);
+            current.setPolicy(0);
+            userService.update(current);
         }catch (Exception e){
             e.printStackTrace();
             return new Result("更新检测规则失败!");

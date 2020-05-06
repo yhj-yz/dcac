@@ -2,6 +2,8 @@ package com.huatusoft.dcac.strategymanager.service.impl;
 
 import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseServiceImpl;
+import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
+import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import com.huatusoft.dcac.strategymanager.dao.DataGradeDao;
 import com.huatusoft.dcac.strategymanager.dao.StrategyDao;
 import com.huatusoft.dcac.strategymanager.entity.DataClassifyBigEntity;
@@ -32,6 +34,9 @@ public class DataGradeServiceImpl extends BaseServiceImpl<DataGradeEntity, DataG
 
     @Autowired
     private DataGradeDao dataGradeDao;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public Page<DataGradeEntity> findAllByPage(Pageable pageable, String gradeName, String createUserAccount, String gradeDesc) {
@@ -92,6 +97,10 @@ public class DataGradeServiceImpl extends BaseServiceImpl<DataGradeEntity, DataG
             dataGradeEntity.setGradeName(gradeName);
             dataGradeEntity.setGradeDesc(gradeDesc);
             dataGradeDao.update(dataGradeEntity);
+            UserEntity current = userService.getCurrentUser();
+            current.setPolicyFileEdited(true);
+            current.setPolicy(0);
+            userService.update(current);
         }catch (Exception e){
             e.printStackTrace();
             return new Result("修改数据分级失败!");
