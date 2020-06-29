@@ -54,7 +54,9 @@ public class TableOpera {
             "HT_DCAC_STRATEGY_RESPONSE",
             "HT_DCAC_STRATEGY_SCAN",
             "HT_DCAC_STRATEGY_GROUP",
-            "STRATEGY_GROUP"
+            "STRATEGY_GROUP",
+            "HT_DCAC_SYSTEM_PARAM",
+            "HT_DCAC_STRATEGY_SCAN"
     };
 
     public static String []  IGNORE_TABLE ={

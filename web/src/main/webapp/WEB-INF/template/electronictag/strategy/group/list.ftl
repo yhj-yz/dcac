@@ -2,7 +2,7 @@
 <html lang="ch">
 <head>
     <meta charset="UTF-8">
-    <title>组策略</title>
+    <title>策略组</title>
     [#include "/include/head.ftl"]
     <script type="text/javascript" src="${base}/resources/dsm/js/page.js"></script>
     <style>
@@ -39,8 +39,8 @@
 					}' /]
             [#assign form="search_form"]
             [#include "/include/search.ftl"]
-            <button type="button" class="btn btn-primary add-strategy-group">新增组策略</button>
-            <button type="button" class="btn btn-primary delete-strategy-group">删除组策略</button>
+            <button type="button" class="btn btn-primary add-strategy-group">新增策略组</button>
+            <button type="button" class="btn btn-primary delete-strategy-group">删除策略组</button>
             <div id="managerContent" style="margin-top: 10px">
                 <div class="table-view">
                     <form id="list_form" >
@@ -54,7 +54,7 @@
                                         <label for="checkboxFiveInput"></label>
                                     </div>
                                 </th>
-                                <th>组策略名称</th>
+                                <th>策略组名称</th>
                                 <th>创建者</th>
                                 <th>描述</th>
                             </tr>
@@ -76,9 +76,9 @@
         <form id="strategyGroupForm">
             <div class="dsm-form-item dsm-big">
                 <div class="dsm-inline">
-                    <label class="dsm-form-label">组策略名称：</label>
+                    <label class="dsm-form-label">策略组名称：</label>
                     <div class="dsm-input-inline">
-                        <input type="text" autocomplete="off" name="groupName" placeholder="组策略名称" class="dsm-input required groupName" >
+                        <input type="text" autocomplete="off" name="groupName" placeholder="策略组名称" class="dsm-input required groupName" >
                     </div>
                     <div class="desc"><em>*</em></div>
                 </div>
@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div class="dsm-inline">
-                    <label class="dsm-form-label">添加策略：</label>
+                    <label class="dsm-form-label">添加扫描策略：</label>
                     <div class="dsm-input-inline">
                         <button type="button" class="btn btn-primary choose-strategy" style="float: left;margin-top: 10px">选择</button>
                         <button type="button" class="btn btn-primary remove-strategy" style="margin-top: 10px">删除</button>
@@ -145,7 +145,7 @@
         refreshPage();
     });
 
-    //增加组策略
+    //增加策略组
     $(document).on('click', '.add-strategy-group', function (e) {
         $("#strategyGroupForm")[0].reset();
         $(".strategyForm tbody").html("");
@@ -153,7 +153,7 @@
         dsmDialog.open({
             type: 1,
             area:['900px','500px'],
-            title:"新增组策略",
+            title:"新增策略组",
             btn:['添加','取消'],
             content : $("#addStrategyGroup"),
             yes: function(index,layero) {
@@ -179,14 +179,14 @@
         });
     });
 
-    //删除组策略
+    //删除策略组
     $(document).on('click', '.delete-strategy-group', function (e) {
         if(noItemSelected()){//如果用户没有勾选
             return;
         }
         dsmDialog.toComfirm("是否执行删除操作？", {
             btn: ['确定','取消'],
-            title:"删除组策略"
+            title:"删除策略组"
         }, function(index){
             var ids_ = "";
             $("#list_form :checked[name='ids']").each(function(i){
@@ -212,18 +212,18 @@
         });
     });
 
-    //检查是否勾选组策略
+    //检查是否勾选策略组
     function noItemSelected(){
         var ids_ = $("#list_form :checked[name='ids']");
         if(ids_.length === 0){
-            dsmDialog.error("请先选择组策略!");
+            dsmDialog.error("请先选择策略组!");
             return true;
         }else{
             return false;
         }
     }
 
-    //获取组策略详情
+    //获取策略组详情
     function getDetails(id) {
         $.ajax({
             data: {id: id},
@@ -277,7 +277,7 @@
         dsmDialog.open({
             type: 1,
             area:['900px','500px'],
-            title:"修改组策略",
+            title:"修改策略组",
             btn:['修改','取消'],
             content : $("#addStrategyGroup"),
             yes: function(index,layero) {

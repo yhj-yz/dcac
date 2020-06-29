@@ -163,7 +163,7 @@ public class Rc4Utils {
         String[] split = "https://localhost:9444/A17DZBQ/admin/login.jsp?token=123123213213".split("\\?");
         System.out.println(Arrays.toString(split));
 
-        ByteSource sysadmin = ByteSource.Util.bytes("sysadmin");
+        ByteSource sysadmin = ByteSource.Util.bytes("wmk");
         SimpleHash md5 = new SimpleHash("MD5", "11111111", sysadmin, 10);
         System.out.println(md5.toString());
     }

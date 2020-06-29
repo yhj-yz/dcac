@@ -3779,6 +3779,12 @@ body .layui-layer .layui-layer-btn .layui-layer-btn1:hover {
 .icon-add-white{
      background: url(../images/btn_icon_white.png)  -242px -5px;
  }
+.icon-relate-white{
+    background: url(../images/btn_icon_white.png)  -187px -5px;
+}
+.icon-delete-white{
+    background: url(../images/btn_icon_white.png)  -297px -5px;
+}
 .icon-update-white{
     background: url(../images/btn_icon_white.png)  -464px -5px;
 }

@@ -51,7 +51,7 @@ public class DepartmentEntity extends BaseEntity {
 	private String unitCode;
 
 	/** "部门名"属性名称 */
-	@OneToMany(mappedBy="department", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="department", fetch = FetchType.LAZY,cascade={CascadeType.REMOVE})
 	@JsonIgnore
 	private List<UserEntity> users = new ArrayList<>();
 	

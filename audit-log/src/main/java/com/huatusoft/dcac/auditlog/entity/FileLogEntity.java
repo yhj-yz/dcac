@@ -61,4 +61,7 @@ public class FileLogEntity extends LogEntity {
     /**所属部门*/
     @Column(name = "DEPARTMENT")
     private String department;
+    /**疑似加密*/
+    @Column(name = "IS_ENCRYPTED")
+    private String isEncrypted;
 }

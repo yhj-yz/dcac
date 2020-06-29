@@ -75,15 +75,14 @@
                 /authentication/login.do = authc <!--登陆接口-->
                 /authentication/main.do = authc
                 /logout.do = logout
-<!--                /admin/ = anon-->
-<!--                /admin/index.jsp = anon-->
-<!--                /admin/uptest/list.jhtml = anon-->
-<!--                /admin/file/uploadflowfiles.jhtml = anon-->
-<!--                /admin/login.jsp = authc-->
-<!--                /admin/logout.jsp = logout-->
-<!--                /admin/common/captcha.jhtml = anon-->
-<!--                /admin/authorizationManager/nolic.jhtml = anon-->
-<!--                /admin/authorizationManager/importlic.jhtml = anon-->
+
+                /admin/strategy/group/list.do = perms["admin:strategy:group"]
+                /admin/strategy/list.do = perms["admin:strategy:list"]
+                /admin/data/classify/list.do = perms["admin:data:classify"]
+                /admin/data/grade/list.do = perms["admin:data:grade"]
+                /admin/strategy/rule/list.do = perms["admin:strategy:rule"]
+                /admin/strategy/mask/list.do = perms["admin:strategy:mask"]
+                /admin/data/identifier/list.do = perms["admin:data:identifier"]
 
 <!--                /admin/organization_management/.jhtml = perms["admin:org"]-->
 <!--                /admin/*/set_user_control.jhtml = perms["admin:dept:multi"]-->
@@ -114,9 +113,6 @@
 <!--                /admin/circulation/** = perms["admin:circulation:address"]-->
 <!--                /admin/circulationManage/** = perms["admin:circulation:manage"]-->
 
-<!--                /admin/dzbq/** = perms["admin:tag"]-->
-<!--                /admin/flow/** = perms["admin:flow:approve"]-->
-<!--                /admin/task/** = perms["admin:flow:approve"] -->
             </value>
         </property>
         <property name="filters">

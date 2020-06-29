@@ -9,6 +9,8 @@ import com.huatusoft.dcac.auditlog.entity.LoginReturnEntity;
 import com.huatusoft.dcac.organizationalstrucure.entity.LoginParamEntity;
 import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
 import com.huatusoft.dcac.organizationalstrucure.service.UserService;
+import com.huatusoft.dcac.strategymanager.entity.TerminalEntity;
+import com.huatusoft.dcac.strategymanager.service.TerminalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,9 @@ public class ClientController extends BaseController {
     @Autowired
     private FileLogService fileLogService;
 
+    @Autowired
+    private TerminalService terminalService;
+
     /**
      * 日志服务接口
      * @param content
@@ -47,6 +52,44 @@ public class ClientController extends BaseController {
             return RecvEntity.nodata();
         }
 
+    }
+
+    /**
+     * 上传终端信息
+     * @param content
+     * @return
+     */
+    @PostMapping(value = "/dg/1/register")
+    public @ResponseBody
+    RecvEntity<TerminalEntity> register(@RequestBody String content){
+        try {
+            TerminalEntity terminalEntity = JsonUtils.toObjectByGson(content, TerminalEntity.class);
+            terminalService.add(terminalEntity);
+            return RecvEntity.success(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RecvEntity.nodata();
+        }
+    }
+
+    /**
+     * 更新终端的扫描状态
+     * @param content
+     * @return
+     */
+    @PostMapping(value = "log/1/upload_scan_status")
+    public @ResponseBody
+    RecvEntity<TerminalEntity> uploadScanStatus(@RequestBody String content){
+        try {
+            TerminalEntity terminalEntity = JsonUtils.toObjectByGson(content, TerminalEntity.class);
+            TerminalEntity oldTerminalEntity = terminalService.findByClientId(terminalEntity.getClientId());
+            oldTerminalEntity.setScanStatus(terminalEntity.getScanStatus());
+            terminalService.update(oldTerminalEntity);
+            return RecvEntity.success(null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return RecvEntity.nodata();
+        }
     }
 
     @GetMapping(value = "/common/1/test_connect")

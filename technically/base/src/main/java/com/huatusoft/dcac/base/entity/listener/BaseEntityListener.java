@@ -1,6 +1,7 @@
 package com.huatusoft.dcac.base.entity.listener;
 
 import com.huatusoft.dcac.base.entity.BaseEntity;
+import com.huatusoft.dcac.common.bo.Principal;
 import com.huatusoft.dcac.common.constant.SystemConstants;
 import org.apache.shiro.SecurityUtils;
 
@@ -20,7 +21,9 @@ public class BaseEntityListener {
     private void prePersistAddCreateTimeAndCreateUserAccount(BaseEntity entity) {
 
         if (Objects.isNull(entity.getCreateUserAccount())) {
-            entity.setCreateUserAccount(String.valueOf(SecurityUtils.getSubject().getSession().getAttribute(SystemConstants.CURRENT_SYSTEM_LOGIN_USER_ACCOUNT)));
+            if(SecurityUtils.getSubject().getPrincipal() != null){
+                entity.setCreateUserAccount(((Principal)SecurityUtils.getSubject().getPrincipal()).getAccount());
+            }
         }
         if (Objects.isNull(entity.getCreateDateTime())) {
             entity.setCreateDateTime(new Date());
@@ -30,7 +33,9 @@ public class BaseEntityListener {
     @PreUpdate
     private void preUpdateAddModifyDateTimeAndModifyUserAccount(BaseEntity entity) {
         if (Objects.isNull(entity.getUpdateUserAccount())) {
-            entity.setUpdateUserAccount(String.valueOf(SecurityUtils.getSubject().getSession().getAttribute(SystemConstants.CURRENT_SYSTEM_LOGIN_USER_ACCOUNT)));
+            if(SecurityUtils.getSubject().getPrincipal() != null) {
+                entity.setUpdateUserAccount(((Principal) SecurityUtils.getSubject().getPrincipal()).getAccount());
+            }
         }
         if (Objects.isNull(entity.getUpdateDateTime())) {
             entity.setUpdateDateTime(new Date());

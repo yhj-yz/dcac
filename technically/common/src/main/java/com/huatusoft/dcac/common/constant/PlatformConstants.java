@@ -10,7 +10,7 @@ public interface PlatformConstants {
     Integer REQUEST_PARAM_INIT_LENGTH = 5;
 
     Integer DEPARTMENT_DELETE = 2;
-    Integer DEPARTMENT_DISABLED = 2;
+    Integer DEPARTMENT_DISABLED = 1;
     Integer USER_DELETE = 2;
     Integer USER_DISABLED = 2;
     String PLATFORM_APP_ID = "platform_app_id";

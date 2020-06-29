@@ -18,7 +18,7 @@ public interface DepartmentDao extends BaseDao<DepartmentEntity, String> {
      * @param parentId
      * @return
      */
-    DepartmentEntity findByParentIdEquals(String parentId);
+    List<DepartmentEntity> findByParentId(String parentId);
 
     /**
      * 查询可用父节点
@@ -29,11 +29,17 @@ public interface DepartmentDao extends BaseDao<DepartmentEntity, String> {
     Long countByParentIdEqualsAndStatusIsNotIn(String pid, Integer... disabledCode);
 
     /**
-     * 查询所有状态可用的部门
-     * @param disabledCode 禁用代码
+     * 查询可用部门
+     * @param parentId
+     * @param disabledCode
      * @return
      */
-    List<DepartmentEntity> findByStatusNotIn(Integer... disabledCode);
+    List<DepartmentEntity> findByParentIdAndStatusNotIn(String parentId,Integer... disabledCode);
 
-
+    /**
+     * 根据id删除根节点以及子节点
+     * @param id1
+     * @param id2
+     */
+    void deleteByIdOrParentId(String id1,String id2);
 }

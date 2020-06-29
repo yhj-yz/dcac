@@ -34,4 +34,7 @@ public class SystemConstants {
 
     public static final Integer UNPROCESSED = 0;
 
+    public static final String APP_ID = "154236953859313664";
+
+    public static final String PRODUCT_KEY = "4E039B13-EA00-4811-ABC5-99EDD0590265";
 }

@@ -4,6 +4,7 @@
  */
 package com.huatusoft.dcac.auditlog.controller;
 
+import com.huatusoft.dcac.auditlog.entity.FileLog;
 import com.huatusoft.dcac.auditlog.entity.FileLogEntity;
 import com.huatusoft.dcac.base.controller.BaseController;
 import com.huatusoft.dcac.base.response.Result;
@@ -11,6 +12,7 @@ import com.huatusoft.dcac.common.bo.Message;
 import com.huatusoft.dcac.common.bo.PageVo;
 import com.huatusoft.dcac.common.bo.PageableVo;
 import com.huatusoft.dcac.auditlog.service.FileLogService;
+import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,14 +24,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 @Controller("fileLogController")
 @RequestMapping("admin/fileLog")
 public class FileLogController extends BaseController{
     @Autowired
     private FileLogService fileLogService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 跳转到文件操作日志界面
@@ -38,6 +42,19 @@ public class FileLogController extends BaseController{
     @GetMapping(value="/list")
     public String list(){
         return "/log/fileLog/list.ftl";
+    }
+
+    /**
+     * 外部跳转到文件操作日志界面
+     * @param userNo
+     * @return
+     */
+    @GetMapping(value = "/list1")
+    public String list(String userNo) {
+        if(userNo == null){
+            return "";
+        }
+        return userService.visitByOut("/log/fileLog/list.ftl",userNo);
     }
 
     /**
@@ -101,26 +118,50 @@ public class FileLogController extends BaseController{
     @PostMapping(value = "/insert1000")
     @ResponseBody
     public Result addInsert1000(){
+         List<String> computerList = new ArrayList<String>();
+         for(int i = 0 ; i < 100; i++){
+             computerList.add("电脑"+i);
+         }
+         List<String> userList = new ArrayList<String>();
+         for(int i = 0 ; i < 80; i++){
+             userList.add("用户"+i);
+         }
+         List<String> departmentList = new ArrayList<String>();
+         for(int i = 0 ; i < 10; i++){
+             departmentList.add("部门"+i);
+         }
+         List<String> md5List = new ArrayList<String>();
+         for(int i = 0 ; i < 300; i++){
+             md5List.add(UUID.randomUUID().toString().replace("-",""));
+         }
+         List<FileLog> fileLogList = new ArrayList<FileLog>();
+         for(int i = 0; i< 1000; i++){
+             FileLog fileLog = new FileLog();
+             fileLog.setFileName("文件"+i);
+             fileLog.setFileMd5(md5List.get((int)(Math.random()*300)));
+             fileLogList.add(fileLog);
+         }
         for(int i = 0;i < 1000; i++){
             FileLogEntity fileLogEntity = new FileLogEntity();
-            fileLogEntity.setComputerName("电脑"+i);
-            fileLogEntity.setUserAccount("sysadmin");
-            fileLogEntity.setUserName("sysadmin");
-            fileLogEntity.setDepartment("部门"+i);
-            fileLogEntity.setFileMD5(UUID.randomUUID().toString().replace("-",""));
-            fileLogEntity.setFileName("c:\\test\\文件"+i+".doc");
+            fileLogEntity.setComputerName(computerList.get((int)(Math.random()*100)));
+            int userRandom = (int)(Math.random()*80);
+            fileLogEntity.setUserAccount(userList.get(userRandom));
+            fileLogEntity.setUserName(userList.get(userRandom));
+            fileLogEntity.setDepartment(departmentList.get((int)(Math.random()*10)));
+            fileLogEntity.setFileMD5(fileLogList.get(i).getFileMd5());
+            fileLogEntity.setFileName(fileLogList.get(i).getFileName());
             fileLogEntity.setFileOper(0);
             fileLogEntity.setFileSize(i);
             fileLogEntity.setHits(i);
-            fileLogEntity.setLoginName("sysadmin");
+            fileLogEntity.setLoginName(userList.get(userRandom));
             fileLogEntity.setTime(new Date().toString());
             fileLogEntity.setIp("123."+i);
             fileLogEntity.setIsImport(0);
             fileLogEntity.setOperateTime(new Date());
             fileLogEntity.setCreateDateTime(new Date());
-            fileLogEntity.setCreateUserAccount("sysadmin");
+            fileLogEntity.setCreateUserAccount(userList.get(userRandom));
             fileLogEntity.setUpdateDateTime(new Date());
-            fileLogEntity.setUpdateUserAccount("sysadmin");
+            fileLogEntity.setUpdateUserAccount(userList.get(userRandom));
             fileLogService.add(fileLogEntity);
         }
         return new Result("200","插入成功",null);

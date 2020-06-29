@@ -29,8 +29,6 @@
 		</property>
 	</bean>
 
-
-
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="${task.core_pool_size}" />
 		<property name="maxPoolSize" value="${task.max_pool_size}" />
@@ -47,6 +45,67 @@
 			</list>
 		</property>
 	</bean>
+
+
+	<!--redis-->
+<!--	<context:property-placeholder location="classpath:redis.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>-->
+
+<!--	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
+<!--		&lt;!&ndash;最大连接数&ndash;&gt;-->
+<!--		<property name="maxTotal" value="${redis.pool.maxTotal}"/>-->
+<!--		&lt;!&ndash;最大空闲数&ndash;&gt;-->
+<!--		<property name="maxIdle" value="${redis.pool.maxIdle}"/>-->
+<!--		&lt;!&ndash;最长等待时间&ndash;&gt;-->
+<!--		<property name="maxWaitMillis" value="${redis.pool.maxWait}"/>-->
+<!--		&lt;!&ndash;在空闲时检查有效性&ndash;&gt;-->
+<!--		<property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>-->
+<!--	</bean>-->
+
+<!--	<bean id="jedisPool" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" destroy-method="destroy">-->
+<!--		<property name="poolConfig" ref="jedisPoolConfig"/>-->
+<!--		<property name="hostName" value="${redis.hostname}"/>-->
+<!--		<property name="port" value="${redis.port}"/>-->
+<!--	</bean>-->
+
+<!--	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >-->
+<!--		<property name="connectionFactory" ref="jedisPool" />-->
+<!--		&lt;!&ndash;如果不配置Serializer，那么存储的时候缺省使用String，如果用User类型存储，那么会提示错误User can't cast to String！！  &ndash;&gt;-->
+<!--		<property name="keySerializer" >-->
+<!--			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />-->
+<!--		</property>-->
+<!--		<property name="valueSerializer" >-->
+<!--			<bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer" />-->
+<!--		</property>-->
+<!--		<property name="hashKeySerializer">-->
+<!--			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>-->
+<!--		</property>-->
+<!--		<property name="hashValueSerializer">-->
+<!--			<bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>-->
+<!--		</property>-->
+<!--	</bean >-->
+
+	<!--redis数据失效监听 -->
+<!--	<bean id="messageListener"-->
+<!--		  class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">-->
+<!--		<constructor-arg>-->
+<!--			<bean class="com.huatusoft.dcac.web.listener.redis.MyRedisKeyExpiredMessageDelegate" />-->
+<!--		</constructor-arg>-->
+<!--	</bean>-->
+<!--	<bean id="redisContainer"-->
+<!--		  class="org.springframework.data.redis.listener.RedisMessageListenerContainer">-->
+<!--	<property name="connectionFactory" ref="jedisPool" />-->
+<!--	<property name="messageListeners">-->
+<!--		<map>-->
+<!--			<entry key-ref="messageListener">-->
+<!--				<list>-->
+<!--					<bean class="org.springframework.data.redis.listener.PatternTopic">-->
+<!--						<constructor-arg value="__key*__:expired" />-->
+<!--					</bean>-->
+<!--				</list>-->
+<!--			</entry>-->
+<!--		</map>-->
+<!--	</property>-->
+<!--	</bean>-->
 
 	<!--配置缓存工厂-->
 	<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
@@ -70,10 +129,12 @@
 			<tx:method name="save*" propagation="REQUIRED" read-only="false"/>
 			<tx:method name="add*" propagation="REQUIRED" read-only="false"/>
 			<tx:method name="import*" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="upload*" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="register*" propagation="REQUIRED" read-only="false"/>
 			<tx:method name="update*" propagation="REQUIRED" read-only="false"/>
 			<tx:method name="delete*" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="set*" propagation="REQUIRED" read-only="false"/>
 			<tx:method name="Get*" propagation="REQUIRED" read-only="false"/>
-<!--			<tx:method name="flush*" propagation="REQUIRED" read-only="false"/>-->
 			<tx:method name="*" read-only="true"/>
 		</tx:attributes>
 	</tx:advice>

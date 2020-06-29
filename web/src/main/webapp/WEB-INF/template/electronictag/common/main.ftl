@@ -22,20 +22,6 @@
                 <a class="btn dsm-client"></a>
                 <a class="btn dsm-client"></a>
             </div>
-            <div class="topbar-nav">
-                <a href="javascript:void(0);" class="topbar-btn"><i class="icon icon-packagedownload m-r-10"></i>下载客户端安装包</a>
-            </div>
-            <div class="topbar-nav-help-doc">
-                <a href="javascript:void(0);" class="topbar-btn"><i class="icon icon-packagedownload m-r-10"></i>下载离线帮助文档</a>
-            </div>
-            <div class="topbar-nav-help">
-                <a href="javascript:void(0);" class="topbar-btn"></i>打开帮助</a>
-            </div>
-            [@shiro.hasPermission name = "admin:system:paramset"]
-                <div class="topbar-nav-update">
-                    <a href="javascript:void(0);" class="topbar-btn"></i>在线升级</a>
-                </div>
-            [/@shiro.hasPermission]
         </div>
     </div>
     <div class="topbar-download-proc-help-doc" style="right: 224px;width: 202px">
@@ -71,47 +57,6 @@
                 <hr class="whiteline rightline"/>
             </div>
             <div class="navbar">
-                [#list ["admin:system:paramset", "admin:system:whitelist", "admin:system:backup"] as permission]
-                    [@shiro.hasPermission name = permission]
-                        <ul class="nav menu">
-                            <li class="navitem bottomline">
-                                <a class="auto cur" data-toggle="collapse" href="#collapseOne">
-                                    <i class="icon icon-nav-sysSet"></i>
-                                    <span class="ptitle">系统设置</span>
-                                </a>
-                                <ul id="collapseOne" class="nav subnav collapse">
-                                    [@shiro.hasPermission name = "admin:system:paramset"]
-                                        <li>
-                                            <a href="${base}/system_settings/list.do" target="electronicTagIframe"
-                                               class="auto cur">
-                                                <span>系统参数设置</span>
-                                            </a>
-                                        </li>
-                                    [/@shiro.hasPermission]
-                                    [@shiro.hasPermission name = "admin:system:whitelist"]
-                                        <li>
-                                            <a href="${base}/ip_authentication/list.do" target="electronicTagIframe"
-                                               class="auto cur">
-                                                <span>IP白名单</span>
-                                            </a>
-                                        </li>
-                                    [/@shiro.hasPermission]
-                                    [@shiro.hasPermission name = "admin:system:backup"]
-                                        <li>
-                                            <a href="${base}/admin/backUp/backUpView.do"
-                                               data-urlindex="authorizationManagerList" target="electronicTagIframe"
-                                               class="auto">
-                                                <span>系统备份与还原</span>
-                                            </a>
-                                        </li>
-                                    [/@shiro.hasPermission]
-                                </ul>
-                            </li>
-                        </ul>
-                        [#break /]
-                    [/@shiro.hasPermission]
-                [/#list]
-
                 [@shiro.hasPermission name = "admin:org"]
                     <ul class="nav menu">
                         <li class="navitem bottomline">
@@ -182,51 +127,110 @@
                     [/@shiro.hasPermission]
                 [/#list]
 
-                <ul class="nav menu">
-                    <li class="navitem bottomline">
-                        <a class="auto cur" data-toggle="collapse" href="#collapseEight">
-                            <i class="icon icon-nav-log"></i>
-                            <span class="ptitle">策略管理</span>
-                        </a>
-                        <ul id="collapseEight" class="nav subnav collapse">
-                            <li>
-                                <a href="${base}/admin/strategy/group/list.do" target="electronicTagIframe" class="auto cur">
-                                    <span>组策略</span>
+                [#list ["admin:strategy:group", "admin:strategy:list", "admin:data:classify", "admin:data:grade", "admin:strategy:rule", "admin:strategy:mask", "admin:data:identifier"] as permission]
+                    [@shiro.hasPermission name = permission]
+                        <ul class="nav menu">
+                            <li class="navitem bottomline">
+                                <a class="auto cur" data-toggle="collapse" href="#collapseEight">
+                                    <i class="icon icon-nav-stra"></i>
+                                    <span class="ptitle">策略管理</span>
                                 </a>
-                            </li>
-                            <li>
-                                <a href="${base}/admin/strategy/list.do" target="electronicTagIframe" class="auto cur">
-                                    <span>策略规则配置</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${base}/admin/data/classify/list.do" target="electronicTagIframe" class="auto cur">
-                                    <span>数据分类定义</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${base}/admin/data/grade/list.do" target="electronicTagIframe" class="auto cur">
-                                    <span>数据分级定义</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${base}/admin/strategy/rule/list.do" target="electronicTagIframe" class="auto cur">
-                                    <span>检测规则定义</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${base}/admin/strategy/mask/list.do" target="electronicTagIframe" class="auto cur">
-                                    <span>脱敏规则定义</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${base}/admin/data/identifier/list.do" target="electronicTagIframe" class="auto cur">
-                                    <span>隐私检测模板</span>
-                                </a>
+                                <ul id="collapseEight" class="nav subnav collapse">
+                                    [@shiro.hasPermission name = "admin:strategy:group"]
+                                        <li>
+                                            <a href="${base}/admin/strategy/group/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>策略组</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:strategy:list"]
+                                        <li>
+                                            <a href="${base}/admin/strategy/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>扫描策略</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:data:classify"]
+                                        <li>
+                                            <a href="${base}/admin/data/classify/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>数据分类</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:data:grade"]
+                                        <li>
+                                            <a href="${base}/admin/data/grade/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>数据分级</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:strategy:rule"]
+                                        <li>
+                                            <a href="${base}/admin/strategy/rule/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>检测规则</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:strategy:mask"]
+                                        <li>
+                                            <a href="${base}/admin/strategy/mask/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>脱敏规则</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:data:identifier"]
+                                        <li>
+                                            <a href="${base}/admin/data/identifier/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>检测模板</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:data:identifier"]
+                                        <li>
+                                            <a href="${base}/strategy/terminal/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>终端策略</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                </ul>
                             </li>
                         </ul>
-                    </li>
-                </ul>
+                        [#break /]
+                    [/@shiro.hasPermission]
+                [/#list]
+
+                [#list ["admin:strategy:group", "admin:strategy:list", "admin:data:classify", "admin:data:grade", "admin:strategy:rule", "admin:strategy:mask", "admin:data:identifier"] as permission]
+                    [@shiro.hasPermission name = permission]
+                        <ul class="nav menu">
+                            <li class="navitem bottomline">
+                                <a class="auto cur" data-toggle="collapse" href="#collapseNine">
+                                    <i class="icon icon-nav-dataBase"></i>
+                                    <span class="ptitle">数据分析</span>
+                                </a>
+                                <ul id="collapseNine" class="nav subnav collapse">
+                                    [@shiro.hasPermission name = "admin:strategy:group"]
+                                        <li>
+                                            <a href="http://172.16.22.168:37799/webroot/decision/v5/design/report/share/a781c260b6ca4cf48e70fc4c759d2bd7?link=eyJhbGciOiJIUzI1NiJ9.eyJyZXBvcnRJZCI6ImE3ODFjMjYwYjZjYTRjZjQ4ZTcwZmM0Yzc1OWQyYmQ3IiwidXNlcklkIjoiYjVmMGMyZWUtNjQwZi00MDM5LWE0ZDQtOTE4YjU1MzU0ODk4IiwianRpIjoiand0In0.bVHdD-EKysYdCLAebNL2INoutSjPb09l-d6h8Z2EjGc" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>敏感数据分析统计</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                </ul>
+                            </li>
+                        </ul>
+                        [#break /]
+                    [/@shiro.hasPermission]
+                [/#list]
+
 
                 [#--[#list ["admin:flow:approveapprove"] as permission]--]
                 [#--[@shiro.hasPermission name = permission]--]
@@ -268,6 +272,46 @@
 [#--                        [#break /]--]
 [#--                    [/@shiro.hasPermission]--]
 [#--                [/#list]--]
+                [#list ["admin:system:paramset", "admin:system:whitelist", "admin:system:backup"] as permission]
+                    [@shiro.hasPermission name = permission]
+                        <ul class="nav menu">
+                            <li class="navitem bottomline">
+                                <a class="auto cur" data-toggle="collapse" href="#collapseOne">
+                                    <i class="icon icon-nav-sysSet"></i>
+                                    <span class="ptitle">系统设置</span>
+                                </a>
+                                <ul id="collapseOne" class="nav subnav collapse">
+                                    [@shiro.hasPermission name = "admin:system:paramset"]
+                                        <li>
+                                            <a href="${base}/system_settings/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>系统参数设置</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:system:whitelist"]
+                                        <li>
+                                            <a href="${base}/ip_authentication/list.do" target="electronicTagIframe"
+                                               class="auto cur">
+                                                <span>IP白名单</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                    [@shiro.hasPermission name = "admin:system:backup"]
+                                        <li>
+                                            <a href="${base}/admin/backUp/backUpView.do"
+                                               data-urlindex="authorizationManagerList" target="electronicTagIframe"
+                                               class="auto">
+                                                <span>系统备份与还原</span>
+                                            </a>
+                                        </li>
+                                    [/@shiro.hasPermission]
+                                </ul>
+                            </li>
+                        </ul>
+                        [#break /]
+                    [/@shiro.hasPermission]
+                [/#list]
 
                 <ul class="nav" data-ride="collapse">
                     <li class="navitem" style="height: 41px;">

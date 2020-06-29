@@ -1,5 +1,6 @@
 package com.huatusoft.dcac.organizationalstrucure.service;
 
+import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseService;
 import com.huatusoft.dcac.organizationalstrucure.dao.UserDao;
 import com.huatusoft.dcac.organizationalstrucure.entity.DepartmentEntity;
@@ -83,4 +84,33 @@ public interface UserService extends BaseService<UserEntity, UserDao> {
      * @return 找不到用户返回null
      */
     UserEntity login(LoginParamEntity paramEntity) throws Exception;
+
+    /**
+     * 外部访问系统页面
+     * @param url
+     * @param userNo
+     * @return
+     */
+    String visitByOut(String url,String userNo);
+
+    /**
+     * 新增用户
+     * @param departmentId
+     * @param account
+     * @param name
+     * @param password
+     * @return
+     */
+    Result addUser(String departmentId,String account, String name, String password);
+
+    /**
+     *
+     * @param userId
+     * @param account
+     * @param userName
+     * @param password
+     * @param passwordSure
+     * @return
+     */
+    Result updateUser(String userId,String account,String name,String password,String passwordSure);
 }

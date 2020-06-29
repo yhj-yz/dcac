@@ -1,16 +1,24 @@
 package com.huatusoft.dcac.organizationalstrucure.service.impl;
+import com.ht.base.util.HttpUtil;
+import com.huatusoft.dcac.base.response.Result;
 import com.huatusoft.dcac.base.service.BaseServiceImpl;
 import com.huatusoft.dcac.common.bo.Principal;
 import com.huatusoft.dcac.common.constant.DefaultNodeConstants;
 import com.huatusoft.dcac.common.constant.PlatformConstants;
+import com.huatusoft.dcac.common.constant.SystemConstants;
+import com.huatusoft.dcac.common.util.JsonUtils;
+import com.huatusoft.dcac.organizationalstrucure.dao.DepartmentDao;
+import com.huatusoft.dcac.organizationalstrucure.dao.RoleDao;
+import com.huatusoft.dcac.organizationalstrucure.dao.SystemDao;
 import com.huatusoft.dcac.organizationalstrucure.dao.UserDao;
 import com.huatusoft.dcac.organizationalstrucure.entity.DepartmentEntity;
 import com.huatusoft.dcac.organizationalstrucure.entity.LoginParamEntity;
+import com.huatusoft.dcac.organizationalstrucure.entity.RoleEntity;
 import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
 import com.huatusoft.dcac.organizationalstrucure.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.Account;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
@@ -25,10 +33,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author WangShun
@@ -39,6 +44,15 @@ import java.util.Objects;
 public class UserServiceImpl extends BaseServiceImpl<UserEntity, UserDao> implements UserService {
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private SystemDao systemParamDao;
+
+    @Autowired
+    private DepartmentDao departmentDao;
+
+    @Autowired
+    private RoleDao roleDao;
 
     @Override
     public UserEntity getUserByAccount(String account) {
@@ -121,5 +135,93 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, UserDao> implem
             throw new Exception("用户已被锁");
         }
         return user;
+    }
+
+    @Override
+    public String visitByOut(String url, String userNo) {
+        Map<String,String> paramMap = new HashMap<String, String>(1);
+        paramMap.put("userNo",userNo);
+        String appId = systemParamDao.findAll().get(0).getAppId();
+        String productKey = systemParamDao.findAll().get(0).getProductKey();
+        String result = HttpUtil.signPost("http://172.16.23.148:7073/api/token/getTokenByUserNo", appId, productKey, String.valueOf(System.currentTimeMillis()), paramMap);
+        String code = JsonUtils.getJsonString(result, "code");
+        //用户处在登陆状态
+        if ("1".equals(code)) {
+            String result1 = HttpUtil.signPost("http://172.16.23.148:7073/api/user/getUserByNo", appId, productKey, String.valueOf(System.currentTimeMillis()),paramMap);
+            String data1 = JsonUtils.getJsonString(result1, "data");
+            if(data1 != null) {
+                String userName = JsonUtils.getJsonString(data1, "userAccount");
+                UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userName,userNo);
+                SecurityUtils.getSubject().getSession().setAttribute("basicPlatformReturnCurLoginAccount",userNo);
+                SecurityUtils.getSubject().login(usernamePasswordToken);
+                return url;
+            }else {
+                return "";
+            }
+        } else {
+            SecurityUtils.getSubject().logout();
+        }
+        return "";
+    }
+
+    @Override
+    public Result addUser(String departmentId, String account, String name, String password) {
+        if(isAccountOrNameRepeat(account,name)){
+            return new Result("账号或姓名已存在,请重新输入!");
+        }
+        DepartmentEntity departmentEntity = departmentDao.find(departmentId);
+        if(departmentEntity == null){
+            return new Result("不存在相应的部门!");
+        }
+        try {
+            UserEntity userEntity = new UserEntity();
+            userEntity.setAccount(account);
+            userEntity.setName(name);
+            ByteSource source = ByteSource.Util.bytes(account);
+            SimpleHash md5 = new SimpleHash("MD5", password, source, 10);
+            userEntity.setPassword(md5.toString());
+            userEntity.setDepartment(departmentEntity);
+            userEntity.setRoleName("系统管理员");
+            RoleEntity roleEntity = roleDao.findByName("系统管理员");
+            userEntity.setRole(roleEntity);
+            userDao.add(userEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("添加用户失败!");
+        }
+        return new Result("200","添加用户成功!",null);
+    }
+
+    @Override
+    public Result updateUser(String userId, String account, String name, String password, String passwordSure) {
+        UserEntity userEntity = this.find(userId);
+        if(userEntity == null){
+            return new Result("不存在相应的用户!");
+        }
+        if(isAccountOrNameRepeat(account,name) && !account.equals(userEntity.getAccount()) && !name.equals(userEntity.getName()) ){
+            return new Result("账号或姓名重复,请重新输入!");
+        }
+        try {
+            userEntity.setAccount(account);
+            userEntity.setName(name);
+            ByteSource source = ByteSource.Util.bytes(account);
+            SimpleHash md5 = new SimpleHash("MD5", password, source, 10);
+            userEntity.setPassword(md5.toString());
+            this.update(userEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result("更新用户失败!");
+        }
+        return new Result("200","更新用户成功!",null);
+    }
+
+    private boolean isAccountOrNameRepeat(String account,String name){
+        List<UserEntity> list = findAll();
+        for(UserEntity userEntity : list){
+            if(userEntity.getAccount().equals(account) || userEntity.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
     }
 }

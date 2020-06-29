@@ -4,6 +4,8 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 
@@ -21,6 +23,7 @@ public final class SpringContextUtils implements ApplicationContextAware, Dispos
 
 	/** applicationContext */
 	private static ApplicationContext applicationContext;
+//			= new ClassPathXmlApplicationContext(SpringContextUtils.class.getClass().getClassLoader().getResource("/").getPath()+"applicationContext.xml");
 
 	/**
 	 * 不可实例化
@@ -93,5 +96,4 @@ public final class SpringContextUtils implements ApplicationContextAware, Dispos
 		Locale locale = localeResolver.resolveLocale(null);
 		return applicationContext.getMessage(code, args, locale);
 	}
-
 }

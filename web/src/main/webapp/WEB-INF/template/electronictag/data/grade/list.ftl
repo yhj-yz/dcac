@@ -130,7 +130,7 @@
         });
     });
 
-    //删除一级分类
+    //删除分级
     $(document).on('click', '.delete-grade', function (e) {
         if(noItemSelected()){//如果用户没有勾选
             return;

@@ -13,9 +13,9 @@ public class DefaultNodeConstants {
 	/**程序配置默认根节点父类id=-1*/
 	public final static Long CONTRO_ROOT_PID = -1L;
 	/** 组织架构根节点的父节点id=0*/
-	public final static String EMPTY_DEPT_ID = "00000000000000000000000000000000";
+	public final static String EMPTY_DEPT_ID = "0";
 	/** 组织架构根节点id=1*/
-	public final static Long ROOT_DEPT_ID = 1L;
+	public final static String ROOT_DEPT_ID = "00000000000000000000000000000000";
 	/** 无部门用户组部门id=2*/
 	public final static Long NO_DEPT_ID = 2L;
 	/** 应用程序控制父节点id=3*/

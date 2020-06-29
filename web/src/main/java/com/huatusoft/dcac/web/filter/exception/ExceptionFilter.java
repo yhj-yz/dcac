@@ -6,6 +6,9 @@ import com.huatusoft.dcac.securitystrategycenter.exception.PermissionException;
 import com.huatusoft.dcac.securitystrategycenter.exception.handler.PermissionExceptionHandler;
 import com.huatusoft.dcac.systemsetting.exception.SystemSettingException;
 import com.huatusoft.dcac.systemsetting.exception.handler.SystemSettingExceptionHandler;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -39,4 +42,5 @@ public class ExceptionFilter extends OncePerRequestFilter {
             }
         }
     }
+
 }

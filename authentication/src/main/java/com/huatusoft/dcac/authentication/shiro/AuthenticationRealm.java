@@ -6,12 +6,9 @@
 package com.huatusoft.dcac.authentication.shiro;
 
 import com.huatusoft.dcac.organizationalstrucure.entity.AuthorityEntity;
-import com.huatusoft.dcac.common.bo.BasisPlatformInfo;
-import com.huatusoft.dcac.common.bo.CommonAttributes;
 import com.huatusoft.dcac.common.bo.Principal;
 import com.huatusoft.dcac.organizationalstrucure.entity.UserEntity;
 import com.huatusoft.dcac.organizationalstrucure.service.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -22,11 +19,8 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 
 /**
  * 权限认证
@@ -68,35 +62,23 @@ public class AuthenticationRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)  {
-        //获取Session
+        //session
         Session session = SecurityUtils.getSubject().getSession();
-        //查看是否是基础平台单点登陆
-        String basicPlatformReturnCurLoginAccount = String.valueOf(session.getAttribute(BasisPlatformInfo.CURRENT_LOGIN_ACCOUNT));
         //获取用户名密码
         token = (UsernamePasswordToken) authenticationToken;
-        if(StringUtils.isBlank(token.getUsername())) {
-            account = basicPlatformReturnCurLoginAccount;
-            token.setUsername(account);
-        } else {
-            account = String.valueOf(token.getUsername());
-        }
-        if(Objects.isNull(token.getPassword())) {
-            password = basicPlatformReturnCurLoginAccount;
-            token.setPassword(password.toCharArray());
-        } else {
-            password = String.valueOf(token.getPassword());
-        }
+        //用户名
+        account = token.getUsername();
         //加盐
         credentialsSalt = ByteSource.Util.bytes(account);
         user = userService.getUserByAccount(account);
         //如果是基础平台登陆
-        if(StringUtils.isNotBlank(basicPlatformReturnCurLoginAccount) && !Objects.equals(CommonAttributes.STRING_NULL, basicPlatformReturnCurLoginAccount)) {
-            session.removeAttribute(BasisPlatformInfo.CURRENT_LOGIN_ACCOUNT);
-            password = new SimpleHash("MD5",password,credentialsSalt,10).toString();
-            authenticationInfo = new SimpleAuthenticationInfo(new Principal(user.getId(), user.getAccount(), user.getName()), password, credentialsSalt, getName());
-            return authenticationInfo;
+        password = new String(token.getPassword());
+        if(session.getAttribute("basicPlatformReturnCurLoginAccount") != null && session.getAttribute("basicPlatformReturnCurLoginAccount").equals(password)) {
+            session.removeAttribute("basicPlatformReturnCurLoginAccount");
+            password = new SimpleHash("MD5", token.getPassword(),null,10).toString();
+            authenticationInfo = new SimpleAuthenticationInfo(new Principal(user.getId(), user.getAccount(), user.getName()),password, getName());
         } else {
-            authenticationInfo = new SimpleAuthenticationInfo(new Principal(user.getId(), user.getAccount(), user.getName()), user.getPassword(), credentialsSalt, getName());
+            authenticationInfo = new SimpleAuthenticationInfo(new Principal(user.getId(), user.getAccount(), user.getName()),user.getPassword(), credentialsSalt, getName());
         }
         return authenticationInfo;
     }

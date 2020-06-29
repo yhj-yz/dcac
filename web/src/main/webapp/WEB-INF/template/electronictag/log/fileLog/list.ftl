@@ -100,10 +100,12 @@
                                     </th>
                                     <th>文件名称</th>
                                     <th>文件大小</th>
+                                    <th>疑似加密</th>
                                     <th>文件指纹</th>
                                     <th>分类信息</th>
                                     <th>分级信息</th>
                                     <th>严重程度</th>
+                                    <th>命中次数</th>
                                     <th>采集时间</th>
                                     <th>用户账号</th>
                                     <th>所属部门</th>
@@ -246,6 +248,13 @@
                     </div>
                 </div>
 
+                <div>
+                    <label class="dsm-form-label">疑似加密：</label>
+                    <div class="dsm-input-inline">
+                        <h5 class="isEncrypted"></h5>
+                    </div>
+                </div>
+
                 <div style="float: left">
                     <label class="dsm-form-label">文件指纹：</label>
                     <div class="dsm-input-inline">
@@ -271,6 +280,13 @@
                     <label class="dsm-form-label">严重程度：</label>
                     <div class="dsm-input-inline">
                         <h5 type="text" class="dataLevel"></h5>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="dsm-form-label">命中次数：</label>
+                    <div class="dsm-input-inline">
+                        <h5 type="text" class="hits"></h5>
                     </div>
                 </div>
 
@@ -350,6 +366,7 @@
                 var fileName = data.fileName.substring(data.fileName.lastIndexOf("\\") + 1, data.fileName.length);
                 var filePath = data.fileName.substring(0, data.fileName.lastIndexOf("\\"));
                 var dataClassifyName = "";
+                var isEncrypted = "";
                 $.ajax({
                     data: {id: data.dataType},
                     dataType: "json",
@@ -377,6 +394,7 @@
                 var strategyName = "";
                 var strategyId = "";
                 var dataLevel = "";
+                var hits = parseInt(data.hits);
                 if(data.strategyId != "" && null != data.strategyId){
                     $.ajax({
                         data: {id: data.strategyId},
@@ -387,8 +405,6 @@
                             if (_data != null && ""!= _data) {
                                 strategyName = _data.strategyName;
                                 strategyId = _data.id;
-                                var hits = parseInt(data.hits);
-                                console.log(_data);
                                 var dataLevelRuleEntities = _data.strategyRuleEntities[0].dataLevelRuleEntities;
                                 var levelDefaultCode = _data.strategyRuleEntities[0].levelDefaultCode;
                                 var levelDefaultValue = "";
@@ -417,24 +433,21 @@
                                     if (ruleScopeCode === "0") {
                                         var ruleScopeValues = ruleScopeValue.split(",");
                                         if ((parseInt(ruleScopeValues[0]) <= hits && parseInt(ruleScopeValues[1]) >= hits && parseInt(ruleScopeValues[0]) <= parseInt(ruleScopeValues[1])) || (parseInt(ruleScopeValues[1]) <= hits && parseInt(ruleScopeValues[0]) >= hits && (ruleScopeValues[0]) >= parseInt(ruleScopeValues[1]))) {
-                                            dataLevel += "(" + hits + ")";
                                             break;
                                         } else {
-                                            dataLevel = levelDefaultValue + "(" + hits + ")";
+                                            dataLevel = levelDefaultValue;
                                         }
                                     } else if (ruleScopeCode === "1") {
                                         if (parseInt(ruleScopeValue) <= hits) {
-                                            dataLevel += "(" + hits + ")";
                                             break;
                                         } else {
-                                            dataLevel = levelDefaultValue + "(" + hits + ")";
+                                            dataLevel = levelDefaultValue;
                                         }
                                     } else if (ruleScopeCode === "2") {
                                         if (parseInt(ruleScopeValue) >= hits) {
-                                            dataLevel += "(" + hits + ")";
                                             break;
                                         } else {
-                                            dataLevel = levelDefaultValue + "(" + hits + ")";
+                                            dataLevel = levelDefaultValue;
                                         }
                                     }
                                 }
@@ -451,15 +464,22 @@
                 } else if (data.fileOper === 1) {
                     responseTypeName = "内容脱敏";
                 }
+                if(data.isEncrypted === "1"){
+                    isEncrypted = "加密";
+                }else if(data.isEncrypted === "0"){
+                    isEncrypted = "非加密";
+                }
                 var department = "内置账号";
                 var text = "<tr>" +
                     "<td class='w40'><div class='dsmcheckbox logList'><input type='checkbox' value='" + _id + "' id='m1_" + _id + "' name='ids'><label for='m1_" + _id + "'></label></div></td>" +
-                    "<td><a onclick='getLogDetails(\"" + fileName + "\",\""+data.fileSize+"\",\""+data.fileMD5+"\",\""+dataClassifyName+"\",\""+dataGradeName+"\",\""+dataLevel+"\",\""+data.time+"\",\""+data.userName+"\",\""+department+"\",\""+data.ip+"\",\""+data.computerName+"\",\""+filePath.replace('\\','\\\\')+"\",\""+responseTypeName+"\",\""+strategyName+"\")'>"+fileName+"</a></td>" +
+                    "<td><a onclick='getLogDetails(\"" + fileName + "\",\""+data.fileSize+"\",\""+isEncrypted+"\",\""+data.fileMD5+"\",\""+dataClassifyName+"\",\""+dataGradeName+"\",\""+dataLevel+"\",\""+hits+"\",\""+data.time+"\",\""+data.userName+"\",\""+department+"\",\""+data.ip+"\",\""+data.computerName+"\",\""+filePath.split('\\').join('\\\\')+"\",\""+responseTypeName+"\",\""+strategyName+"\")'>"+fileName+"</a></td>" +
                     "<td>" + data.fileSize + "KB</td>" +
+                    "<td>" + isEncrypted + "</td>" +
                     "<td>" + data.fileMD5 + "</td>" +
                     "<td>" + dataClassifyName + "</td>" +
                     "<td>" + dataGradeName + "</td>" +
                     "<td>" + dataLevel + "</td>" +
+                    "<td>" + hits + "</td>" +
                     "<td>" + data.time + "</td>" +
                     "<td>" + data.userName + "</td>" +
                     "<td>内置账号</td>" +
@@ -566,14 +586,15 @@
         });
     }
 
-    function getLogDetails(fileName,fileSize,fileMD5,dataClassifyName,dataGradeName,dataLevel,time,userName,department,ipAddress,equipName,filePath,responseTypeName,strategyName) {
-        console.log(filePath);
+    function getLogDetails(fileName,fileSize,isEncrypted,fileMD5,dataClassifyName,dataGradeName,dataLevel,hits,time,userName,department,ipAddress,equipName,filePath,responseTypeName,strategyName) {
         $(".fileName").text(fileName);
         $(".fileSize").text(fileSize+"KB");
+        $(".isEncrypted").text(isEncrypted);
         $(".fileMD5").text(fileMD5);
         $(".dataClassifyName").text(dataClassifyName);
         $(".dataGradeName").text(dataGradeName);
         $(".dataLevel").text(dataLevel);
+        $(".hits").text(hits);
         $(".time").text(time);
         $(".userName").text(userName);
         $(".department").text(department);
